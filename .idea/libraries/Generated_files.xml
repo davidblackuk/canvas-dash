@@ -1,0 +1,51 @@
+<component name="libraryTable">
+  <library name="Generated files" type="javaScript">
+    <properties>
+      <sourceFilesUrls>
+        <item url="file://$PROJECT_DIR$/ts/jQueryIntegration.js" />
+        <item url="file://$PROJECT_DIR$/ts/dials/DialBezel.js" />
+        <item url="file://$PROJECT_DIR$/ts/dials/SliderNeedle.js" />
+        <item url="file://$PROJECT_DIR$/ts/dials/DialNeedle.js" />
+        <item url="file://$PROJECT_DIR$/ts/dials/SliderMask.js" />
+        <item url="file://$PROJECT_DIR$/ts/dials/SliderScale.js" />
+        <item url="file://$PROJECT_DIR$/ts/dials/Slider.js" />
+        <item url="file://$PROJECT_DIR$/ts/dials/DialBase.js" />
+        <item url="file://$PROJECT_DIR$/ts/dials/DialGlass.js" />
+        <item url="file://$PROJECT_DIR$/ts/dials/Dial360.js" />
+        <item url="file://$PROJECT_DIR$/ts/dials/Dial180.js" />
+        <item url="file://$PROJECT_DIR$/ts/dials/SliderBezel.js" />
+        <item url="file://$PROJECT_DIR$/ts/dials/DialFace.js" />
+        <item url="file://$PROJECT_DIR$/ts/dials/DialOptions.js" />
+        <item url="file://$PROJECT_DIR$/ts/dials/DialScale.js" />
+        <item url="file://$PROJECT_DIR$/ts/marquee/marquee.js" />
+        <item url="file://$PROJECT_DIR$/ts/marquee/characters.js" />
+        <item url="file://$PROJECT_DIR$/ts/common/Dashboard.js" />
+        <item url="file://$PROJECT_DIR$/ts/dials/DialMask.js" />
+        <item url="file://$PROJECT_DIR$/ts/dials/DialValue.js" />
+      </sourceFilesUrls>
+    </properties>
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/ts/dials/DialBezel.js" />
+      <root url="file://$PROJECT_DIR$/ts/jQueryIntegration.js" />
+      <root url="file://$PROJECT_DIR$/ts/dials/SliderNeedle.js" />
+      <root url="file://$PROJECT_DIR$/ts/dials/DialNeedle.js" />
+      <root url="file://$PROJECT_DIR$/ts/dials/SliderMask.js" />
+      <root url="file://$PROJECT_DIR$/ts/dials/Slider.js" />
+      <root url="file://$PROJECT_DIR$/ts/dials/SliderScale.js" />
+      <root url="file://$PROJECT_DIR$/ts/dials/DialBase.js" />
+      <root url="file://$PROJECT_DIR$/ts/dials/Dial360.js" />
+      <root url="file://$PROJECT_DIR$/ts/dials/DialGlass.js" />
+      <root url="file://$PROJECT_DIR$/ts/dials/Dial180.js" />
+      <root url="file://$PROJECT_DIR$/ts/dials/SliderBezel.js" />
+      <root url="file://$PROJECT_DIR$/ts/dials/DialFace.js" />
+      <root url="file://$PROJECT_DIR$/ts/dials/DialOptions.js" />
+      <root url="file://$PROJECT_DIR$/ts/dials/DialScale.js" />
+      <root url="file://$PROJECT_DIR$/ts/marquee/marquee.js" />
+      <root url="file://$PROJECT_DIR$/ts/marquee/characters.js" />
+      <root url="file://$PROJECT_DIR$/ts/common/Dashboard.js" />
+      <root url="file://$PROJECT_DIR$/ts/dials/DialMask.js" />
+      <root url="file://$PROJECT_DIR$/ts/dials/DialValue.js" />
+    </CLASSES>
+    <SOURCES />
+  </library>
+</component>
