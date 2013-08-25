@@ -3,7 +3,9 @@ canvas-dash
 
 HTML 5 Canvas based Dashboard gauges
 
-A library of dashboard dials, gauges and other ephemera implemented usint the HTML 5 canvas control, for modern browsers.
+A library of dashboard dials, gauges and other ephemera implemented using the HTML 5 canvas control, for modern browsers.
+
+[For documentation and demos, go to the project home page.](http://davidblackuk.github.io/canvas-dash/)
 
 The library features:
 
@@ -17,6 +19,7 @@ The library features:
        +	360 and 180 degree dials
        +	Horizontal sliders
        +	Scrolling marquee
+
 
 
 
