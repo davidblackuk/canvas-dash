@@ -1,0 +1,623 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"tit",
+				"title"
+			],
+			[
+				"ca",
+				"canvasParent"
+			],
+			[
+				"margin",
+				"margin-right"
+			],
+			[
+				"mar",
+				"margin-left"
+			],
+			[
+				"get",
+				"getCanvas"
+			],
+			[
+				"can",
+				"canvas"
+			],
+			[
+				"in",
+				"inZone"
+			],
+			[
+				"ma",
+				"margin-top"
+			],
+			[
+				"le",
+				"length"
+			],
+			[
+				"c",
+				"current"
+			],
+			[
+				"canvas",
+				"canvasParent"
+			],
+			[
+				"title",
+				"titleElement"
+			],
+			[
+				"dem",
+				"demoArea"
+			],
+			[
+				"demo",
+				"demoTitle"
+			],
+			[
+				"inli",
+				"inline-block"
+			],
+			[
+				"ba",
+				"background-color"
+			],
+			[
+				"con",
+				"context"
+			],
+			[
+				"editr",
+				"editor"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"Ba",
+				"background-color"
+			],
+			[
+				"h",
+				"h2"
+			],
+			[
+				"object",
+				"objectRepo"
+			],
+			[
+				"assoc",
+				"associations"
+			],
+			[
+				"wy",
+				"wyInvariantName"
+			],
+			[
+				"fin",
+				"find"
+			],
+			[
+				"find",
+				"findItemComplete"
+			],
+			[
+				"add",
+				"addPropertyValue"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "---\nname        : dChart \ntagline     : Fruity visualizations \nuri         : http://www.david-black.info\ntagspace    : /tag/\nemail       : \nlang        : en\ncharset     : UTF-8\ndestination : _site \nserver_port : 4000 \nlsi         : false\npygments    : true\npermalink   : /:year/:title/\nmarkdown    : rdiscount\nexclude     : [public, tmp, README.markdown, config.ru]\nbaseUrl		: http://davidblackuk.github.io/canvas-dash/\n",
+			"file": "_config.yml",
+			"file_size": 366,
+			"file_write_time": 1368103501000000,
+			"settings":
+			{
+				"buffer_size": 420,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"contents": "<!DOCTYPE html>\n<head>\n    <meta charset=\"{{ site.charset }}\">\n    <title>{% if page.title %}{{ page.title }} &larr; {% endif %}{{ page.top }}</title>\n    <meta name=\"author\" content=\"David Blacxk\">\n    <link rel=\"start\" href=\"/\">\n    <link rel=\"stylesheet\" href=\"{{ site.baseurl }}/css/base.css\" type=\"text/css\" media=\"screen\"/>\n   \n\n    <script type=\"text/javascript\" src=\"{{ site.baseurl }}/js/jquery-1.9.1.min.js\"></script>\n    <script type=\"text/javascript\" src=\"{{ site.baseurl }}/js/jquery.number.min.js\"></script>\n        <script type=\"text/javascript\" src=\"{{ site.baseurl }}/js/purl.js\"> </script>\n    <script type=\"text/javascript\" src=\"{{ site.baseurl }}/js/editor.js\"> </script>\n    <script type=\"text/javascript\" src=\"{{ site.baseurl }}/js/cDash.js\"></script>  \n    <script type=\"text/javascript\" src=\"{{ site.baseurl }}/js/demos.js\"></script>  \n</head>\n<body>\n\n    <div id=\"container\">\n        <div id=\"header\">\n        </div>\n       \n        {% include menu.ext %}\n\n        <div id=\"content-container\">\n\n            {{ content }}\n        </div>\n        <div id=\"footer\">\n            Copyright &#169; David Black 2013\n        </div>\n    </div>\n\n \n</body>\n\n      <script src=\"https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?skin=sons-of-obsidian\"></script>\n\n\n    <script type=\"text/javascript\" > \n        $(function(){\n             Editor.InitializePage();\n        });\n    </script>\n</html>",
+			"file": "_layouts/default.html",
+			"file_size": 1409,
+			"file_write_time": 1377443997000000,
+			"settings":
+			{
+				"buffer_size": 1427,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "_layouts/sbEdit.html",
+			"settings":
+			{
+				"buffer_size": 1483,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "Packages/JSLint/JSLint.sublime-build",
+	"command_palette":
+	{
+		"height": 47.0,
+		"selected_items":
+		[
+			[
+				"html",
+				"HTML: Encode Special Characters"
+			],
+			[
+				"encode",
+				"HTML: Encode Special Characters"
+			],
+			[
+				"pretty",
+				"HTMLPrettify: Prettify"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"pac in",
+				"Package Control: Install Package"
+			],
+			[
+				"pac",
+				"Package Control: Install Package"
+			],
+			[
+				"package",
+				"Package Control: Install Package"
+			],
+			[
+				"",
+				"Package Control: Remove Package"
+			],
+			[
+				"pa",
+				"Package Control: Install Package"
+			],
+			[
+				"snipp",
+				"Snippet: Anonymous Function"
+			],
+			[
+				"list",
+				"Package Control: List Packages"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"javascr",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"set j",
+				"Set Syntax: JavaScript"
+			]
+		],
+		"width": 575.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Volumes/internal/davidblack/Downloads/incomplete/1370860390/princess charming.bmp",
+		"/Volumes/internal/davidblack/jtest/fruity/editor/editor.html",
+		"/Volumes/internal/davidblack/jtest/fruity/js/editor.js",
+		"/Volumes/internal/davidblack/jtest/fruity/js/cDash.js",
+		"/Volumes/internal/davidblack/jtest/fruity/_layouts/sbEdit.html",
+		"/Volumes/internal/davidblack/jtest/fruity/_layouts/default.html",
+		"/Volumes/internal/davidblack/jtest/fruity/_includes/menu.ext",
+		"/Volumes/internal/davidblack/jtest/fruity/index.html",
+		"/Volumes/internal/davidblack/jtest/fruity/contact.html",
+		"/Volumes/internal/davidblack/jtest/fruity/about.html",
+		"/Volumes/internal/davidblack/jtest/fruity/themes/themes.html",
+		"/Volumes/internal/davidblack/jtest/fruity/_config.yml",
+		"/Volumes/internal/davidblack/jtest/fruity/js/xregexp.js",
+		"/Volumes/internal/davidblack/jtest/fruity/license.html",
+		"/Volumes/internal/davidblack/jtest/fruity/js/purl.js",
+		"/Volumes/internal/davidblack/jtest/fruity/documentation/documentation.html",
+		"/Volumes/UNTITLED 1/2013-04-08/update.ps1",
+		"/Volumes/internal/davidblack/jtest/fruity/documentation/dials.html",
+		"/Volumes/internal/davidblack/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/Volumes/internal/davidblack/Library/Application Support/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
+		"/Volumes/internal/davidblack/jtest/fruity/css/prettify.css",
+		"/Volumes/internal/davidblack/jtest/fruity/css/main.css",
+		"/Volumes/internal/davidblack/jtest/fruity/css/base.css",
+		"/Volumes/internal/davidblack/jtest/fruity/_site/editor/editor.html",
+		"/Volumes/internal/davidblack/jtest/fruity/_site/contact.html",
+		"/Volumes/internal/davidblack/jtest/fruity/_site/index.html",
+		"/Volumes/internal/davidblack/jtest/fruity/documentation/index.html",
+		"/Volumes/internal/davidblack/jtest/fruity/_site/about.md",
+		"/Volumes/internal/davidblack/jtest/fruity/_layouts/about.md",
+		"/Volumes/internal/davidblack/jtest/fruity/_layouts/post.html",
+		"/Volumes/internal/davidblack/Projects/Dashboards/Html5/site/base.css",
+		"/Volumes/internal/davidblack/Projects/davidblackuk.github.com/_config.yml",
+		"/Volumes/internal/davidblack/Desktop/JsPlay/json/objectMedium",
+		"/Volumes/internal/davidblack/Desktop/JsPlay/json/objectTiny",
+		"/Volumes/internal/davidblack/Desktop/JsPlay/json/objectHuge",
+		"/Volumes/internal/davidblack/Dropbox/Bops/Wyvern/data/linkRepository.js",
+		"/Volumes/internal/davidblack/Dropbox/Bops/Wyvern/public/javascripts/objectView.js",
+		"/Volumes/internal/davidblack/Dropbox/Bops/Wyvern/data/metaRepository.js",
+		"/Volumes/internal/davidblack/Dropbox/Bops/Wyvern/routes/objects.js",
+		"/Volumes/internal/davidblack/Dropbox/Bops/Wyvern/data/objectRepository.js",
+		"/Volumes/internal/davidblack/Dropbox/Bops/Wyvern/app.js",
+		"/Volumes/internal/davidblack/Dropbox/Bops/Wyvern/data/linksRepository.js",
+		"/Volumes/internal/davidblack/Dropbox/Bops/Wyvern/data/associationsRepository.js",
+		"/Volumes/internal/davidblack/Library/Application Support/Sublime Text 2/Packages/User/sublime-jslint.sublime-settings",
+		"/Volumes/internal/davidblack/Library/Application Support/Sublime Text 2/Packages/sublime-jslint/sublime-jslint.sublime-settings",
+		"/Volumes/internal/davidblack/Dropbox/Bops/Wyvern/data/associationsRepository",
+		"/Volumes/internal/davidblack/Dropbox/Bops/Wyvern/data/metaRepository",
+		"/Volumes/internal/davidblack/WebstormProjects/Wyvern/data/objectRepository.js",
+		"/Volumes/internal/davidblack/WebstormProjects/Wyvern/public/javascripts/objectView.js",
+		"/Volumes/internal/davidblack/WebstormProjects/Wyvern/public/stylesheets/style.less",
+		"/Volumes/internal/davidblack/WebstormProjects/Wyvern/views/about.jade",
+		"/Volumes/internal/davidblack/WebstormProjects/Wyvern/views/objects/show.jade",
+		"/Volumes/internal/davidblack/WebstormProjects/Wyvern/public/javascripts/page_global.js",
+		"/Volumes/internal/davidblack/WebstormProjects/Wyvern/views/layout.jade",
+		"/Volumes/internal/davidblack/WebstormProjects/Wyvern/public/javascripts/objectFormat.js",
+		"/Volumes/internal/davidblack/WebstormProjects/Wyvern/public/stylesheets/style.css",
+		"/Volumes/internal/davidblack/WebstormProjects/Wyvern/node_modules/less/test/less/css-escapes.less",
+		"/Volumes/internal/davidblack/WebstormProjects/Wyvern/views/objects/index.jade"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"</li>",
+			"<li>",
+			"<li>\n",
+			");\n",
+			"cDash",
+			"123",
+			"        ",
+			"\\t",
+			",",
+			", atLong",
+			" atLat",
+			"one:",
+			", 9, ",
+			", 8, ",
+			", 7, ",
+			", 6, ",
+			", 5, ",
+			", 4, ",
+			", 3, ",
+			", 2, ",
+			", 1, ",
+			", 5, ",
+			", 4, ",
+			", 3, ",
+			", 2, ",
+			", 1, ",
+			", ",
+			" 0.",
+			"-0.",
+			"51.",
+			");",
+			", ",
+			"\\t",
+			"AddStation (",
+			"cp",
+			"\" \"",
+			" \"",
+			"prin",
+			"char",
+			"\\",
+			"ing.",
+			"1",
+			"\n    ",
+			"editorDiv",
+			"window",
+			"Editor.js",
+			"editor.js",
+			"margin",
+			"main.css",
+			">",
+			"<",
+			"	<",
+			");\n",
+			"meta",
+			"objects",
+			"meta",
+			"item",
+			"callback",
+			"collection"
+		],
+		"highlight": true,
+		"in_selection": true,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"",
+			"+",
+			" ",
+			" atLong",
+			"\" atLat",
+			"one:@\"",
+			"one:@\" ",
+			"inZone:9 ",
+			"inZone:8 ",
+			"inZone:7 ",
+			"inZone:6 ",
+			"inZone:5 ",
+			"inZone:4 ",
+			"inZone:3 ",
+			"inZone:2 ",
+			"inZone:1 ",
+			"inZone:",
+			" atLongitude:-0.",
+			"atLongitude:-0.",
+			"atLatitude:51.",
+			"];",
+			" inZone:",
+			"",
+			" inZone:",
+			"",
+			"[self addStation:stations forLine:@",
+			"cat",
+			"\" >> test.avi cp \"",
+			"\" \"",
+			"\"prin",
+			"\"char",
+			"",
+			"ing.avi.",
+			"ing.avi",
+			"&gt;",
+			"&lt;"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"selected": 0,
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "_config.yml",
+					"settings":
+					{
+						"buffer_size": 420,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								420,
+								420
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/YAML/YAML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "_layouts/default.html",
+					"settings":
+					{
+						"buffer_size": 1427,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								282,
+								282
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "_layouts/sbEdit.html",
+					"settings":
+					{
+						"buffer_size": 1483,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1134,
+								1134
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 33.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 369.0
+	},
+	"output.jslint_result_view":
+	{
+		"height": 112.0
+	},
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"meta",
+				"data/metaRepository.js"
+			],
+			[
+				"lay",
+				"views/layout.jade"
+			],
+			[
+				"objectfor",
+				"public/javascripts/objectFormat.js"
+			],
+			[
+				"vi/",
+				"views/objects/show.jade"
+			],
+			[
+				"views/o/",
+				"views/objects/show.jade"
+			],
+			[
+				"pu/sty",
+				"public/stylesheets/style.less"
+			],
+			[
+				"styles",
+				"public/stylesheets/style.less"
+			],
+			[
+				"object",
+				"data/objectRepository.js"
+			],
+			[
+				"css",
+				"node_modules/less/test/less/css-escapes.less"
+			],
+			[
+				"views/ob/in",
+				"views/objects/index.jade"
+			],
+			[
+				"objects",
+				"views/objects/index.jade"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 292.0,
+	"status_bar_visible": true
+}
