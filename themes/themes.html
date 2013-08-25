@@ -1,0 +1,87 @@
+---
+layout: default
+title: cDash | Theme browser
+---
+
+<div id="content-single">
+
+	<p>I'm not (as you can tell!) a graphics person. These themes are included as an indication of what can be achieved. If you want to 
+		create a theme and contribute it back. Please do so, I'd be very grateful.</p>
+
+		<select id="themeSelector">
+			<option selected value="chocolate">Chocolate</option>
+			<option value="blue">Blue</option>
+			<option value="dark">Dark</option>
+		</select>
+		<br/>
+
+<div class="excent">
+		<canvas style="margin-left: 133px" id="dial1" width="200" height="133"></canvas>
+		<canvas style="margin-left: 20px" id="marq" width="200" height="32"></canvas>
+
+		<br/>
+		<canvas id="dial2" width="133" height="200"></canvas>
+		<canvas id="dial3" width="200" height="200"></canvas>
+		<canvas id="dial4" width="133" height="200"></canvas>
+		<br/>
+		<canvas style="margin-left: 133px" id="dial5" width="200" height="133"></canvas>
+</div>
+
+	</div>
+
+
+
+
+
+    <script type="text/javascript">
+        function showTheme(theme) {
+
+
+            $("#dial1").dbDial180N(theme);
+            $("#dial2").dbDial180W(theme);
+            $("#dial3").dbDial360(theme);
+            $("#dial4").dbDial180E(theme);
+            $("#dial5").dbDial180S(theme);
+
+            $("#marq").dbMarquee(theme, {message: "I THINK that I shall never see A poem lovely as a tree. A tree whose hungry mouth is prest Against the sweet earth's flowing breast; A tree that looks at God all day, And lifts her leafy arms to pray; A tree that may in summer wear A nest of robins in her hair; Upon whose bosom snow has lain; Who intimately lives with rain. Poems are made by fools like me, But only God can make a tree.  Joyce Kilmer. (1886-1918)"});
+           randomize();
+
+            window.setInterval(function(){
+	           randomize();
+            }, 2000);
+
+        }
+
+        function randomize(){
+        	 $("#dial1").data('dbDashboard').value(Math.random()*100);
+        	 $("#dial2").data('dbDashboard').value(Math.random()*100);
+        	 $("#dial3").data('dbDashboard').value(Math.random()*100);
+        	 $("#dial4").data('dbDashboard').value(Math.random()*100);
+        	 $("#dial5").data('dbDashboard').value(Math.random()*100);
+        }
+
+        $(function () {
+			$("#themesButton").addClass("selectedPage");
+
+
+            var theme = (typeof window.location.search == 'string' && window.location.search !== "") ? window.location.search.replace("?theme=","") : "chocolate";
+            $("#themeSelector").val(theme);
+            showTheme(theme);
+            $("#themeSelector").change(function () {
+                window.location.search = "?theme="+$(this).val();
+            })
+
+        });
+
+
+    </script>
+
+
+
+
+
+
+
+
+
+

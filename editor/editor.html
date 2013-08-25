@@ -1,0 +1,37 @@
+---
+layout: sbEdit
+title: cDash | Editor
+---
+
+<div id="content-single">
+
+	<div id="editorDiv">
+
+	<button type="button" id="runButton">Run</button>
+		<div id="codeDiv"></div>
+
+
+
+
+	</div>
+
+	<div id="canvasDiv">
+
+	 <canvas  width="200" height="200" id="canvas"> </canvas>
+
+
+	</div>
+</div>
+
+
+
+<script type="text/javascript">
+    $(function(){
+
+        $("#editorButton").addClass("selectedPage");
+    });
+
+    var editor = new Editor($("#codeDiv"), $("#canvas"))
+    editor.process();
+    editor.run();
+</script>

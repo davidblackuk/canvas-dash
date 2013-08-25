@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="{{ site.charset }}">
+    <title>{% if page.title %}{{ page.title }} &larr; {% endif %}{{ page.top }}</title>
+    <meta name="author" content="David Blacxk">
+    <link rel="start" href="/">
+    <link rel="stylesheet" href="/css/base.css" type="text/css" media="screen"/>
+    <link rel="stylesheet" href="/css/codemirror.css" type="text/css" media="screen"/>
+   <link rel="stylesheet" href="/css/blackboard.css" type="text/css" media="screen"/>
+    
+
+    <script type="text/javascript" src="/js/jquery-1.9.1.min.js"></script>
+        <script type="text/javascript" src="/js/jquery.number.min.js"></script>
+
+    <script type="text/javascript" src="/js/purl.js"> </script>
+    <script type="text/javascript" src="/js/editor.js"> </script>
+    <script type="text/javascript" src="/js/cDash.js"></script>  
+    <script type="text/javascript" src="/js/codemirror.js"></script>  
+    <script type="text/javascript" src="/js/javascript.js"></script>  
+</head>
+<body>
+
+    <div id="container">
+        <div id="header">
+        </div>
+       
+        {% include menu.ext %}
+
+        <div id="content-container">
+
+            {{ content }}
+        </div>
+        <div id="footer">
+            Copyright &#169; David Black 2013
+        </div>
+    </div>
+
+ 
+</body>
+
+</html>

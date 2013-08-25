@@ -1,0 +1,868 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"tit",
+				"title"
+			],
+			[
+				"ca",
+				"canvasParent"
+			],
+			[
+				"margin",
+				"margin-right"
+			],
+			[
+				"mar",
+				"margin-left"
+			],
+			[
+				"get",
+				"getCanvas"
+			],
+			[
+				"can",
+				"canvas"
+			],
+			[
+				"in",
+				"inZone"
+			],
+			[
+				"ma",
+				"margin-top"
+			],
+			[
+				"le",
+				"length"
+			],
+			[
+				"c",
+				"current"
+			],
+			[
+				"canvas",
+				"canvasParent"
+			],
+			[
+				"title",
+				"titleElement"
+			],
+			[
+				"dem",
+				"demoArea"
+			],
+			[
+				"demo",
+				"demoTitle"
+			],
+			[
+				"inli",
+				"inline-block"
+			],
+			[
+				"ba",
+				"background-color"
+			],
+			[
+				"con",
+				"context"
+			],
+			[
+				"editr",
+				"editor"
+			],
+			[
+				"font",
+				"font-size"
+			],
+			[
+				"Ba",
+				"background-color"
+			],
+			[
+				"h",
+				"h2"
+			],
+			[
+				"object",
+				"objectRepo"
+			],
+			[
+				"assoc",
+				"associations"
+			],
+			[
+				"wy",
+				"wyInvariantName"
+			],
+			[
+				"fin",
+				"find"
+			],
+			[
+				"find",
+				"findItemComplete"
+			],
+			[
+				"add",
+				"addPropertyValue"
+			]
+		]
+	},
+	"buffers":
+	[
+		{
+			"contents": "---\nlayout: default\ntitle: cDash | Dials\n---\n\n<div id=\"content-single\">\n\n	<h1>Dials</h1>\n\n    <h2>The basics</h2>\n\n	<p>The cDash library constsis of a single jQuery extension method. Which if called with no options, renders a 360 degree dial in the default chocolate theme.</p>\n\n	<p>The built in styles are: </p>\n	<ul>\n		<li>blue</li>\n		<li>chocolate</li>\n		<li>dark</li>\n		<li>metro</li>\n	</ul>\n\n	<p>You can create dials with themes quite easily (click the try me button to open the edior  and try the commented out code). Don't forget the canvas element on your own pages.</p>\n\n<pre class=\"prettyprint tryMe\">\n\n//  $(\"#canvas\").cDash({theme: \"metro\"});\n//  $(\"#canvas\").cDash({theme: \"dark\"});\n//  $(\"#canvas\").cDash({theme: \"blue\"});\n//  $(\"#canvas\").cDash({theme: \"chocolate\"});\n\n    // No theme\n    $(\"#canvas\").cDash();\n\n</pre>\n\n<p>The dial will fill the canvas (at least to the maximum amount it can to maintain its aspect ratio). The dials were designed to be rendered on canvases at a size of about 200 x 200. Smaller sizes of canvases may lead to the dial looking strange as the size of the ticks and scale bands etc will be too large. To address this you need to either fully specify the sizes of these items in the options, or, use a built in display set.</p>\n<p>There are two built-in display sets, 'medium' and small'. Below there are three dials at 200x200, 100x100 and 50x50. </p>\n\n<p>See how the default sizes look terrible on the smaller sized dials.</p>\n\n<pre class=\"prettyprint\">\n\n     $(\"#d1\").cDash({theme: \"blue\"});\n     $(\"#d2\").cDash({theme: \"blue\"});\n     $(\"#d3\").cDash({theme: \"blue\"});\n\n\n</pre>\n\n\n<div class=\"excent\">\n    <canvas width=\"200\" height=\"200\" id=\"d1\"> </canvas>\n    <canvas width=\"100\" height=\"100\" id=\"d2\"> </canvas>\n    <canvas  width=\"50\" height=\"50\" id=\"d3\"> </canvas>\n</div>\n\n<p>And here is the result of applying the display sets: medium and small</p>\n\n<pre class=\"prettyprint \">\n\n    $(\"#d1\").cDash({theme: \"blue\"});\n    $(\"#d2\").cDash({theme: \"blue\", displaySet:\"medium\"});\n    $(\"#d3\").cDash({theme: \"blue\", displaySet:\"small\"});\n\n\n</pre>\n\n\n<div class=\"excent\">\n    <canvas width=\"200\" height=\"200\" id=\"d4\"> </canvas>\n    <canvas width=\"100\" height=\"100\" id=\"d5\"> </canvas>\n    <canvas  width=\"50\" height=\"50\" id=\"d6\"> </canvas>\n</div>\n\n<p>The display sets reduce the number of major and minor ticks, modify the scale text etc. All of these types of adjustments can be made\nmanually if desired (much, much more of that later)</p>\n\n<h3>Accessing the dial object and setting the value</h3>\n\n<p>The dial creation method stores the dial object as a data property on the canvas jQuery object. You will need to retrieve the actual dial object if you want to update the dial value subsequently, or call other methods. By default the dial is stored using the key 'dbDashboard' </p>\n\n<p>As an example of using the javascript object directly let's look at updating the dial value after initialization</p>\n\n<pre class=\"prettyprint \">\n\n    // our dial is rendered in canvas id: canvas\n    $(\"#canvas\").cDash();\n    var dial =  $(\"#canvas\").data(\"dbDashboard\");\n    dial.value(34);\n\n\n</pre>\n\n<p>Multiple dials on one canvas won't work with a default id (king of the obvious, talking here) so you can override the id that gets used in the options object.</p>\n\n\n<pre class=\"prettyprint tryMe\">\n\n    $(\"#canvas\").cDash({id:\"myDial\"});\n    var dial =  $(\"#canvas\").data(\"myDial\");\n    dial.value(34);\n\n</pre>\n\n\n\n\n<script type=\"text/javascript\">\n    $(function(){\n        $(\"#documentationButton\").addClass(\"selectedPage\");\n    });\n\n    $(\"#d1\").cDash({theme: \"blue\"});\n    $(\"#d2\").cDash({theme: \"blue\"});\n    $(\"#d3\").cDash({theme: \"blue\"});\n\n    $(\"#d4\").cDash({theme: \"blue\"});\n    $(\"#d5\").cDash({theme: \"blue\", displaySet:\"medium\"});\n    $(\"#d6\").cDash({theme: \"blue\", displaySet:\"small\"});\n\n</script>",
+			"file": "documentation/dials.html",
+			"file_size": 3840,
+			"file_write_time": 1377432551000000,
+			"settings":
+			{
+				"buffer_size": 3839,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "documentation/documentation.html",
+			"settings":
+			{
+				"buffer_size": 5253,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "index.html",
+			"settings":
+			{
+				"buffer_size": 2845,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "js/demos.js",
+			"settings":
+			{
+				"buffer_size": 1858,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "css/base.css",
+			"settings":
+			{
+				"buffer_size": 4948,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "css/main.css",
+			"settings":
+			{
+				"buffer_size": 2618,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "editor/editor.html",
+			"settings":
+			{
+				"buffer_size": 508,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "_layouts/default.html",
+			"settings":
+			{
+				"buffer_size": 1301,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "_layouts/sbEdit.html",
+			"settings":
+			{
+				"buffer_size": 1303,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "_includes/menu.ext",
+			"settings":
+			{
+				"buffer_size": 588,
+				"line_ending": "Unix"
+			}
+		}
+	],
+	"build_system": "Packages/JSLint/JSLint.sublime-build",
+	"command_palette":
+	{
+		"height": 47.0,
+		"selected_items":
+		[
+			[
+				"html",
+				"HTML: Encode Special Characters"
+			],
+			[
+				"encode",
+				"HTML: Encode Special Characters"
+			],
+			[
+				"pretty",
+				"HTMLPrettify: Prettify"
+			],
+			[
+				"insta",
+				"Package Control: Install Package"
+			],
+			[
+				"pac in",
+				"Package Control: Install Package"
+			],
+			[
+				"pac",
+				"Package Control: Install Package"
+			],
+			[
+				"package",
+				"Package Control: Install Package"
+			],
+			[
+				"",
+				"Package Control: Remove Package"
+			],
+			[
+				"pa",
+				"Package Control: Install Package"
+			],
+			[
+				"snipp",
+				"Snippet: Anonymous Function"
+			],
+			[
+				"list",
+				"Package Control: List Packages"
+			],
+			[
+				"install",
+				"Package Control: Install Package"
+			],
+			[
+				"install ",
+				"Package Control: Install Package"
+			],
+			[
+				"inst",
+				"Package Control: Install Package"
+			],
+			[
+				"javascr",
+				"Set Syntax: JavaScript"
+			],
+			[
+				"set j",
+				"Set Syntax: JavaScript"
+			]
+		],
+		"width": 575.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/Volumes/internal/davidblack/Downloads/incomplete/1370860390/princess charming.bmp",
+		"/Volumes/internal/davidblack/jtest/fruity/editor/editor.html",
+		"/Volumes/internal/davidblack/jtest/fruity/js/editor.js",
+		"/Volumes/internal/davidblack/jtest/fruity/js/cDash.js",
+		"/Volumes/internal/davidblack/jtest/fruity/_layouts/sbEdit.html",
+		"/Volumes/internal/davidblack/jtest/fruity/_layouts/default.html",
+		"/Volumes/internal/davidblack/jtest/fruity/_includes/menu.ext",
+		"/Volumes/internal/davidblack/jtest/fruity/index.html",
+		"/Volumes/internal/davidblack/jtest/fruity/contact.html",
+		"/Volumes/internal/davidblack/jtest/fruity/about.html",
+		"/Volumes/internal/davidblack/jtest/fruity/themes/themes.html",
+		"/Volumes/internal/davidblack/jtest/fruity/_config.yml",
+		"/Volumes/internal/davidblack/jtest/fruity/js/xregexp.js",
+		"/Volumes/internal/davidblack/jtest/fruity/license.html",
+		"/Volumes/internal/davidblack/jtest/fruity/js/purl.js",
+		"/Volumes/internal/davidblack/jtest/fruity/documentation/documentation.html",
+		"/Volumes/UNTITLED 1/2013-04-08/update.ps1",
+		"/Volumes/internal/davidblack/jtest/fruity/documentation/dials.html",
+		"/Volumes/internal/davidblack/Library/Application Support/Sublime Text 2/Packages/User/Preferences.sublime-settings",
+		"/Volumes/internal/davidblack/Library/Application Support/Sublime Text 2/Packages/Default/Preferences.sublime-settings",
+		"/Volumes/internal/davidblack/jtest/fruity/css/prettify.css",
+		"/Volumes/internal/davidblack/jtest/fruity/css/main.css",
+		"/Volumes/internal/davidblack/jtest/fruity/css/base.css",
+		"/Volumes/internal/davidblack/jtest/fruity/_site/editor/editor.html",
+		"/Volumes/internal/davidblack/jtest/fruity/_site/contact.html",
+		"/Volumes/internal/davidblack/jtest/fruity/_site/index.html",
+		"/Volumes/internal/davidblack/jtest/fruity/documentation/index.html",
+		"/Volumes/internal/davidblack/jtest/fruity/_site/about.md",
+		"/Volumes/internal/davidblack/jtest/fruity/_layouts/about.md",
+		"/Volumes/internal/davidblack/jtest/fruity/_layouts/post.html",
+		"/Volumes/internal/davidblack/Projects/Dashboards/Html5/site/base.css",
+		"/Volumes/internal/davidblack/Projects/davidblackuk.github.com/_config.yml",
+		"/Volumes/internal/davidblack/Desktop/JsPlay/json/objectMedium",
+		"/Volumes/internal/davidblack/Desktop/JsPlay/json/objectTiny",
+		"/Volumes/internal/davidblack/Desktop/JsPlay/json/objectHuge",
+		"/Volumes/internal/davidblack/Dropbox/Bops/Wyvern/data/linkRepository.js",
+		"/Volumes/internal/davidblack/Dropbox/Bops/Wyvern/public/javascripts/objectView.js",
+		"/Volumes/internal/davidblack/Dropbox/Bops/Wyvern/data/metaRepository.js",
+		"/Volumes/internal/davidblack/Dropbox/Bops/Wyvern/routes/objects.js",
+		"/Volumes/internal/davidblack/Dropbox/Bops/Wyvern/data/objectRepository.js",
+		"/Volumes/internal/davidblack/Dropbox/Bops/Wyvern/app.js",
+		"/Volumes/internal/davidblack/Dropbox/Bops/Wyvern/data/linksRepository.js",
+		"/Volumes/internal/davidblack/Dropbox/Bops/Wyvern/data/associationsRepository.js",
+		"/Volumes/internal/davidblack/Library/Application Support/Sublime Text 2/Packages/User/sublime-jslint.sublime-settings",
+		"/Volumes/internal/davidblack/Library/Application Support/Sublime Text 2/Packages/sublime-jslint/sublime-jslint.sublime-settings",
+		"/Volumes/internal/davidblack/Dropbox/Bops/Wyvern/data/associationsRepository",
+		"/Volumes/internal/davidblack/Dropbox/Bops/Wyvern/data/metaRepository",
+		"/Volumes/internal/davidblack/WebstormProjects/Wyvern/data/objectRepository.js",
+		"/Volumes/internal/davidblack/WebstormProjects/Wyvern/public/javascripts/objectView.js",
+		"/Volumes/internal/davidblack/WebstormProjects/Wyvern/public/stylesheets/style.less",
+		"/Volumes/internal/davidblack/WebstormProjects/Wyvern/views/about.jade",
+		"/Volumes/internal/davidblack/WebstormProjects/Wyvern/views/objects/show.jade",
+		"/Volumes/internal/davidblack/WebstormProjects/Wyvern/public/javascripts/page_global.js",
+		"/Volumes/internal/davidblack/WebstormProjects/Wyvern/views/layout.jade",
+		"/Volumes/internal/davidblack/WebstormProjects/Wyvern/public/javascripts/objectFormat.js",
+		"/Volumes/internal/davidblack/WebstormProjects/Wyvern/public/stylesheets/style.css",
+		"/Volumes/internal/davidblack/WebstormProjects/Wyvern/node_modules/less/test/less/css-escapes.less",
+		"/Volumes/internal/davidblack/WebstormProjects/Wyvern/views/objects/index.jade"
+	],
+	"find":
+	{
+		"height": 35.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+			""
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"</li>",
+			"<li>",
+			"<li>\n",
+			");\n",
+			"cDash",
+			"123",
+			"        ",
+			"\\t",
+			",",
+			", atLong",
+			" atLat",
+			"one:",
+			", 9, ",
+			", 8, ",
+			", 7, ",
+			", 6, ",
+			", 5, ",
+			", 4, ",
+			", 3, ",
+			", 2, ",
+			", 1, ",
+			", 5, ",
+			", 4, ",
+			", 3, ",
+			", 2, ",
+			", 1, ",
+			", ",
+			" 0.",
+			"-0.",
+			"51.",
+			");",
+			", ",
+			"\\t",
+			"AddStation (",
+			"cp",
+			"\" \"",
+			" \"",
+			"prin",
+			"char",
+			"\\",
+			"ing.",
+			"1",
+			"\n    ",
+			"editorDiv",
+			"window",
+			"Editor.js",
+			"editor.js",
+			"margin",
+			"main.css",
+			">",
+			"<",
+			"	<",
+			");\n",
+			"meta",
+			"objects",
+			"meta",
+			"item",
+			"callback",
+			"collection"
+		],
+		"highlight": true,
+		"in_selection": true,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+			"",
+			"+",
+			" ",
+			" atLong",
+			"\" atLat",
+			"one:@\"",
+			"one:@\" ",
+			"inZone:9 ",
+			"inZone:8 ",
+			"inZone:7 ",
+			"inZone:6 ",
+			"inZone:5 ",
+			"inZone:4 ",
+			"inZone:3 ",
+			"inZone:2 ",
+			"inZone:1 ",
+			"inZone:",
+			" atLongitude:-0.",
+			"atLongitude:-0.",
+			"atLatitude:51.",
+			"];",
+			" inZone:",
+			"",
+			" inZone:",
+			"",
+			"[self addStation:stations forLine:@",
+			"cat",
+			"\" >> test.avi cp \"",
+			"\" \"",
+			"\"prin",
+			"\"char",
+			"",
+			"ing.avi.",
+			"ing.avi",
+			"&gt;",
+			"&lt;"
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+				{
+					"buffer": 0,
+					"file": "documentation/dials.html",
+					"settings":
+					{
+						"buffer_size": 3839,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								3334,
+								3334
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1153.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 1,
+					"file": "documentation/documentation.html",
+					"settings":
+					{
+						"buffer_size": 5253,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								244,
+								244
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 234.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 2,
+					"file": "index.html",
+					"settings":
+					{
+						"buffer_size": 2845,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								130,
+								130
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 2.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "js/demos.js",
+					"settings":
+					{
+						"buffer_size": 1858,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								195,
+								195
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "css/base.css",
+					"settings":
+					{
+						"buffer_size": 4948,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								4680,
+								4680
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 3959.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "css/main.css",
+					"settings":
+					{
+						"buffer_size": 2618,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								506,
+								506
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 2,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 1868.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "editor/editor.html",
+					"settings":
+					{
+						"buffer_size": 508,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 7,
+					"file": "_layouts/default.html",
+					"settings":
+					{
+						"buffer_size": 1301,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 8,
+					"file": "_layouts/sbEdit.html",
+					"settings":
+					{
+						"buffer_size": 1303,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								0,
+								0
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 9,
+					"file": "_includes/menu.ext",
+					"settings":
+					{
+						"buffer_size": 588,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								346,
+								346
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				}
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 34.0
+	},
+	"input":
+	{
+		"height": 33.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 369.0
+	},
+	"output.jslint_result_view":
+	{
+		"height": 112.0
+	},
+	"replace":
+	{
+		"height": 64.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+			[
+				"meta",
+				"data/metaRepository.js"
+			],
+			[
+				"lay",
+				"views/layout.jade"
+			],
+			[
+				"objectfor",
+				"public/javascripts/objectFormat.js"
+			],
+			[
+				"vi/",
+				"views/objects/show.jade"
+			],
+			[
+				"views/o/",
+				"views/objects/show.jade"
+			],
+			[
+				"pu/sty",
+				"public/stylesheets/style.less"
+			],
+			[
+				"styles",
+				"public/stylesheets/style.less"
+			],
+			[
+				"object",
+				"data/objectRepository.js"
+			],
+			[
+				"css",
+				"node_modules/less/test/less/css-escapes.less"
+			],
+			[
+				"views/ob/in",
+				"views/objects/index.jade"
+			],
+			[
+				"objects",
+				"views/objects/index.jade"
+			]
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": true,
+	"show_open_files": true,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 292.0,
+	"status_bar_visible": true
+}

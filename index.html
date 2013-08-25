@@ -1,1 +1,92 @@
-hello there
+---
+layout: default
+title: cDash | Home
+---
+
+      <div id="content">
+           <div id="mainTitleBar"> 
+                <div class="floatyTitle">cDash     </div> <a class="link-button" href="">Download cDash</a>
+            </div>
+           
+            <h3>Features</h3>
+            <ul class="features">
+                <li>100% HTML5 Canvas based</li>
+                <li>Implemented in Typescript, also available in javascript</li>
+                <li>Open source</li>
+                <li>Use via a jQuery plugin</li>
+                <li>Animated and themable</li>
+                <li>Highly customizable
+                    <ul>
+                        <li>Colors</li>
+                        <li>Fonts</li>
+                        <li>They can look exactly as you want</li>
+                    </ul>
+                </li>
+                <li>Dials
+                    <ul>
+                        <li>360 and 180 degree dials</li>
+                        <li>Horizontal sliders</li>
+                        <li>Scrolling marquee</li>
+                    </ul>
+                </li>
+
+
+
+
+            </ul>
+    <p> Project info and general updates: </p>
+<a href="https://twitter.com/david_black_uk" class="excent twitter-follow-button" data-show-count="false">Follow @david_black_uk</a>
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+
+    <canvas width="500" height="37" id="marquee"/>
+    </div>
+
+
+        <div id="aside">
+            <h3>It's as simple as...</h3>
+
+            <div >
+
+<pre class="prettyprint tryMe">
+
+  $("#canvas").cDash();
+
+
+</pre>
+
+
+            <p>Which renders:</p>
+
+            <canvas class="excent" width="150" height="150" id="canvas"> </canvas>
+
+            </div>
+
+        </div>
+
+        <div id="aside" >
+            <h3 id="demoTitle">Watch out</h3>
+            <div style="height: 180px" id="canvasParent"/>
+
+        </div>
+
+
+
+<script type="text/javascript">
+    $(function(){
+       
+        $("#homeButton").addClass("selectedPage");
+        $("#canvas").cDash();
+        $("#marquee").cDash({theme: "blue", type:"marquee", message:"cDash - HTML 5 Canvas dials, gauges and cool eye candy. (c) 2013 David Black and other contributors. For updates and announcements follow me on twitter (or check out the contacts page)    ****    The only thing we have to fear is fear itself. Well that and spiders, obviously :-)   ***    message repeats    ****    ",
+            ledSize: 3,
+            ledMargin: 1,
+            ledShape: "square"
+        });
+
+        var demo = new Demo($("#demoTitle"), $("#canvasParent"));
+        demo.play();
+
+    });
+</script>
+
+

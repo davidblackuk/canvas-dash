@@ -1,0 +1,287 @@
+body{
+    background: #fff url(../images/bb.jpg) ;
+    color: #cfecff;
+    font-family: "Segoe UI", Frutiger, "Frutiger Linotype", "Dejavu Sans", "Helvetica Neue", Arial, sans-serif;
+}
+
+#container
+{
+    margin: 0 auto;
+    width: 900px;
+
+}
+
+#header
+{
+    padding:0;
+    margin: 20px 0 20px 0;
+    width: 212px;
+    height: 69px;
+    background-image:  url(../images/logo.png);
+
+}
+
+#header h1 { margin: 0; }
+
+#navigation
+{
+    float: left;
+    width: 900px;
+    background: rgba(51, 51, 51, 0.40);
+}
+
+#navigation ul
+{
+    margin: 0;
+    padding: 0;
+}
+
+#navigation ul li
+{
+    list-style-type: none;
+    display: inline;
+}
+
+#navigation li a
+{
+    display: block;
+    float: left;
+    margin: 5px 10px;
+    color: #cfecff;
+
+    text-decoration: none;
+
+}
+
+#navigation li a:link {color: #c1c3ff; text-decoration: none}
+#navigation li a:visited {color: #c1c3ff; text-decoration: none}
+#navigation li a:active {color: #c1c3ff; text-decoration: none}
+#navigation li a:hover {color: #e7ccff; text-decoration: none}
+
+
+#navigation .selectedPage a {
+    border-bottom: 3px solid white;
+}
+
+
+#navigation li a:hover { background: #112b59; }
+
+#content-container
+{
+    float: left;
+    width: 900px;
+
+}
+
+#content
+{
+    clear: left;
+    float: left;
+    width: 500px;
+    padding: 20px;
+    margin: 30px 0 30px 30px ;
+    display: inline;
+    background: #112b59;
+    -moz-box-shadow: 0 0 15px rgba(255,255,255,0.6);
+    -webkit-box-shadow: 0 0 15px rgba(255,255,255,0.6);
+    box-shadow: 0 0 15px rgba(255,255,255,0.6);
+
+
+}
+
+#content-single
+{
+    clear: left;
+    float: left;
+    width: 800px;
+    padding: 20px;
+    margin: 30px 0 30px 30px ;
+    display: inline;
+    background: #112b59;
+    -moz-box-shadow: 0 0 15px rgba(255,255,255,0.6);
+    -webkit-box-shadow: 0 0 15px rgba(255,255,255,0.6);
+    box-shadow: 0 0 15px rgba(255,255,255,0.6);
+
+
+}
+
+#content h2 { margin: 0; }
+
+#aside
+{
+    float: right;
+    width: 260px;
+    padding: 8px;
+    margin: 30px 20px 0 0;
+    display: inline;
+    background: #112b59;
+    -moz-box-shadow: 0 0 15px rgba(255,255,255,0.6);
+    -webkit-box-shadow: 0 0 15px rgba(255,255,255,0.6);
+    box-shadow: 0 0 15px rgba(255,255,255,0.6);
+}
+
+#aside h3 { margin: 0; }
+
+#footer
+{
+    clear: both;
+    background: rgba(51, 51, 51, 0.40);
+    text-align: right;
+    padding: 20px;
+    margin-top: 30px;
+    height: 1%;
+}
+
+#container h1 {
+    font-size: xx-large;
+    padding:0;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px  black;
+}
+
+#container h2{
+    font-size: x-large;
+    text-shadow: 2px 2px  black;
+}
+
+#container h3{
+    font-size: large;
+    text-shadow: 2px 2px  black;
+}
+
+#container ul{
+    font-size: large;
+    text-shadow: 2px 2px  black;
+}
+
+#container a:link {color: #c1c3ff; text-decoration: underline}
+#container a:visited {color: #c1c3ff; text-decoration: underline}
+#container a:active {color: #c1c3ff; text-decoration: underline}
+#container a:hover {color: #e7ccff; text-decoration: underline}
+
+.excent{
+    margin-left: auto;
+    margin-right: auto;
+    display: table-cell;
+ }
+
+.link-button{
+    border-radius: 5px;
+    margin:5px;
+    padding: 10px;
+    background-color: red;
+    display: inline-block;
+    -moz-box-shadow: 0 0 15px rgba(255,255,255,0.6);
+    -webkit-box-shadow: 0 0 15px rgba(255,255,255,0.6);
+    box-shadow: 0 0 15px rgba(255,255,255,0.6);
+    float: right;
+}
+
+
+#mainTitleBar a:link {color: #fff; text-decoration: none}
+#mainTitleBar a:visited {color: #fff; text-decoration: none}
+#mainTitleBar a:active {color: #fff; text-decoration: none}
+#mainTitleBar a:hover {color: #fff; text-decoration: none}
+
+#mainTitleBar 
+{
+    width: 100%;
+}
+
+.floatyTitle {
+    display: inline-block;
+       font-size: xx-large;
+    font-weight: bold;
+    padding:0;
+    margin-top: 0px;
+    margin-bottom: 10px;
+    text-shadow: 2px 2px  black;
+}
+
+
+.projectName{
+    color:white;
+    margin-bottom: 5px;
+}
+.projectAuthor{
+    color:white;
+    margin-bottom: 5px;
+
+}
+
+
+.licenseBoilerPlate{
+    font-family: Courier, "Lucida Console", monospace ;
+    color:#ccc;
+}
+
+hr.lichr {
+    border: 0;
+    border-bottom: 1px dashed #00c;
+    background: #999;
+}
+
+.prettyprint{
+    
+}
+
+pre {
+    position: relative;
+}
+
+.tryMeButton{
+    position: absolute;
+    top: 6px;
+    right: 6px;
+    cursor: pointer;
+    font-size: x-small;
+    border-radius: 3px;
+    padding: 3px;
+    background-color: rgb(104, 42, 236);
+    display: inline-block;
+    color: white!Important;
+    -moz-box-shadow: 0 0 5px rgba(255,255,255,0.6);
+    -webkit-box-shadow: 0 0 5px rgba(255,255,255,0.6);
+    box-shadow: 0 0 5px rgba(255,255,255,0.6);
+
+}
+
+.tryMeButton .typ {
+    color: white;
+}
+
+#editorDiv{
+    float: left;
+    width: 499px;
+
+}
+
+#codeDiv{
+
+}
+
+#canvasDiv{
+    float: left;
+    margin-left: 30px;
+    width: 250px;
+    
+}
+
+
+
+#marquee {
+    margin-top: 15px;
+    border: 1px solid #ccc; 
+}
+
+
+.demoCanvas{
+    margin-top: 10px;
+}
+
+.centerDiv {
+    width: 660px;
+    margin-left: auto;
+    margin-right: auto;
+}
