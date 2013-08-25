@@ -13,4 +13,4 @@ pygments    : true
 permalink   : /:year/:title/
 markdown    : rdiscount
 exclude     : [public, tmp, README.markdown, config.ru]
-baseurl		: http://davidblackuk.github.io/canvas-dash/
+baseurl     : http://davidblackuk.github.io/canvas-dash/
