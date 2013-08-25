@@ -1,11 +1,11 @@
  <div id="navigation">
 	 <ul>
-		 <li id="homeButton"><a href="/index.html">Home</a></li>
-		 <li id="documentationButton"><a href="/documentation/documentation.html">Documentation</a></li>
-		 <li id="themesButton"><a href="/themes/themes.html">Themes</a></li>
-		 <li id="editorButton"><a href='/editor/editor.html?code=%0A%0A%24("%23canvas").cDash()%3B%0A%0A'>Editor</a></li>		 
-		 <li id="licenseButton"><a href="/license.html">License</a></li>
-		 <li id="aboutButton"><a href="/about.html">About</a></li>
-		 <li id="contactButton"><a href="/contact.html">Contact</a></li>
+		 <li id="homeButton"><a href="{{ site.baseurl }}/index.html">Home</a></li>
+		 <li id="documentationButton"><a href="{{ site.baseurl }}/documentation/documentation.html">Documentation</a></li>
+		 <li id="themesButton"><a href="{{ site.baseurl }}/themes/themes.html">Themes</a></li>
+		 <li id="editorButton"><a href='{{ site.baseurl }}/editor/editor.html?code=%0A%0A%24("%23canvas").cDash()%3B%0A%0A'>Editor</a></li>		 
+		 <li id="licenseButton"><a href="{{ site.baseurl }}/license.html">License</a></li>
+		 <li id="aboutButton"><a href="{{ site.baseurl }}/about.html">About</a></li>
+		 <li id="contactButton"><a href="{{ site.baseurl }}/contact.html">Contact</a></li>
 	 </ul>
  </div>
