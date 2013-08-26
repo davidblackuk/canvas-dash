@@ -7,6 +7,6 @@ minFile="${productName}.min.js"
 echo "Building cDash..."
 tsc -out out/$jsFile ts/d/*.ts ts/common/*.ts ts/dials/*.ts ts/marquee/*.ts ts/jQueryIntegration.ts
 echo "Copy to docs..."
-cp out/$jsFile ../CDashDoc/js/$jsFile
+cp out/$jsFile ../canvas-dash-doc/js/$jsFile
 echo "Done."
 

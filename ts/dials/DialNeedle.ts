@@ -26,8 +26,13 @@ module DbDashboards.Dials {
             ctx.rotate(angle);
             ctx.translate(-cx, -cy);
 
-
             ctx.beginPath();
+
+            ctx.shadowColor = this.dial.options.needle.shadowColor;
+            ctx.shadowBlur = this.dial.options.needle.shadowBlur;
+            ctx.shadowOffsetX = this.dial.options.needle.shadowX;
+            ctx.shadowOffsetY = this.dial.options.needle.shadowY;
+
 
             ctx.strokeStyle = this.dial.options.needle.strokeStyle;
             ctx.lineWidth = this.dial.options.needle.strokeWidth;
