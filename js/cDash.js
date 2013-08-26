@@ -18,6 +18,7 @@ var DbDashboards;
                 var h = (srcContext != null) ? srcContext.canvas.height : 0;
                 buffer.width = w + xPadding;
                 buffer.height = h + yPadding;
+
                 return buffer.getContext("2d");
             };
 
@@ -282,6 +283,11 @@ var DbDashboards;
                 ctx.translate(-cx, -cy);
 
                 ctx.beginPath();
+
+                ctx.shadowColor = this.dial.options.needle.shadowColor;
+                ctx.shadowBlur = this.dial.options.needle.shadowBlur;
+                ctx.shadowOffsetX = this.dial.options.needle.shadowX;
+                ctx.shadowOffsetY = this.dial.options.needle.shadowY;
 
                 ctx.strokeStyle = this.dial.options.needle.strokeStyle;
                 ctx.lineWidth = this.dial.options.needle.strokeWidth;
