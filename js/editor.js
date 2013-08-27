@@ -6,15 +6,13 @@ var Editor = (function () {
         this.canvas = canvas;
         this.context = canvas[0].getContext("2d");
     }
-    Editor.InitializePage = function InitializePage() {
+    Editor.InitializePage = function InitializePage(baseUrl) {
         var needButtons = $(".tryMe");
         var buttons = $('<div class="tryMeButton">Try Me</div>').appendTo(needButtons);
         buttons.click(function(){
             var code = $(this).closest("pre").text().replace("Try Me","");
-            var t = $.url().attr('protocol') + "://" +
-                    $.url().attr('host') + ":" +
-                    $.url().attr('port') + 
-                    "/editor/editor.html" + "?code=" +
+            var site = $.url().segment(1) == undefined ? "" : "/" + $.url().segment(1);
+            var t = baseUrl + "/editor/editor.html" + "?code=" +
                     encodeURIComponent(code);
            
               window.location=t; 
