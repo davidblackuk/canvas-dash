@@ -507,6 +507,7 @@ module DbDashboards.Dials {
             },
             metro: {
 
+
                 glass: {
                     visible: false
                 },
