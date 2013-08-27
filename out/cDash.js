@@ -1494,34 +1494,37 @@ var DbDashboards;
             DialBase.themes = {
                 dark: {
                     face: {
-                        gradientColor2: "black",
-                        gradientColor1: "#555"
+                        gradientColor2: "#003",
+                        gradientColor1: "#000"
                     },
                     value: {
                         font: {
-                            strokeStyle: "#FFF",
-                            fillStyle: "#FFF"
-                        }
+                            fillStyle: "#fff"
+                        },
+                        margin: 60
                     },
                     bezel: {
-                        strokeStyle: "#aaa"
+                        strokeStyle: "rgba(126,126,255, 0.3)",
+                        width: 7,
+                        margin: 1
                     },
                     needle: {
-                        fillStyle: "#ddd",
-                        strokeStyle: "#000",
-                        shadowColor: "#333"
+                        fillStyle: "rgba(0,0,0,0)",
+                        strokeStyle: "#fff",
+                        shadowColor: "#333",
+                        margin: 30
                     },
                     scale: {
-                        strokeStyle: "#eee",
+                        margin: 7,
+                        strokeStyle: "#999",
                         majorTicks: {
                             strokeStyle: "#999"
                         },
                         minorTicks: {
-                            strokeStyle: "white"
+                            strokeStyle: "#999"
                         },
                         font: {
-                            strokeStyle: "white",
-                            fillStyle: "#ddd"
+                            fillStyle: "#999"
                         }
                     }
                 },

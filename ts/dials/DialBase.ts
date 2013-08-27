@@ -392,53 +392,60 @@ module DbDashboards.Dials {
 
 
         public static themes: DbDashboards.Common.Themes = {
-            dark:  {
+            dark:   {
                 face:{
-                    gradientColor2: "black",
-                    gradientColor1: "#555"
+                    gradientColor2: "#003",
+                    gradientColor1: "#000"
                 },
                 value: {
                     font: {
-                        strokeStyle: "#FFF",
-                        fillStyle: "#FFF"
-                    }
+                        fillStyle: "#fff"
+                    },
+                    margin:60
+
                 },
                 bezel: {
-                    strokeStyle: "#aaa"
+                    strokeStyle: "rgba(126,126,255, 0.3)",
+                    width: 7,
+                    margin: 1
                 },
                 needle: {
-                    fillStyle: "#ddd",
-                    strokeStyle: "#000",
-                    shadowColor: "#333"
+                    fillStyle: "rgba(0,0,0,0)",
+                    strokeStyle: "#fff",
+                    shadowColor: "#333",
+                    margin: 30
                 },
                 scale: {
-                    strokeStyle: "#eee",
+                    margin: 7,
+                    strokeStyle: "#999",
 
                     majorTicks: {
                         strokeStyle: "#999"
                     },
                     minorTicks: {
-                        strokeStyle: "white"
+                        strokeStyle: "#999"
                     },
                     font: {
-                        strokeStyle: "white",
-                        fillStyle: "#ddd"
+                        fillStyle: "#999",
+
                     }
                 }
             },
             blue: {
                 face:{
-                    gradientColor2: "#007",
-                    gradientColor1: "#00f"
+                    gradientColor1: "#00d",
+                    gradientColor2: "#003"
                 },
                 value: {
                     font: {
                         strokeStyle: "#85C2FF",
-                        fillStyle: "#85C2FF"
+                        fillStyle: "#99e"
                     }
                 },
                 bezel: {
-                    strokeStyle: "#99e"
+                    strokeStyle: "rgba(0,0,0,0)",
+                    width:1.5,
+                    margin:0
                 },
                 needle: {
                     fillStyle: "#CBCBF7",
@@ -447,17 +454,21 @@ module DbDashboards.Dials {
                     shadowColor: "#333"
                 },
                 scale: {
-                    strokeStyle: "#ddf",
+                    strokeStyle: "#99e",
                     majorTicks: {
-                        strokeStyle: "#99e"
+                        strokeStyle: "#99e",
+                        length:10
                     },
                     minorTicks: {
-                        strokeStyle: "#99e"
+                        strokeStyle: "#99e",
+                        length:5
                     },
                     font: {
                         strokeStyle: "#B8CEFC",
                         fillStyle: "#B8CEFC"
-                    }
+                    },
+                    width: 8,
+                    margin: 3
                 }
             },
             chocolate: {
@@ -519,7 +530,7 @@ module DbDashboards.Dials {
                 needle: {
                     fillStyle: "#FFFFFF",
                     strokeStyle: "#2881E3",
-                    shadowColor: "#333"
+                    shadowColor: "rgba(0,0,0,0)"
                 },
                 scale: {
                     sideMargin: 15,
