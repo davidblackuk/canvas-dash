@@ -4,6 +4,14 @@
 		"selected_items":
 		[
 			[
+				"al",
+				"vertical-align"
+			],
+			[
+				"fon",
+				"font-style"
+			],
+			[
 				"tit",
 				"title"
 			],
@@ -116,32 +124,26 @@
 	"buffers":
 	[
 		{
-			"contents": "---\nname        : dChart \ntagline     : Fruity visualizations \nuri         : http://www.david-black.info\ntagspace    : /tag/\nemail       : \nlang        : en\ncharset     : UTF-8\ndestination : _site \nserver_port : 4000 \nlsi         : false\npygments    : true\npermalink   : /:year/:title/\nmarkdown    : rdiscount\nexclude     : [public, tmp, README.markdown, config.ru]\nbaseUrl		: http://davidblackuk.github.io/canvas-dash/\n",
-			"file": "_config.yml",
-			"file_size": 366,
-			"file_write_time": 1368103501000000,
+			"file": "documentation/dials.html",
 			"settings":
 			{
-				"buffer_size": 420,
+				"buffer_size": 15277,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"contents": "<!DOCTYPE html>\n<head>\n    <meta charset=\"{{ site.charset }}\">\n    <title>{% if page.title %}{{ page.title }} &larr; {% endif %}{{ page.top }}</title>\n    <meta name=\"author\" content=\"David Blacxk\">\n    <link rel=\"start\" href=\"/\">\n    <link rel=\"stylesheet\" href=\"{{ site.baseurl }}/css/base.css\" type=\"text/css\" media=\"screen\"/>\n   \n\n    <script type=\"text/javascript\" src=\"{{ site.baseurl }}/js/jquery-1.9.1.min.js\"></script>\n    <script type=\"text/javascript\" src=\"{{ site.baseurl }}/js/jquery.number.min.js\"></script>\n        <script type=\"text/javascript\" src=\"{{ site.baseurl }}/js/purl.js\"> </script>\n    <script type=\"text/javascript\" src=\"{{ site.baseurl }}/js/editor.js\"> </script>\n    <script type=\"text/javascript\" src=\"{{ site.baseurl }}/js/cDash.js\"></script>  \n    <script type=\"text/javascript\" src=\"{{ site.baseurl }}/js/demos.js\"></script>  \n</head>\n<body>\n\n    <div id=\"container\">\n        <div id=\"header\">\n        </div>\n       \n        {% include menu.ext %}\n\n        <div id=\"content-container\">\n\n            {{ content }}\n        </div>\n        <div id=\"footer\">\n            Copyright &#169; David Black 2013\n        </div>\n    </div>\n\n \n</body>\n\n      <script src=\"https://google-code-prettify.googlecode.com/svn/loader/run_prettify.js?skin=sons-of-obsidian\"></script>\n\n\n    <script type=\"text/javascript\" > \n        $(function(){\n             Editor.InitializePage();\n        });\n    </script>\n</html>",
 			"file": "_layouts/default.html",
-			"file_size": 1409,
-			"file_write_time": 1377443997000000,
 			"settings":
 			{
-				"buffer_size": 1427,
+				"buffer_size": 1555,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "_layouts/sbEdit.html",
+			"file": "js/editor.js",
 			"settings":
 			{
-				"buffer_size": 1483,
+				"buffer_size": 1644,
 				"line_ending": "Unix"
 			}
 		}
@@ -234,6 +236,16 @@
 	},
 	"file_history":
 	[
+		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/_config.yml",
+		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/_site/documentation/dials.html",
+		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/_layouts/default.html",
+		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/_layouts/sbEdit.html",
+		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/_includes/menu.ext",
+		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/themes/themes.html",
+		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/index.html",
+		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/CNAME",
+		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/css/base.css",
+		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/documentation/dials.html",
 		"/Volumes/internal/davidblack/Downloads/incomplete/1370860390/princess charming.bmp",
 		"/Volumes/internal/davidblack/jtest/fruity/editor/editor.html",
 		"/Volumes/internal/davidblack/jtest/fruity/js/editor.js",
@@ -310,6 +322,12 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"\n",
+			"org",
+			"Editor.initializePAge",
+			"initializePAge",
+			"tryMeButton",
+			"    <tr><td></td>\n        <td>\n        </td>\n    </tr>\n",
 			"</li>",
 			"<li>",
 			"<li>\n",
@@ -371,7 +389,7 @@
 			"collection"
 		],
 		"highlight": true,
-		"in_selection": true,
+		"in_selection": false,
 		"preserve_case": false,
 		"regex": false,
 		"replace_history":
@@ -422,31 +440,33 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 2,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "_config.yml",
+					"file": "documentation/dials.html",
 					"settings":
 					{
-						"buffer_size": 420,
+						"buffer_size": 15277,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								420,
-								420
+								15200,
+								15203
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/YAML/YAML.tmLanguage"
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 0.0,
+						"translation.y": 10703.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
@@ -456,15 +476,15 @@
 					"file": "_layouts/default.html",
 					"settings":
 					{
-						"buffer_size": 1427,
+						"buffer_size": 1555,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								282,
-								282
+								1518,
+								1518
 							]
 						],
 						"settings":
@@ -481,23 +501,23 @@
 				},
 				{
 					"buffer": 2,
-					"file": "_layouts/sbEdit.html",
+					"file": "js/editor.js",
 					"settings":
 					{
-						"buffer_size": 1483,
+						"buffer_size": 1644,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1134,
-								1134
+								205,
+								220
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
