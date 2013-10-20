@@ -12,6 +12,7 @@ module DbDashboards.Dials {
             this.options.type = type;
         }
 
+
         public static overrideDefaults = {
             value: {
                 margin: 5
@@ -31,11 +32,13 @@ module DbDashboards.Dials {
 
         drawNeedle(ctx: CanvasRenderingContext2D, stepValue: number){
 
+            
             var s = new DialNeedle(this);
 
+            this.clearNeedleContext();
+        
 
-            this.needleContext.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
-            s.addLayer(ctx, stepValue);
+            s.addLayer(this.needleContext, stepValue);
 
 
 

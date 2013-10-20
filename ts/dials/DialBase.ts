@@ -170,7 +170,7 @@ module DbDashboards.Dials {
             }
 
 
-            this.context.restore();
+            
 
         }
 
@@ -204,13 +204,16 @@ module DbDashboards.Dials {
             var sweepDelta = Math.abs(vals.value - original) / (vals.max - vals.min) ;
 
 
-            if (0 == v){
+            if (0 == v) {
+
                 this.drawNeedle(this.needleContext, v);
                 this.renderLayers();
             } else {
                 $({value: original}).animate({value: vals.value},{
                     duration: 1000 * sweepDelta,
-                    step: (function(d: DialBase){return function (now: number, tween: any) {
+                    step: (function (d: DialBase) {
+                        return function (now: number, tween: any) {
+                        
                         d.drawNeedle(d.needleContext, tween.now);
                         d.renderLayers();
 
@@ -224,9 +227,13 @@ module DbDashboards.Dials {
 
 
         private renderLayers() {
-            this.context.drawImage(this.backgroundContext.canvas, this.options.x,this.options.y);
-            this.context.drawImage(this.needleContext.canvas,  this.options.x,this.options.y);
-            this.context.drawImage(this.foregroundContext.canvas,  this.options.x,this.options.y);
+     
+           this.context.drawImage(this.backgroundContext.canvas, this.options.x,this.options.y);
+            
+           
+
+           this.context.drawImage(this.needleContext.canvas,  this.options.x,this.options.y);
+           this.context.drawImage(this.foregroundContext.canvas,  this.options.x,this.options.y);
         }
 
 
@@ -269,7 +276,12 @@ module DbDashboards.Dials {
             throw new Error("This method must be implemented");
         }
 
-
+        clearNeedleContext() {
+            // THere was a bug using the canvas on parallels with ie 10 where clear rect on the 
+            // context does not work. This workaround resizes the canvas to the same size causeing a clear.
+            // Not pretty but necessary.
+            this.needleContext.canvas.width = this.needleContext.canvas.width;
+        }
 
 
         /**
@@ -351,12 +363,13 @@ module DbDashboards.Dials {
                 strokeStyle:"pink",
                 fillStyle: "green",
                 strokeWidth: 0.5,
-                width: 5,
+                width: 7,
                 margin: 10,
                 shadowColor: "cyan",
                 shadowBlur: 1.5,
                 shadowX: -1.5,
-                shadowY: 1.5
+                shadowY: 1.5,
+                style: "arrow"
             },
             glass: {
                 shape: DialGlass.ShapeOut,
@@ -531,7 +544,11 @@ module DbDashboards.Dials {
                 needle: {
                     fillStyle: "#FFFFFF",
                     strokeStyle: "#2881E3",
-                    shadowColor: "rgba(0,0,0,0)"
+                    shadowColor: "rgba(0,0,0,0)",
+                    style: "line",
+                    width: 3,
+                    margin: 20
+                  
                 },
                 scale: {
                     sideMargin: 15,

@@ -70,15 +70,16 @@ module DbDashboards.Dials {
      */
     export interface NeedleOptions {
 
-        fillStyle:string;
-        strokeStyle:string;
-        strokeWidth:number;
-        width:number;
-        margin:number;
-        shadowColor:string;
-        shadowBlur:number;
-        shadowX:number;
-        shadowY:number;
+        fillStyle: string;
+        strokeStyle: string;
+        strokeWidth: number;
+        width: number;
+        margin: number;
+        shadowColor: string;
+        shadowBlur: number;
+        shadowX: number;
+        shadowY: number;
+        style: string;
 
     }
 

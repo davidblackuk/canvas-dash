@@ -60,7 +60,8 @@ module DbDashboards.Dials {
 
         }
 
-        drawNeedle(ctx: CanvasRenderingContext2D, stepValue: number){
+        drawNeedle(ctx: CanvasRenderingContext2D, stepValue: number) {
+            this.clearNeedleContext();
             var s = new DialNeedle(this);
             this.needleContext.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
             s.addLayer(ctx, stepValue);
