@@ -47,7 +47,7 @@ Demo.prototype.initilize = function(titleElement, canvas) {
 		{type: "slider",  theme:"metro",  orientation:"", title:"Slider (metro theme)", width:220, height: 60},
 		{type: "dial180", theme:"chocolate", orientation:"W", title:"Dial 180 West (default theme)", width:180, height: 180},
 		{type: "dial360", theme:"blue", orientation:" ", title:"Dial 360 (blue theme)", width:180, height: 180},
-		{type: "dial180", theme:"dark", orientation:"N", title:"Dial 180 North (dark theme)", width:180, height: 180},
+		{type: "dial180", theme:"metro", orientation:"N", title:"Dial 180 North (metro theme)", width:180, height: 180},
 		{type: "marquee", theme:"metro", orientation:"", title:"Marquee (metro theme)", width:180, height: 180, message:"Hello world! "},
 		{type: "dial180", theme:"chocolate", orientation:"S", title:"Dial 180 South (chocolate)", width:180, height: 180},
 	];
