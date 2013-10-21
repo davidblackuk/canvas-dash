@@ -187,62 +187,135 @@ var DbDashboards;
         var DialMask = (function () {
             function DialMask(dial) {
                 this.dial = dial;
+                this._w = this.dial.options.prv.effectiveWidth;
+                this._h = this.dial.options.prv.effectiveHeight;
             }
-            DialMask.prototype.addLayer = function (ctx) {
-                var w = this.dial.options.prv.effectiveWidth;
-                var h = this.dial.options.prv.effectiveHeight;
-
-                switch (this.dial.options.type) {
-                    case Dials.DialBase.Dial360:
-                        ctx.arc(w / 2, h / 2, (w / 2), 0, Math.PI * 2, false);
-
-                        ctx.clip();
-                        break;
-                    case Dials.DialBase.Dial180N:
-                        ctx.beginPath();
-                        ctx.moveTo(w / 2, (h / 2) + this.dial.options.baseRunOutSize);
-                        ctx.lineTo(0, (h / 2) + this.dial.options.baseRunOutSize);
-                        ctx.lineTo(0, h / 2);
-                        ctx.arc(w / 2, h / 2, w / 2, Math.PI, 0, false);
-                        ctx.lineTo(w, (h / 2) + this.dial.options.baseRunOutSize);
-                        ctx.closePath();
-                        ctx.clip();
-                        break;
-                    case Dials.DialBase.Dial180S:
-                        ctx.beginPath();
-                        ctx.moveTo(0, 0);
-                        ctx.lineTo(0, this.dial.options.baseRunOutSize);
-                        ctx.arc(w / 2, this.dial.options.baseRunOutSize, w / 2, Math.PI, 0, true);
-                        ctx.lineTo(w, 0);
-                        ctx.lineTo(0, 0);
-                        ctx.closePath();
-                        ctx.clip();
-                        break;
-                    case Dials.DialBase.Dial180E:
-                        ctx.beginPath();
-                        ctx.moveTo(0, 0);
-                        ctx.lineTo(this.dial.options.baseRunOutSize, 0);
-                        ctx.arc(this.dial.options.baseRunOutSize, h / 2, h / 2, 3 * Math.PI / 2, Math.PI / 2, false);
-                        ctx.lineTo(0, h);
-                        ctx.lineTo(0, 0);
-                        ctx.closePath();
-                        ctx.clip();
-                        break;
-                    case Dials.DialBase.Dial180W:
-                        ctx.beginPath();
-                        ctx.moveTo(w, 0);
-                        ctx.lineTo(w, h);
-                        ctx.lineTo(w - this.dial.options.baseRunOutSize, h);
-                        ctx.arc(w - this.dial.options.baseRunOutSize, h / 2, h / 2, Math.PI / 2, 3 * Math.PI / 2, false);
-                        ctx.lineTo(w, 0);
-                        ctx.closePath();
-                        ctx.clip();
-                        break;
-                }
+            DialMask.prototype.apply = function (ctx) {
+                throw Error("Do not call the base apply method, must be implemented in the derived class");
             };
             return DialMask;
         })();
         Dials.DialMask = DialMask;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var __extends = this.__extends || function (d, b) {
+    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
+    function __() { this.constructor = d; }
+    __.prototype = b.prototype;
+    d.prototype = new __();
+};
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        var DialMask360 = (function (_super) {
+            __extends(DialMask360, _super);
+            function DialMask360(dial) {
+                _super.call(this, dial);
+            }
+            DialMask360.prototype.apply = function (ctx) {
+                ctx.arc(this._w / 2, this._h / 2, (this._w / 2), 0, Math.PI * 2, false);
+                ctx.clip();
+            };
+            return DialMask360;
+        })(Dials.DialMask);
+        Dials.DialMask360 = DialMask360;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        var DialMask180N = (function (_super) {
+            __extends(DialMask180N, _super);
+            function DialMask180N(dial) {
+                _super.call(this, dial);
+            }
+            DialMask180N.prototype.apply = function (ctx) {
+                ctx.beginPath();
+                ctx.moveTo(this._w / 2, (this._h / 2) + this.dial.options.baseRunOutSize);
+                ctx.lineTo(0, (this._h / 2) + this.dial.options.baseRunOutSize);
+                ctx.lineTo(0, this._h / 2);
+                ctx.arc(this._w / 2, this._h / 2, this._w / 2, Math.PI, 0, false);
+                ctx.lineTo(this._w, (this._h / 2) + this.dial.options.baseRunOutSize);
+                ctx.closePath();
+                ctx.clip();
+            };
+            return DialMask180N;
+        })(Dials.DialMask);
+        Dials.DialMask180N = DialMask180N;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        var DialMask180S = (function (_super) {
+            __extends(DialMask180S, _super);
+            function DialMask180S(dial) {
+                _super.call(this, dial);
+            }
+            DialMask180S.prototype.apply = function (ctx) {
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(0, this.dial.options.baseRunOutSize);
+                ctx.arc(this._w / 2, this.dial.options.baseRunOutSize, this._w / 2, Math.PI, 0, true);
+                ctx.lineTo(this._w, 0);
+                ctx.lineTo(0, 0);
+                ctx.closePath();
+                ctx.clip();
+            };
+            return DialMask180S;
+        })(Dials.DialMask);
+        Dials.DialMask180S = DialMask180S;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        var DialMask180E = (function (_super) {
+            __extends(DialMask180E, _super);
+            function DialMask180E(dial) {
+                _super.call(this, dial);
+            }
+            DialMask180E.prototype.apply = function (ctx) {
+                ctx.beginPath();
+                ctx.moveTo(0, 0);
+                ctx.lineTo(this.dial.options.baseRunOutSize, 0);
+                ctx.arc(this.dial.options.baseRunOutSize, this._h / 2, this._h / 2, 3 * Math.PI / 2, Math.PI / 2, false);
+                ctx.lineTo(0, this._h);
+                ctx.lineTo(0, 0);
+                ctx.closePath();
+                ctx.clip();
+            };
+            return DialMask180E;
+        })(Dials.DialMask);
+        Dials.DialMask180E = DialMask180E;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        var DialMask180W = (function (_super) {
+            __extends(DialMask180W, _super);
+            function DialMask180W(dial) {
+                _super.call(this, dial);
+            }
+            DialMask180W.prototype.apply = function (ctx) {
+                ctx.beginPath();
+                ctx.moveTo(this._w, 0);
+                ctx.lineTo(this._w, this._h);
+                ctx.lineTo(this._w - this.dial.options.baseRunOutSize, this._h);
+                ctx.arc(this._w - this.dial.options.baseRunOutSize, this._h / 2, this._h / 2, Math.PI / 2, 3 * Math.PI / 2, false);
+                ctx.lineTo(this._w, 0);
+                ctx.closePath();
+                ctx.clip();
+            };
+            return DialMask180W;
+        })(Dials.DialMask);
+        Dials.DialMask180W = DialMask180W;
     })(DbDashboards.Dials || (DbDashboards.Dials = {}));
     var Dials = DbDashboards.Dials;
 })(DbDashboards || (DbDashboards = {}));
@@ -332,12 +405,6 @@ var DbDashboards;
     })(DbDashboards.Dials || (DbDashboards.Dials = {}));
     var Dials = DbDashboards.Dials;
 })(DbDashboards || (DbDashboards = {}));
-var __extends = this.__extends || function (d, b) {
-    for (var p in b) if (b.hasOwnProperty(p)) d[p] = b[p];
-    function __() { this.constructor = d; }
-    __.prototype = b.prototype;
-    d.prototype = new __();
-};
 var DbDashboards;
 (function (DbDashboards) {
     (function (Dials) {
@@ -1359,8 +1426,8 @@ var DbDashboards;
             * Applies a mask to the prevent glass highlights etc over flowing
             */
             Dial180.prototype.applyMask = function (ctx) {
-                var m = new Dials.DialMask(this);
-                m.addLayer(ctx);
+                var m = Dials.DialMaskFactory.create(this);
+                m.apply(ctx);
             };
             Dial180.overrideDefaults = {
                 value: {
@@ -1370,7 +1437,12 @@ var DbDashboards;
             return Dial180;
         })(Dials.DialBase);
         Dials.Dial180 = Dial180;
-
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
         /**
         * A semicircular 180 degree dial with a sweep of  180 degrees
         */
@@ -1381,7 +1453,7 @@ var DbDashboards;
             * @param options the options for the Dial360
             */
             function Dial180N(options, target) {
-                _super.call(this, Dials.DialBase.Dial180N, Dial180.overrideDefaults, options, target);
+                _super.call(this, Dials.DialBase.Dial180N, Dials.Dial180.overrideDefaults, options, target);
                 this.target = target;
 
                 var w = this.target.width();
@@ -1409,16 +1481,21 @@ var DbDashboards;
                 };
             }
             return Dial180N;
-        })(Dial180);
+        })(Dials.Dial180);
         Dials.Dial180N = Dial180N;
-
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
         /**
         * A semicircular 180 degree dial with a sweep of  180 degrees
         */
         var Dial180S = (function (_super) {
             __extends(Dial180S, _super);
             function Dial180S(options, target) {
-                _super.call(this, Dials.DialBase.Dial180S, Dial180.overrideDefaults, options, target);
+                _super.call(this, Dials.DialBase.Dial180S, Dials.Dial180.overrideDefaults, options, target);
                 this.target = target;
 
                 var w = this.target.width();
@@ -1446,16 +1523,21 @@ var DbDashboards;
                 };
             }
             return Dial180S;
-        })(Dial180);
+        })(Dials.Dial180);
         Dials.Dial180S = Dial180S;
-
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
         /**
         * A semicircular 180 degree dial with a sweep of  180 degrees
         */
         var Dial180E = (function (_super) {
             __extends(Dial180E, _super);
             function Dial180E(options, target) {
-                _super.call(this, Dials.DialBase.Dial180E, Dial180.overrideDefaults, options, target);
+                _super.call(this, Dials.DialBase.Dial180E, Dials.Dial180.overrideDefaults, options, target);
                 this.target = target;
 
                 var w = this.target.width();
@@ -1483,16 +1565,21 @@ var DbDashboards;
                 };
             }
             return Dial180E;
-        })(Dial180);
+        })(Dials.Dial180);
         Dials.Dial180E = Dial180E;
-
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
         /**
         * A semicircular 180 degree dial with a sweep of  180 degrees
         */
         var Dial180W = (function (_super) {
             __extends(Dial180W, _super);
             function Dial180W(options, target) {
-                _super.call(this, Dials.DialBase.Dial180W, Dial180.overrideDefaults, options, target);
+                _super.call(this, Dials.DialBase.Dial180W, Dials.Dial180.overrideDefaults, options, target);
                 this.target = target;
 
                 var w = this.target.width();
@@ -1520,7 +1607,7 @@ var DbDashboards;
                 };
             }
             return Dial180W;
-        })(Dial180);
+        })(Dials.Dial180);
         Dials.Dial180W = Dial180W;
     })(DbDashboards.Dials || (DbDashboards.Dials = {}));
     var Dials = DbDashboards.Dials;
@@ -1569,8 +1656,8 @@ var DbDashboards;
             * Applies a mask to the prevent glass highlights etc over flowing
             */
             Dial360.prototype.applyMask = function (ctx) {
-                var m = new Dials.DialMask(this);
-                m.addLayer(ctx);
+                var m = Dials.DialMaskFactory.create(this);
+                m.apply(ctx);
             };
 
             Dial360.prototype.addScale = function (ctx) {
@@ -2388,4 +2475,30 @@ Lightweight JQuery integration
         }
     });
 })(jQuery);
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        var DialMaskFactory = (function () {
+            function DialMaskFactory() {
+            }
+            DialMaskFactory.create = function (dial) {
+                switch (dial.options.type) {
+                    case Dials.DialBase.Dial360:
+                        return new Dials.DialMask360(dial);
+                    case Dials.DialBase.Dial180N:
+                        return new Dials.DialMask180N(dial);
+                    case Dials.DialBase.Dial180S:
+                        return new Dials.DialMask180S(dial);
+                    case Dials.DialBase.Dial180E:
+                        return new Dials.DialMask180E(dial);
+                    case Dials.DialBase.Dial180W:
+                        return new Dials.DialMask180W(dial);
+                }
+            };
+            return DialMaskFactory;
+        })();
+        Dials.DialMaskFactory = DialMaskFactory;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
 //# sourceMappingURL=cDash.js.map
