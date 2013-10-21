@@ -2,11 +2,12 @@
 
 productName="cDash"
 jsFile="${productName}.js"
+mapFile="${jsFile}.map"
 minFile="${productName}.min.js"
 
-echo "Building cDash..."
-tsc -out out/$jsFile ts/d/*.ts ts/common/*.ts ts/dials/needles/*.ts ts/dials/*.ts ts/marquee/*.ts ts/jQueryIntegration.ts
+
 echo "Copy to docs..."
 cp out/$jsFile ../canvas-dash-doc/js/$jsFile
+cp out/$mapFile ../canvas-dash-doc/js/$mapFile
 echo "Done."
 

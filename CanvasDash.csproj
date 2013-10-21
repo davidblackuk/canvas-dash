@@ -27,6 +27,7 @@
     <Content Include="build" />
     <Content Include="LICENSE" />
     <Content Include="README.md" />
+    <Content Include="out\cDash.js.map" />
     <None Include="web.Debug.config">
       <DependentUpon>web.config</DependentUpon>
     </None>
