@@ -1,11 +1,4 @@
-/// <reference path="d/jquery-1.9.1.d.ts" />
-/// <reference path="dials/DialOptions.ts" />
-/// <reference path="dials/dialBase.ts" />
-/// <reference path="dials/Dial180.ts" />
-/// <reference path="dials/Dial360.ts" />
-/// <reference path="dials/Slider.ts" />
-/// <reference path="marquee/marquee.ts" />
-/// <reference path="dials/DialScale.ts" />
+
 
 /*
     Copyright (C) 2013 David Black and other contributors

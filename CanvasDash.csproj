@@ -43,7 +43,13 @@
     <TypeScriptCompile Include="ts\dials\DialFace.ts" />
     <TypeScriptCompile Include="ts\dials\DialGlass.ts" />
     <TypeScriptCompile Include="ts\dials\DialMask.ts" />
-    <TypeScriptCompile Include="ts\dials\DialNeedle.ts" />
+    <TypeScriptCompile Include="ts\dials\needles\DialNeedle.ts" />
+    <TypeScriptCompile Include="ts\dials\needles\DialNeedleArrow.ts" />
+    <TypeScriptCompile Include="ts\dials\needles\DialNeedleCircleArrow.ts" />
+    <TypeScriptCompile Include="ts\dials\needles\DialNeedleDart.ts" />
+    <TypeScriptCompile Include="ts\dials\needles\DialNeedleFactory.ts" />
+    <TypeScriptCompile Include="ts\dials\needles\DialNeedleLine.ts" />
+    <TypeScriptCompile Include="ts\dials\needles\DialNeedleTriangle.ts" />
     <TypeScriptCompile Include="ts\dials\DialOptions.ts" />
     <TypeScriptCompile Include="ts\dials\DialScale.ts" />
     <TypeScriptCompile Include="ts\dials\DialValue.ts" />
@@ -58,6 +64,7 @@
     <TypeScriptCompile Include="ts\marquee\characters.ts" />
     <TypeScriptCompile Include="ts\marquee\marquee.ts" />
   </ItemGroup>
+  <ItemGroup />
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

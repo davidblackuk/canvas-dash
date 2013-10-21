@@ -14,7 +14,22 @@ module DbDashboards.Dials {
         needleLength: number;
 
     }
+    /**
+ *  Options to control the behaviour and styling of the needle
+ */
+    export interface NeedleOptions {
+        fillStyle: string;
+        strokeStyle: string;
+        strokeWidth: number;
+        width: number;
+        margin: number;
+        shadowColor: string;
+        shadowBlur: number;
+        shadowX: number;
+        shadowY: number;
+        style: string;
 
+    }
     export interface GlassOptions {
         shape: string;
         visible: boolean;
@@ -65,23 +80,7 @@ module DbDashboards.Dials {
 
     }
 
-    /**
-     *  Options to control the behaviour and styling of the needle
-     */
-    export interface NeedleOptions {
 
-        fillStyle: string;
-        strokeStyle: string;
-        strokeWidth: number;
-        width: number;
-        margin: number;
-        shadowColor: string;
-        shadowBlur: number;
-        shadowX: number;
-        shadowY: number;
-        style: string;
-
-    }
 
     export interface FaceOptions{
         gradientColor1: string;

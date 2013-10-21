@@ -1,16 +1,4 @@
-/// <reference path="../d/jquery-1.9.1.d.ts" />
-/// <reference path="../Common/Dashboard.ts" />
-/// <reference path="DialBezel.ts" />
-/// <reference path="DialFace.ts" />
-/// <reference path="DialGlass.ts" />
-/// <reference path="DialMask.ts" />
-/// <reference path="DialNeedle.ts" />
-/// <reference path="DialScale.ts" />
-/// <reference path="DialValue.ts" />
-/// <reference path="DialOptions.ts" />
-/// <reference path="SliderBezel.ts" />
-/// <reference path="SliderScale.ts" />
-/// <reference path="../marquee/marquee.ts" />
+
 
 /*
  Copyright (C) 2013 David Black and other contributors
@@ -142,7 +130,6 @@ module DbDashboards.Dials {
          */
         public render() {
 
-            this.context.save();
 
             //this.applyMask(this.context);
             this.applyMask(this.backgroundContext);
@@ -163,7 +150,7 @@ module DbDashboards.Dials {
 
             this.renderLayers();
 
-            this.context.restore();
+
 
             if (this.options.value.value != this.options.value.min){
                 this.setValue(this.options.value.value);
@@ -229,9 +216,7 @@ module DbDashboards.Dials {
         private renderLayers() {
      
            this.context.drawImage(this.backgroundContext.canvas, this.options.x,this.options.y);
-            
-           
-
+                   
            this.context.drawImage(this.needleContext.canvas,  this.options.x,this.options.y);
            this.context.drawImage(this.foregroundContext.canvas,  this.options.x,this.options.y);
         }
@@ -369,7 +354,7 @@ module DbDashboards.Dials {
                 shadowBlur: 1.5,
                 shadowX: -1.5,
                 shadowY: 1.5,
-                style: "arrow"
+                style: DialNeedleFactory.triangle
             },
             glass: {
                 shape: DialGlass.ShapeOut,
@@ -423,10 +408,12 @@ module DbDashboards.Dials {
                     margin: 1
                 },
                 needle: {
-                    fillStyle: "rgba(0,0,0,0)",
+                    fillStyle: "#fff",
                     strokeStyle: "#fff",
                     shadowColor: "#333",
-                    margin: 30
+                    margin: 30,
+                    width: 3,
+                    style: DialNeedleFactory.dart
                 },
                 scale: {
                     margin: 7,
@@ -464,7 +451,10 @@ module DbDashboards.Dials {
                     fillStyle: "#CBCBF7",
                     strokeStyle: "#000",
                     strokeWidth: 1,
-                    shadowColor: "#333"
+                    width: 3,
+                    margin: 20,
+                    shadowColor: "#333",
+                    style: DialNeedleFactory.circleArrow
                 },
                 scale: {
                     strokeStyle: "#99e",
@@ -501,7 +491,10 @@ module DbDashboards.Dials {
                 needle: {
                     fillStyle: "#DEC7A2",
                     strokeStyle: "#000",
-                    shadowColor: "#333"
+                    shadowColor: "#333",
+                    style: DialNeedleFactory.arrow,
+                    width: 3,
+                    margin: 20
                 },
                 scale: {
                     strokeStyle: "#C28566",
@@ -545,7 +538,7 @@ module DbDashboards.Dials {
                     fillStyle: "#FFFFFF",
                     strokeStyle: "#2881E3",
                     shadowColor: "rgba(0,0,0,0)",
-                    style: "line",
+                    style: DialNeedleFactory.line,
                     width: 3,
                     margin: 20
                   

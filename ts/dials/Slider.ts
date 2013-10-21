@@ -1,8 +1,3 @@
-/// <reference path="../d/jquery-1.9.1.d.ts" />
-/// <reference path="DialOptions.ts" />
-/// <reference path="DialBase.ts" />
-/// <reference path="SliderMask.ts" />
-/// <reference path="SliderNeedle.ts" />
 
 
 module DbDashboards.Dials {

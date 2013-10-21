@@ -1,6 +1,3 @@
-/// <reference path="../d/jquery-1.9.1.d.ts" />
-/// <reference path="DialOptions.ts" />
-/// <reference path="DialBase.ts" />
 
 module DbDashboards.Dials {
 
@@ -62,12 +59,12 @@ module DbDashboards.Dials {
 
         drawNeedle(ctx: CanvasRenderingContext2D, stepValue: number) {
             this.clearNeedleContext();
-            var s = new DialNeedle(this);
-            this.needleContext.clearRect(0,0,ctx.canvas.width, ctx.canvas.height);
-            s.addLayer(ctx, stepValue);
+            var s = DialNeedleFactory.create(this);
+            s.render(ctx, stepValue);
             var v = new DialValue(this);
             v.addLayer(ctx, stepValue);
         }
+
 
         addBezel(ctx: CanvasRenderingContext2D) {
             var b = new DialBezel(this);

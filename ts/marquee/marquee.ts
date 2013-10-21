@@ -1,7 +1,3 @@
-/// <reference path="../Common/Dashboard.ts" />
-/// <reference path="Characters.ts" />
-/// <reference path="../dials/DialBase.ts" />
-/// <reference path="../d/jquery-1.9.1.d.ts" />
 
 module DbDashboards.Marquees {
 

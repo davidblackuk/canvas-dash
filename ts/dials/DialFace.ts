@@ -1,6 +1,3 @@
-/// <reference path="DialOptions.ts" />
-/// <reference path="DialBase.ts" />
-
 
 module DbDashboards.Dials {
 
