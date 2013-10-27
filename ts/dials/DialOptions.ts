@@ -2,17 +2,20 @@
 
 module DbDashboards.Dials {
     export interface PrivateOptions {
-        effectiveWidth:number;
-        effectiveHeight:number;
-        scaleStartAngle:number;
-        scaleEndAngle:number;
+        effectiveWidth: number;
+        effectiveHeight: number;
+        scaleStartAngle: number;
+        scaleEndAngle: number;
 
         needleZeroOffset;
         needleSweep;
         needleX: number;
         needleY: number;
-        needleLength: number;
+        needleLength?: number;
 
+        minPoint?: Point;
+        maxPoint?: Point;
+        needleRotation?: number;
     }
     /**
  *  Options to control the behaviour and styling of the needle

@@ -32,37 +32,25 @@
             var options = $.extend({type: "dial360", orientation: "", theme:"chocolate", id:"dbDashboard"}, options);
 
             return this.each(function () {
-                var dial = null;
-                var t = options.type.toLowerCase();
-                var o = options.orientation.toLowerCase();
+                var factory: DbDashboards.Dials.ControlFactoryBase = null;
 
-                if (t == "dial360") {
-                    dial = new DbDashboards.Dials.Dial360(options,  $(this));
-                } else if (t == "dial180") {
-                    switch (options.orientation.toLowerCase()) {
-                        case "s":
-                        case "south":
-                            dial = new DbDashboards.Dials.Dial180S(options,  $(this));
-                            break;
-                        case "e":
-                        case "east":
-                            dial = new DbDashboards.Dials.Dial180E(options,  $(this));
-                            break;
-                        case "w":
-                        case "west":
-                            dial = new DbDashboards.Dials.Dial180W(options,  $(this));
-                            break;
-                        default:
-                            dial = new DbDashboards.Dials.Dial180N(options,  $(this));
-                            break;
-                    }
-                } else if (t == "slider"){
-                    dial = new DbDashboards.Dials.Slider(options, $(this));
-                } else if (t == "marquee"){
-                    dial = new DbDashboards.Marquees.LedMarquee(options, $(this));
+                switch (options.type.toLowerCase()) {
+                    case DbDashboards.Dials.ControlFactoryBase.dial180:
+                        factory = new DbDashboards.Dials.Dial180Factory(options, $(this));                   
+                        break;   
+                    case DbDashboards.Dials.ControlFactoryBase.dial360:
+                        factory = new DbDashboards.Dials.Dial360Factory(options, $(this));
+                        break;   
+                    case DbDashboards.Dials.ControlFactoryBase.slider:
+                        factory = new DbDashboards.Dials.SliderFactory(options, $(this));
+                        break;   
+                    case DbDashboards.Dials.ControlFactoryBase.marquee:
+                        factory = new DbDashboards.Marquees.MarqueeFactory(options, $(this));
+                        break;
                 }
-                dial.render();
 
+                var dial = factory.create();
+                dial.render();
                 $(this).data(options.id, dial);
             });
         }

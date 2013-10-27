@@ -38,21 +38,21 @@ module DbDashboards.Dials {
 
 
                 switch (this.dial.options.orientation) {
-                    case DialBase.North:
+                    case Orientations.North:
                         var start = this.scaleBandX1 + (this.majorTickSpacing*step);
                         var x1 = start + (this.minorTickSpacing*min);
                         var y1 = this.scaleBandY1;
                         var x2 = x1;
                         var y2 = y1 + this.options.minorTicks.length  + this.options.majorTicks.width ;
                         break;
-                    case DialBase.South:
+                    case Orientations.South:
                         var start = this.scaleBandX1 + (this.majorTickSpacing*step);
                         var x1 = start + (this.minorTickSpacing*min);
                         var y1 = this.scaleBandY1;
                         var x2 = x1;
                         var y2 = y1 - (this.options.minorTicks.length + this.options.majorTicks.width);
                         break;
-                    case DialBase.West:
+                    case Orientations.West:
                         var start = this.scaleBandY1 + (this.majorTickSpacing*step);
                         var x1 = this.scaleBandX1;
                         var y1 = start + (this.minorTickSpacing*min);
@@ -60,7 +60,7 @@ module DbDashboards.Dials {
                         var y2 = y1;
 
                         break;
-                    case DialBase.East:
+                    case Orientations.East:
                         var start = this.scaleBandY1 + (this.majorTickSpacing*step);
                         var x1 = this.scaleBandX1;
                         var y1 = start + (this.minorTickSpacing*min);
@@ -94,26 +94,26 @@ module DbDashboards.Dials {
 
 
                 switch (this.dial.options.orientation) {
-                    case DialBase.North:
+                    case Orientations.North:
                         var x1 = this.scaleBandX1 + (this.majorTickSpacing*maj);
                         var y1 = this.scaleBandY1;
                         var x2 = x1;
                         var y2 = y1 + this.options.majorTicks.length + this.options.width;
                         break;
-                    case DialBase.South:
+                    case Orientations.South:
                         var x1 = this.scaleBandX1 + (this.majorTickSpacing*maj);
                         var y1 = this.scaleBandY1;
                         var x2 = x1;
                         var y2 = y1 - (this.options.majorTicks.length + this.options.width);
                         break;
-                    case DialBase.West:
+                    case Orientations.West:
                         var x1 = this.scaleBandX1;
                         var y1 = this.scaleBandY1 + (this.majorTickSpacing*maj);
                         var x2 = this.scaleBandX1 + this.options.majorTicks.length+ this.options.width;
                         var y2 = y1;
 
                         break;
-                    case DialBase.East:
+                    case Orientations.East:
                         var x1 = this.scaleBandX1;
                         var y1 = this.scaleBandY1 + (this.majorTickSpacing*maj);
                         var x2 = this.scaleBandX1 - (this.options.majorTicks.length + + this.options.width);
@@ -155,20 +155,20 @@ module DbDashboards.Dials {
                 var txt = $.number(stepValue+this.dial.options.value.min, this.options.decimalPlaces);
                 var r = 0;
                 switch (this.dial.options.orientation) {
-                    case DialBase.North:
+                    case Orientations.North:
                         x = this.options.sideMargin+ (this.majorTickSpacing*maj);
                         y = this.scaleY + this.options.width  + this.options.margin + this.options.majorTicks.length +  this.options.font.pixelSize/2;
                         break;
-                    case DialBase.South:
+                    case Orientations.South:
                         x = this.options.sideMargin+ (this.majorTickSpacing*maj) ;
                         y = this.dial.options.height - (this.scaleY + this.options.width  + this.options.margin + this.options.majorTicks.length - 3 );
                         break;
-                    case DialBase.East:
+                    case Orientations.East:
                         x = this.dial.options.width - (this.scaleY + this.options.width  + this.options.margin + this.options.majorTicks.length +  this.options.font.pixelSize/2);
                         y = this.options.sideMargin+ (this.majorTickSpacing*maj) ;
                         r = Math.PI/2;
                         break;
-                    case DialBase.West:
+                    case Orientations.West:
                         x = (this.scaleY + this.options.width  + this.options.margin + this.options.majorTicks.length )+  this.options.font.pixelSize/2;
                         y = this.options.sideMargin+ (this.majorTickSpacing*maj) ;
                         r = -Math.PI/2;
@@ -217,28 +217,28 @@ module DbDashboards.Dials {
             this.scaleY = this.dial.options.bezel.margin + this.dial.options.bezel.width+ this.options.margin + (this.options.width );
 
             switch (this.dial.options.orientation) {
-                case DialBase.North:
+                case Orientations.North:
                     this.scaleBandX1 = this.options.sideMargin;
                     this.scaleBandY1 = this.dial.options.bezel.margin + this.dial.options.bezel.width+ this.options.margin + (this.options.width );
                     this.scaleBandX2 = this.dial.options.width - this.options.sideMargin;
                     this.scaleBandY2 = this.scaleBandY1;
                     this.majorTickSpacing = (this.scaleBandX2 - this.scaleBandX1) / (this.options.majorTicks.count-1);
                     break;
-                case DialBase.South:
+                case Orientations.South:
                     this.scaleBandX1 = this.options.sideMargin;
                     this.scaleBandY1 = this.dial.options.height - (this.dial.options.bezel.margin + this.dial.options.bezel.width+ this.options.margin + (this.options.width ));
                     this.scaleBandX2 = this.dial.options.width - this.options.sideMargin;
                     this.scaleBandY2 = this.scaleBandY1;
                     this.majorTickSpacing = (this.scaleBandX2 - this.scaleBandX1) / (this.options.majorTicks.count-1);
                     break;
-                case DialBase.West:
+                case Orientations.West:
                     this.scaleBandX1 = (this.dial.options.bezel.margin + this.dial.options.bezel.width+ this.options.margin + (this.options.width ));
                     this.scaleBandY1 = this.options.sideMargin;
                     this.scaleBandX2 = this.scaleBandX1;
                     this.scaleBandY2 = this.dial.options.height - this.options.sideMargin;
                     this.majorTickSpacing = (this.scaleBandY2 - this.scaleBandY1) / (this.options.majorTicks.count-1);
                     break;
-                case DialBase.East:
+                case Orientations.East:
                     this.scaleBandX1 = this.dial.options.width - (this.dial.options.bezel.margin + this.dial.options.bezel.width+ this.options.margin + (this.options.width ));
                     this.scaleBandY1 = this.options.sideMargin;
                     this.scaleBandX2 = this.scaleBandX1;

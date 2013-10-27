@@ -37,7 +37,15 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="references.ts" />
+    <TypeScriptCompile Include="ts\common\ControlFactoryBase.ts" />
     <TypeScriptCompile Include="ts\common\Dashboard.ts" />
+    <TypeScriptCompile Include="ts\common\FactoryFarm.ts" />
+    <TypeScriptCompile Include="ts\common\ICreateNeedles.ts" />
+    <TypeScriptCompile Include="ts\common\Orientations.ts" />
+    <TypeScriptCompile Include="ts\common\Point.ts" />
+    <TypeScriptCompile Include="ts\dials\180\Dial180Factory.ts" />
+    <TypeScriptCompile Include="ts\dials\360\Dial360Factory.ts" />
+    <TypeScriptCompile Include="ts\dials\needles\NeedleBase.ts" />
     <TypeScriptCompile Include="ts\dials\180\Dial180.ts" />
     <TypeScriptCompile Include="ts\dials\180\Dial180E.ts" />
     <TypeScriptCompile Include="ts\dials\180\Dial180N.ts" />
@@ -65,16 +73,25 @@
     <TypeScriptCompile Include="ts\dials\DialOptions.ts" />
     <TypeScriptCompile Include="ts\dials\DialScale.ts" />
     <TypeScriptCompile Include="ts\dials\DialValue.ts" />
-    <TypeScriptCompile Include="ts\sliders\Slider.ts" />
+    <TypeScriptCompile Include="ts\marquee\MarqueeFactory.ts" />
+    <TypeScriptCompile Include="ts\sliders\needles\SliderNeedleArrow.ts" />
+    <TypeScriptCompile Include="ts\sliders\needles\SliderNeedleFactory.ts" />
+    <TypeScriptCompile Include="ts\sliders\needles\SliderNeedleLine.ts" />
+    <TypeScriptCompile Include="ts\sliders\slider\Slider.ts" />
     <TypeScriptCompile Include="ts\sliders\SliderBezel.ts" />
     <TypeScriptCompile Include="ts\sliders\SliderMask.ts" />
-    <TypeScriptCompile Include="ts\sliders\SliderNeedle.ts" />
+    <TypeScriptCompile Include="ts\sliders\needles\SliderNeedle.ts" />
     <TypeScriptCompile Include="ts\sliders\SliderScale.ts" />
     <TypeScriptCompile Include="ts\d\jquery-1.9.1.d.ts" />
     <TypeScriptCompile Include="ts\d\jquery.number.d.ts" />
     <TypeScriptCompile Include="ts\jQueryIntegration.ts" />
     <TypeScriptCompile Include="ts\marquee\characters.ts" />
     <TypeScriptCompile Include="ts\marquee\marquee.ts" />
+    <TypeScriptCompile Include="ts\sliders\slider\SliderE.ts" />
+    <TypeScriptCompile Include="ts\sliders\slider\SliderFactory.ts" />
+    <TypeScriptCompile Include="ts\sliders\slider\SliderN.ts" />
+    <TypeScriptCompile Include="ts\sliders\slider\SliderS.ts" />
+    <TypeScriptCompile Include="ts\sliders\slider\SliderW.ts" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>

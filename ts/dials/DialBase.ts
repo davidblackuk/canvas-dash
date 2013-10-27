@@ -35,29 +35,30 @@ module DbDashboards.Dials {
         public static Dial180W:string = "dial180W";
         public static Slider:string = "slider";
 
-        public static North:string = "north";
-        public static South:string = "south";
-        public static East:string = "east";
-        public static West:string = "west";
+
 
         public context: CanvasRenderingContext2D;
 
         // this layer contains the background and the scale and text etc
         private backgroundContext: CanvasRenderingContext2D;
 
-        // this layer contains the needle
-        public needleContext: CanvasRenderingContext2D;
+    
 
         // this layer contains the bezel and the glass
         private foregroundContext: CanvasRenderingContext2D;
 
+        // when typescript has a protected asttribute make this protected
+        public needle: NeedleBase;
+
+
         public options: DialOptions;
+
 
         /**
          * Constructs a new DialBase
          * @param options the options for the Dial
          */
-         constructor(public dialSpecificOverrides: DialOptions, public userOverrides:DialOptions, public target:JQuery) {
+         constructor(public dialSpecificOverrides: DialOptions, public userOverrides:DialOptions, public target:JQuery, private farm: FactoryFarm) {
             super();
 
 
@@ -68,35 +69,26 @@ module DbDashboards.Dials {
 
             this.context = (<any>this.target[0]).getContext("2d");
             this.backgroundContext = this.createLayerContext(this.context, 0, 0);
-            this.needleContext = this.createLayerContext(this.context, 0, 0);
+        
             this.foregroundContext = this.createLayerContext(this.context, 0, 0);
 
-
         }
+
+        /**
+         * Construction is really two phase as we can only initialize the various 
+         * renderers once the sub class has initialized its internal sizing options
+         */
+        private initializeOnce() {
+            this.needle = this.farm.needleFactory.create(this.options, this.createLayerContext(this.context, 0, 0));
+        }
+
 
         /**
          * Sets the orientation of the dial, north is the default if not set. We take input from the outside world
          * as either north, south, east, west, or, n, s, e, w
          */
         setOrientation() {
-            if (typeof this.options.orientation == 'undefined'){
-                this.options.orientation = DialBase.North;
-            } else {
-                switch (this.options.orientation.toLocaleLowerCase().charAt(0)) {
-                    case "s":
-                        this.options.orientation = DialBase.South;
-                    break;
-                    case "e":
-                        this.options.orientation = DialBase.East;
-                        break;
-                    case "w":
-                        this.options.orientation = DialBase.West;
-                        break;
-                    default:
-                        this.options.orientation = DialBase.North;
-                        break;
-                }
-            }
+            this.options.orientation = Orientations.parse(this.options.orientation);
          }
 
 
@@ -118,7 +110,7 @@ module DbDashboards.Dials {
         destroyInternal(){
             this.context = null;
             this.backgroundContext = null;
-            this.needleContext = null;
+            this.needle.destroy();
             this.foregroundContext = null;
             this.options = null;
         }
@@ -130,15 +122,17 @@ module DbDashboards.Dials {
          */
         public render() {
 
+            this.initializeOnce();
+
 
             //this.applyMask(this.context);
             this.applyMask(this.backgroundContext);
-            this.applyMask(this.needleContext);
+            this.applyMask(this.needle.needleContext);
             this.applyMask(this.foregroundContext);
 
             this.addFace(this.backgroundContext);
             this.addScale(this.backgroundContext);
-            this.drawNeedle(this.needleContext, this.options.value.min);
+            this.drawNeedle(this.options.value.min);
 
             if (this.options.glass.visible) {
                 this.addGlass(this.foregroundContext);
@@ -193,7 +187,7 @@ module DbDashboards.Dials {
 
             if (0 == v) {
 
-                this.drawNeedle(this.needleContext, v);
+                this.drawNeedle(v);
                 this.renderLayers();
             } else {
                 $({value: original}).animate({value: vals.value},{
@@ -201,7 +195,7 @@ module DbDashboards.Dials {
                     step: (function (d: DialBase) {
                         return function (now: number, tween: any) {
                         
-                        d.drawNeedle(d.needleContext, tween.now);
+                        d.drawNeedle(tween.now);
                         d.renderLayers();
 
 
@@ -217,7 +211,7 @@ module DbDashboards.Dials {
      
            this.context.drawImage(this.backgroundContext.canvas, this.options.x,this.options.y);
                    
-           this.context.drawImage(this.needleContext.canvas,  this.options.x,this.options.y);
+           this.context.drawImage(this.needle.canvas(),  this.options.x,this.options.y);
            this.context.drawImage(this.foregroundContext.canvas,  this.options.x,this.options.y);
         }
 
@@ -257,16 +251,11 @@ module DbDashboards.Dials {
         }
 
 
-        drawNeedle(ctx: CanvasRenderingContext2D, stepValue: number){
+        drawNeedle(stepValue: number){
             throw new Error("This method must be implemented");
         }
 
-        clearNeedleContext() {
-            // THere was a bug using the canvas on parallels with ie 10 where clear rect on the 
-            // context does not work. This workaround resizes the canvas to the same size causeing a clear.
-            // Not pretty but necessary.
-            this.needleContext.canvas.width = this.needleContext.canvas.width;
-        }
+      
 
 
         /**

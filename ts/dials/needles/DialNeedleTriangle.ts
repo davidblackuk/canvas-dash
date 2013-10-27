@@ -3,24 +3,25 @@ module DbDashboards.Dials {
 
     export class DialNeedleTriangle extends DialNeedle {
 
-        constructor(dial: DialBase) {
-            super(dial);
+        constructor(options: DialOptions, needleContext: CanvasRenderingContext2D) {
+            super(options, needleContext);
         }
 
-        _renderNeedle(ctx: CanvasRenderingContext2D, x: number, y:number ) {
-            var hw = this.dial.options.needle.width / 2 - (this.dial.options.needle.strokeWidth / 2);
-            var nt = this.dial.options.bezel.margin + this.dial.options.bezel.width / 2 + this.dial.options.needle.margin;
-            var needleLength = this.dial.options.prv.needleLength - nt;
 
-            ctx.moveTo(x, y);
-            ctx.beginPath();
+        _renderNeedle( x: number, y:number ) {
+            var hw = this.options.needle.width / 2 - (this.options.needle.strokeWidth / 2);
+            var nt = this.options.bezel.margin + this.options.bezel.width / 2 + this.options.needle.margin;
+            var needleLength = this.options.prv.needleLength - nt;
 
-            ctx.lineTo(x - hw, y);
-            ctx.lineTo(x, y - needleLength);
-            ctx.lineTo(x + hw, y);
-            ctx.closePath();
-            ctx.fill();
-            ctx.stroke();
+            this.needleContext.moveTo(x, y);
+            this.needleContext.beginPath();
+
+            this.needleContext.lineTo(x - hw, y);
+            this.needleContext.lineTo(x, y - needleLength);
+            this.needleContext.lineTo(x + hw, y);
+            this.needleContext.closePath();
+            this.needleContext.fill();
+            this.needleContext.stroke();
         }
 
     }

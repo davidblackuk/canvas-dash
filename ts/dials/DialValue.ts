@@ -46,23 +46,23 @@ module DbDashboards.Dials {
                     break;
                 case DialBase.Slider:
                     switch (this.dial.options.orientation) {
-                        case DialBase.North:
+                        case Orientations.North:
                             tx =  (this.dial.options.prv.effectiveWidth/2);
                             var bezOffset = (this.dial.options.bezel.width/2)+this.dial.options.bezel.margin;
                             ty = this.dial.options.height - (bezOffset + (this.dial.options.value.font.pixelSize/2));
                             break;
-                        case DialBase.South:
+                        case Orientations.South:
                             tx =  (this.dial.options.prv.effectiveWidth/2);
                             var bezOffset = (this.dial.options.bezel.width/2)+this.dial.options.bezel.margin;
                             ty = (bezOffset + (this.dial.options.value.font.pixelSize));
                             ty += this.dial.options.value.margin;
                             break;
-                        case DialBase.East:
+                        case Orientations.East:
                             ty =  (this.dial.options.prv.effectiveHeight/2);
                             var bezOffset = (this.dial.options.bezel.width/2)+this.dial.options.bezel.margin;
                             tx =  (bezOffset + (this.dial.options.value.font.pixelSize))+2;
                             break;
-                        case DialBase.West:
+                        case Orientations.West:
                             ty =  (this.dial.options.prv.effectiveHeight/2);
                             var bezOffset = (this.dial.options.bezel.width/2)+this.dial.options.bezel.margin;
                             tx = this.dial.options.width - (bezOffset + (this.dial.options.value.font.pixelSize)+2);

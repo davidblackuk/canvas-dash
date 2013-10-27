@@ -1,53 +1,68 @@
 
 module DbDashboards.Dials {
 
-    export class DialNeedle {
+    export class DialNeedle extends NeedleBase {
 
-        constructor(public dial:DialBase) {
+        constructor(options: DialOptions, needleContext: CanvasRenderingContext2D) {
+            super(options, needleContext);
         }
 
-        render(ctx: CanvasRenderingContext2D, stepValue: number) {
-            ctx.save();
 
-            var cx = this.dial.options.prv.needleX;
-            var cy = this.dial.options.prv.needleY;
+        render(stepValue: number) {
+            this.clear();
+            this.needleContext.save();
+
+            var cx = this.options.prv.needleX;
+            var cy = this.options.prv.needleY;
           
-            var normaized = (stepValue - this.dial.options.value.min) / (this.dial.options.value.max - this.dial.options.value.min);
+            var normaized = (stepValue - this.options.value.min) / (this.options.value.max - this.options.value.min);
 
-            var zeroAngle = this.dial.options.prv.needleZeroOffset;
-            var angle = zeroAngle + (normaized * this.dial.options.prv.needleSweep);
+            var zeroAngle = this.options.prv.needleZeroOffset;
+            var angle = zeroAngle + (normaized * this.options.prv.needleSweep);
 
             // rotate canvas to rotate needle
-            ctx.translate(cx, cy);
-            ctx.rotate(angle);
-            ctx.translate(-cx, -cy);
+            this.needleContext.translate(cx, cy);
+            this.needleContext.rotate(angle);
+            this.needleContext.translate(-cx, -cy);
 
        
 
-            ctx.shadowColor = this.dial.options.needle.shadowColor;
-            ctx.shadowBlur = this.dial.options.needle.shadowBlur;
-            ctx.shadowOffsetX = this.dial.options.needle.shadowX;
-            ctx.shadowOffsetY = this.dial.options.needle.shadowY;
+            this.needleContext.shadowColor = this.options.needle.shadowColor;
+            this.needleContext.shadowBlur = this.options.needle.shadowBlur;
+            this.needleContext.shadowOffsetX = this.options.needle.shadowX;
+            this.needleContext.shadowOffsetY = this.options.needle.shadowY;
 
 
-            ctx.strokeStyle = this.dial.options.needle.strokeStyle;
-            ctx.lineWidth = this.dial.options.needle.strokeWidth;
-            ctx.fillStyle = this.dial.options.needle.fillStyle;
+            this.needleContext.strokeStyle = this.options.needle.strokeStyle;
+            this.needleContext.lineWidth = this.options.needle.strokeWidth;
+            this.needleContext.fillStyle = this.options.needle.fillStyle;
 
-            this._renderNeedle(ctx, cx, cy);
+            this._renderNeedle( cx, cy);
             
 
         
 
 
             // restore canvas rotation
-            ctx.translate(cx, cy);
-            ctx.rotate(-angle);
-            ctx.translate(-cx, -cy);
-            ctx.restore();
+            this.needleContext.translate(cx, cy);
+            this.needleContext.rotate(-angle);
+            this.needleContext.translate(-cx, -cy);
+            this.needleContext.restore();
         }
 
-        _renderNeedle(ctx: CanvasRenderingContext2D, x: number, y:number) {
+        /**
+         * If a needle has a part of it rendered under the center of rotation, this property
+         * defines the height of the bit under the pivot point at 12 o'clock. It allows
+         * the dial value to move itself out of harms way
+         */
+        descentHeightForNeedleBase() : number {
+            return 0;
+        }
+
+        /**
+         * make me proteced in typescript 1.1
+         */
+        _renderNeedle( x: number, y:number) {
             throw Error("Do not call the base render method, must be implemented in the derived class");
         }
 

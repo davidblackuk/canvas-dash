@@ -11,7 +11,9 @@ module DbDashboards.Dials {
          * @param options the options for the Dial360
          */
           constructor( options:DialOptions, public target:JQuery) {
-            super(<DialOptions> Dial360.overrideDefaults,  options, target);
+              super(<DialOptions> Dial360.overrideDefaults, options, target,  {
+                  needleFactory: new DialNeedleFactory()
+              });
 
             var w = this.target.width();
             if (this.options.width != undefined){
@@ -57,12 +59,12 @@ module DbDashboards.Dials {
 
         }
 
-        drawNeedle(ctx: CanvasRenderingContext2D, stepValue: number) {
-            this.clearNeedleContext();
-            var s = DialNeedleFactory.create(this);
-            s.render(ctx, stepValue);
+        drawNeedle(stepValue: number) {
+          
+           
+            this.needle.render( stepValue);
             var v = new DialValue(this);
-            v.addLayer(ctx, stepValue);
+            v.addLayer(this.needle.needleContext, stepValue);
         }
 
 

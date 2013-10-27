@@ -5,39 +5,37 @@ module DbDashboards.Dials {
         private hw: number;
         public needleLength: number;
 
-        constructor(dial: DialBase) {
-            super(dial);
-            this.hw = dial.options.needle.width / 2 - (dial.options.needle.strokeWidth / 2);
-            var nt = dial.options.bezel.margin + dial.options.bezel.width / 2 + dial.options.needle.margin;
-            this.needleLength = dial.options.prv.needleLength - nt;
+        constructor(options: DialOptions, needleContext: CanvasRenderingContext2D) {
+            super(options, needleContext);
+            this.hw = options.needle.width / 2 - (options.needle.strokeWidth / 2);
+            var nt = options.bezel.margin + options.bezel.width / 2 + options.needle.margin;
+            this.needleLength = options.prv.needleLength - nt;
 
         }
 
-        _renderNeedle(ctx: CanvasRenderingContext2D, x: number, y: number) {
-            //ctx.fillRect(x - hw, y - needleLength, hw * 2, needleLength);
+        _renderNeedle(x: number, y: number) {
+            //this.needleContext.fillRect(x - hw, y - needleLength, hw * 2, needleLength);
 
-            ctx.beginPath();
-            this.arrow(ctx, x, y - this.needleLength);
-            ctx.lineTo(x, y);
-            this.arrow(ctx, x, y);
-            ctx.stroke();
+            this.needleContext.beginPath();
+            this.arrow( x, y - this.needleLength);
+            this.needleContext.lineTo(x, y);
+            this.arrow( x, y);
+            this.needleContext.stroke();
 
         }
 
 
 
-        private arrow(ctx: CanvasRenderingContext2D, x: number, y: number) {
-            var size = this.dial.options.needle.width;
-            ctx.lineWidth = this.dial.options.needle.width;
-            ctx.strokeStyle = this.dial.options.needle.fillStyle;
+       
 
-
-            ctx.moveTo(x - size, y + size * 2);
-            ctx.lineTo(x, y);
-            ctx.lineTo(x + size, y + size * 2);
-            ctx.moveTo(x, y);
+        /**
+        * If a needle has a part of it rendered under the center of rotation, this property
+        * defines the height of the bit under the pivot point at 12 o'clock. It allows
+        * the dial value to move itself out of harms way
+        */
+        descentHeightForNeedleBase(): number {
+            return this.options.needle.width * 2;
         }
-
 
     }
 
