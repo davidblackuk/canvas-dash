@@ -75,6 +75,8 @@
     <TypeScriptCompile Include="ts\dials\DialValue.ts" />
     <TypeScriptCompile Include="ts\marquee\MarqueeFactory.ts" />
     <TypeScriptCompile Include="ts\sliders\needles\SliderNeedleArrow.ts" />
+    <TypeScriptCompile Include="ts\sliders\needles\SliderNeedleCircleArrow.ts" />
+    <TypeScriptCompile Include="ts\sliders\needles\SliderNeedleDart.ts" />
     <TypeScriptCompile Include="ts\sliders\needles\SliderNeedleFactory.ts" />
     <TypeScriptCompile Include="ts\sliders\needles\SliderNeedleLine.ts" />
     <TypeScriptCompile Include="ts\sliders\slider\Slider.ts" />

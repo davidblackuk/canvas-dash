@@ -28,10 +28,10 @@ module DbDashboards.Dials {
                     return new SliderNeedleLine(options, needleContext);
                     break;
                 case DialNeedleFactory.circleArrow:
-                    return new SliderNeedleLine(options, needleContext);
+                    return new SliderNeedleCircleArrow(options, needleContext);
                     break;
                 case DialNeedleFactory.dart:
-                    return new SliderNeedleLine(options, needleContext);
+                    return new SliderNeedleDart(options, needleContext);
                     break;
 
             }

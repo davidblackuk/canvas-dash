@@ -66,6 +66,10 @@ module DbDashboards.Dials {
             this.needleContext.lineTo(x + size, y + size * 2);
             this.needleContext.moveTo(x, y);
         }
+
+        circle(x: number, y: number) {
+            this.needleContext.arc(x, y, this.options.needle.width, 0, Math.PI * 2);
+        }
     }
 
 }

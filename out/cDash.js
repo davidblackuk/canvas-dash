@@ -385,6 +385,10 @@ var DbDashboards;
                 this.needleContext.lineTo(x + size, y + size * 2);
                 this.needleContext.moveTo(x, y);
             };
+
+            NeedleBase.prototype.circle = function (x, y) {
+                this.needleContext.arc(x, y, this.options.needle.width, 0, Math.PI * 2);
+            };
             return NeedleBase;
         })();
         Dials.NeedleBase = NeedleBase;
@@ -584,10 +588,6 @@ var DbDashboards;
                 this.needleContext.lineTo(x, y);
                 this.circle(x, y);
                 this.needleContext.stroke();
-            };
-
-            DialNeedleCircleArrow.prototype.circle = function (x, y) {
-                this.needleContext.arc(x, y, this.options.needle.width, 0, Math.PI * 2);
             };
 
             /**
@@ -2928,6 +2928,54 @@ var DbDashboards;
 var DbDashboards;
 (function (DbDashboards) {
     (function (Dials) {
+        var SliderNeedleCircleArrow = (function (_super) {
+            __extends(SliderNeedleCircleArrow, _super);
+            function SliderNeedleCircleArrow(options, needleContext) {
+                _super.call(this, options, needleContext);
+            }
+            SliderNeedleCircleArrow.prototype._renderNeedle = function (pos) {
+                var hw = this.options.needle.width / 2 - (this.options.needle.strokeWidth / 2);
+                var needleLength = this.options.prv.needleLength;
+
+                this.needleContext.beginPath();
+                this.arrow(pos.x, pos.y - this.options.prv.needleLength / 2);
+                this.needleContext.lineTo(pos.x, pos.y + this.options.prv.needleLength / 2);
+                this.circle(pos.x, pos.y + this.options.prv.needleLength / 2);
+                this.needleContext.stroke();
+            };
+            return SliderNeedleCircleArrow;
+        })(Dials.SliderNeedle);
+        Dials.SliderNeedleCircleArrow = SliderNeedleCircleArrow;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        var SliderNeedleDart = (function (_super) {
+            __extends(SliderNeedleDart, _super);
+            function SliderNeedleDart(options, needleContext) {
+                _super.call(this, options, needleContext);
+            }
+            SliderNeedleDart.prototype._renderNeedle = function (pos) {
+                var hw = this.options.needle.width / 2 - (this.options.needle.strokeWidth / 2);
+                var needleLength = this.options.prv.needleLength;
+
+                this.needleContext.beginPath();
+                this.arrow(pos.x, pos.y - this.options.prv.needleLength / 2);
+                this.needleContext.lineTo(pos.x, pos.y + this.options.prv.needleLength / 2);
+                this.arrow(pos.x, pos.y);
+                this.needleContext.stroke();
+            };
+            return SliderNeedleDart;
+        })(Dials.SliderNeedle);
+        Dials.SliderNeedleDart = SliderNeedleDart;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
         var SliderNeedleFactory = (function () {
             function SliderNeedleFactory() {
             }
@@ -2943,10 +2991,10 @@ var DbDashboards;
                         return new Dials.SliderNeedleLine(options, needleContext);
                         break;
                     case Dials.DialNeedleFactory.circleArrow:
-                        return new Dials.SliderNeedleLine(options, needleContext);
+                        return new Dials.SliderNeedleCircleArrow(options, needleContext);
                         break;
                     case Dials.DialNeedleFactory.dart:
-                        return new Dials.SliderNeedleLine(options, needleContext);
+                        return new Dials.SliderNeedleDart(options, needleContext);
                         break;
                 }
             };

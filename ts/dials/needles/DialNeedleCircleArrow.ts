@@ -24,9 +24,7 @@ module DbDashboards.Dials {
 
         }
 
-        private circle(x: number, y: number) {
-            this.needleContext.arc(x, y, this.options.needle.width, 0, Math.PI*2);
-        }
+     
 
 
         /**
