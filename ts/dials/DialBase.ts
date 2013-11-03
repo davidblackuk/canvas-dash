@@ -567,13 +567,13 @@ module DbDashboards.Dials {
                     fillStyle: "#ffffff",
                     strokeStyle: "#000",
                     shadowColor: "rgba(0,0,0,0)",
-                    style: DialNeedleFactory.triangle,
+                    style: DialNeedleFactory.dot,
                     width: 5,
-                    margin: 20
+                    margin: 10
                 },
                 scale: {
                     strokeStyle: "#000000",
-                    margin: 4,
+                    margin: 6,
                     majorTicks: {
                         strokeStyle: "#444444"
                     },

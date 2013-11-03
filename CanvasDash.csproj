@@ -45,6 +45,7 @@
     <TypeScriptCompile Include="ts\common\Point.ts" />
     <TypeScriptCompile Include="ts\dials\180\Dial180Factory.ts" />
     <TypeScriptCompile Include="ts\dials\360\Dial360Factory.ts" />
+    <TypeScriptCompile Include="ts\dials\needles\DialNeedleDot.ts" />
     <TypeScriptCompile Include="ts\dials\needles\NeedleBase.ts" />
     <TypeScriptCompile Include="ts\dials\180\Dial180.ts" />
     <TypeScriptCompile Include="ts\dials\180\Dial180E.ts" />
@@ -77,6 +78,7 @@
     <TypeScriptCompile Include="ts\sliders\needles\SliderNeedleArrow.ts" />
     <TypeScriptCompile Include="ts\sliders\needles\SliderNeedleCircleArrow.ts" />
     <TypeScriptCompile Include="ts\sliders\needles\SliderNeedleDart.ts" />
+    <TypeScriptCompile Include="ts\sliders\needles\SliderNeedleDot.ts" />
     <TypeScriptCompile Include="ts\sliders\needles\SliderNeedleFactory.ts" />
     <TypeScriptCompile Include="ts\sliders\needles\SliderNeedleLine.ts" />
     <TypeScriptCompile Include="ts\sliders\needles\SliderNeedleTriangle.ts" />

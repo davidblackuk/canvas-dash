@@ -1,7 +1,7 @@
 
 module DbDashboards.Dials {
 
-    export class SliderNeedleTriangle extends SliderNeedle {
+    export class SliderNeedleDot extends SliderNeedle {
 
         constructor(options: DialOptions, needleContext: CanvasRenderingContext2D) {
             super(options, needleContext);
@@ -15,22 +15,17 @@ module DbDashboards.Dials {
             this.needleContext.fillStyle = this.options.needle.fillStyle;
             this.needleContext.strokeStyle = this.options.needle.strokeStyle;
 
-          
+
 
             this.needleContext.beginPath();
 
 
-            this.needleContext.moveTo(pos.x-this.options.needle.width/2, pos.y + this.options.prv.needleLength);
-      
-            this.needleContext.lineTo(pos.x, pos.y - this.options.prv.needleLength/2);
-            this.needleContext.lineTo(pos.x + this.options.needle.width / 2, pos.y + this.options.prv.needleLength);
-           
 
-          
+            this.circle(pos.x, pos.y + this.options.prv.needleLength / 2);
+
             this.needleContext.closePath();
             this.needleContext.fill();
             this.needleContext.stroke();
-
 
         }
     }

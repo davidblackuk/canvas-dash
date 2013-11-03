@@ -33,6 +33,9 @@ module DbDashboards.Dials {
                 case DialNeedleFactory.dart:
                     return new SliderNeedleDart(options, needleContext);
                     break;
+                case DialNeedleFactory.dot:
+                    return new SliderNeedleDot(options, needleContext);
+                    break;
 
             }
 

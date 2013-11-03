@@ -7,6 +7,7 @@ module DbDashboards.Dials {
         public static arrow: string = "arrow";
         public static line: string = "line";
         public static dart: string = "dart";
+        public static dot: string = "dot";
         public static circleArrow: string = "circleArrow";
 
 
@@ -30,6 +31,9 @@ module DbDashboards.Dials {
                     break;
                 case DialNeedleFactory.dart:
                     return new DialNeedleDart(options, needleContext);
+                    break;
+                case DialNeedleFactory.dot:
+                    return new DialNeedleDot(options, needleContext);
                     break;
 
             }

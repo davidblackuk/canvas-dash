@@ -482,12 +482,16 @@ var DbDashboards;
                     case DialNeedleFactory.dart:
                         return new Dials.DialNeedleDart(options, needleContext);
                         break;
+                    case DialNeedleFactory.dot:
+                        return new Dials.DialNeedleDot(options, needleContext);
+                        break;
                 }
             };
             DialNeedleFactory.triangle = "triangle";
             DialNeedleFactory.arrow = "arrow";
             DialNeedleFactory.line = "line";
             DialNeedleFactory.dart = "dart";
+            DialNeedleFactory.dot = "dot";
             DialNeedleFactory.circleArrow = "circleArrow";
             return DialNeedleFactory;
         })();
@@ -1389,13 +1393,13 @@ var DbDashboards;
                         fillStyle: "#ffffff",
                         strokeStyle: "#000",
                         shadowColor: "rgba(0,0,0,0)",
-                        style: Dials.DialNeedleFactory.triangle,
+                        style: Dials.DialNeedleFactory.dot,
                         width: 5,
-                        margin: 20
+                        margin: 10
                     },
                     scale: {
                         strokeStyle: "#000000",
-                        margin: 4,
+                        margin: 6,
                         majorTicks: {
                             strokeStyle: "#444444"
                         },
@@ -2888,6 +2892,33 @@ var DbDashboards;
 var DbDashboards;
 (function (DbDashboards) {
     (function (Dials) {
+        var DialNeedleDot = (function (_super) {
+            __extends(DialNeedleDot, _super);
+            function DialNeedleDot(options, needleContext) {
+                _super.call(this, options, needleContext);
+            }
+            DialNeedleDot.prototype._renderNeedle = function (x, y) {
+                var nt = this.options.bezel.margin + this.options.bezel.width / 2 + this.options.needle.margin;
+                var needleLength = this.options.prv.needleLength - nt;
+
+                this.needleContext.lineWidth = 1;
+                this.needleContext.fillStyle = this.options.needle.fillStyle;
+                this.needleContext.strokeStyle = this.options.needle.strokeStyle;
+                this.needleContext.beginPath();
+                this.circle(x, y - needleLength);
+                this.needleContext.closePath();
+                this.needleContext.fill();
+                this.needleContext.stroke();
+            };
+            return DialNeedleDot;
+        })(Dials.DialNeedle);
+        Dials.DialNeedleDot = DialNeedleDot;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
         var DialMaskFactory = (function () {
             function DialMaskFactory() {
             }
@@ -3015,6 +3046,36 @@ var DbDashboards;
 var DbDashboards;
 (function (DbDashboards) {
     (function (Dials) {
+        var SliderNeedleDot = (function (_super) {
+            __extends(SliderNeedleDot, _super);
+            function SliderNeedleDot(options, needleContext) {
+                _super.call(this, options, needleContext);
+            }
+            SliderNeedleDot.prototype._renderNeedle = function (pos) {
+                var hw = this.options.needle.width / 2 - (this.options.needle.strokeWidth / 2);
+                var needleLength = this.options.prv.needleLength;
+
+                this.needleContext.lineWidth = 1;
+                this.needleContext.fillStyle = this.options.needle.fillStyle;
+                this.needleContext.strokeStyle = this.options.needle.strokeStyle;
+
+                this.needleContext.beginPath();
+
+                this.circle(pos.x, pos.y + this.options.prv.needleLength / 2);
+
+                this.needleContext.closePath();
+                this.needleContext.fill();
+                this.needleContext.stroke();
+            };
+            return SliderNeedleDot;
+        })(Dials.SliderNeedle);
+        Dials.SliderNeedleDot = SliderNeedleDot;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
         var SliderNeedleFactory = (function () {
             function SliderNeedleFactory() {
             }
@@ -3034,6 +3095,9 @@ var DbDashboards;
                         break;
                     case Dials.DialNeedleFactory.dart:
                         return new Dials.SliderNeedleDart(options, needleContext);
+                        break;
+                    case Dials.DialNeedleFactory.dot:
+                        return new Dials.SliderNeedleDot(options, needleContext);
                         break;
                 }
             };
@@ -3087,7 +3151,7 @@ var DbDashboards;
                 var hw = this.options.needle.width / 2 - (this.options.needle.strokeWidth / 2);
                 var needleLength = this.options.prv.needleLength;
 
-                this.needleContext.lineWidth = this.options.needle.width;
+                this.needleContext.lineWidth = 1;
                 this.needleContext.fillStyle = this.options.needle.fillStyle;
                 this.needleContext.strokeStyle = this.options.needle.strokeStyle;
 
@@ -3095,13 +3159,11 @@ var DbDashboards;
 
                 this.needleContext.moveTo(pos.x - this.options.needle.width / 2, pos.y + this.options.prv.needleLength);
 
-                this.needleContext.lineTo(pos.x, pos.y + this.options.prv.needleLength / 2);
+                this.needleContext.lineTo(pos.x, pos.y - this.options.prv.needleLength / 2);
                 this.needleContext.lineTo(pos.x + this.options.needle.width / 2, pos.y + this.options.prv.needleLength);
 
-                //this.needleContext.moveTo(pos.x - this.options.needle.width/2, pos.y - this.options.prv.needleLength / 2);
-                //this.needleContext.lineTo(pos.x, pos.y + this.options.prv.needleLength/2);
-                //this.needleContext.lineTo(pos.x + this.options.needle.width / 2, pos.y - this.options.prv.needleLength / 2);
                 this.needleContext.closePath();
+                this.needleContext.fill();
                 this.needleContext.stroke();
             };
             return SliderNeedleTriangle;
