@@ -146,6 +146,23 @@
 				"buffer_size": 1644,
 				"line_ending": "Unix"
 			}
+		},
+		{
+			"file": "js/demos.js",
+			"settings":
+			{
+				"buffer_size": 1860,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "/Volumes/internal/davidblack/Desktop/parallels",
+			"settings":
+			{
+				"buffer_size": 34,
+				"line_ending": "Unix",
+				"name": "JKR6TP-JF94ST-ZGKGV3-9E8QNH-FQP1Z2"
+			}
 		}
 	],
 	"build_system": "Packages/JSLint/JSLint.sublime-build",
@@ -440,7 +457,7 @@
 	"groups":
 	[
 		{
-			"selected": 2,
+			"selected": 4,
 			"sheets":
 			[
 				{
@@ -520,6 +537,60 @@
 							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 3,
+					"file": "js/demos.js",
+					"settings":
+					{
+						"buffer_size": 1860,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								1854,
+								1854
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
+							"translate_tabs_to_spaces": false
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 4,
+					"file": "/Volumes/internal/davidblack/Desktop/parallels",
+					"settings":
+					{
+						"buffer_size": 34,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								34,
+								34
+							]
+						],
+						"settings":
+						{
+							"auto_name": "JKR6TP-JF94ST-ZGKGV3-9E8QNH-FQP1Z2",
+							"syntax": "Packages/Text/Plain text.tmLanguage"
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
