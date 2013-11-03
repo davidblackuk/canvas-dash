@@ -242,7 +242,14 @@ module DbDashboards.Marquees {
                 ledOffFillStyle:"#2881E3",
                 ledOnFillStyle: "#FFFFFF",
 
+            },
+            paper: {
+                backgroundFillStyle: "#F5F1DF",
+                ledOffFillStyle: "#999999",
+                ledOnFillStyle: "#000",
+
             }
+            
         };
 
     }

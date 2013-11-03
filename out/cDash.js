@@ -2755,6 +2755,11 @@ var DbDashboards;
                     backgroundFillStyle: "#2881E3",
                     ledOffFillStyle: "#2881E3",
                     ledOnFillStyle: "#FFFFFF"
+                },
+                paper: {
+                    backgroundFillStyle: "#F5F1DF",
+                    ledOffFillStyle: "#999999",
+                    ledOnFillStyle: "#000"
                 }
             };
             return LedMarquee;
