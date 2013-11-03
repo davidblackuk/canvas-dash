@@ -16,7 +16,7 @@ module DbDashboards.Dials {
 
             this.needleContext.beginPath();
             this.needleContext.moveTo(pos.x, pos.y - this.options.prv.needleLength/2);
-            this.needleContext.lineTo(pos.x, pos.y + this.options.prv.needleLength / 2);
+            this.needleContext.lineTo(pos.x, pos.y + this.options.prv.needleLength );
             this.needleContext.closePath();
             this.needleContext.stroke();
 

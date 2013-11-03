@@ -79,6 +79,7 @@
     <TypeScriptCompile Include="ts\sliders\needles\SliderNeedleDart.ts" />
     <TypeScriptCompile Include="ts\sliders\needles\SliderNeedleFactory.ts" />
     <TypeScriptCompile Include="ts\sliders\needles\SliderNeedleLine.ts" />
+    <TypeScriptCompile Include="ts\sliders\needles\SliderNeedleTriangle.ts" />
     <TypeScriptCompile Include="ts\sliders\slider\Slider.ts" />
     <TypeScriptCompile Include="ts\sliders\SliderBezel.ts" />
     <TypeScriptCompile Include="ts\sliders\SliderMask.ts" />

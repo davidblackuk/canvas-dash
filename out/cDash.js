@@ -823,7 +823,9 @@ var DbDashboards;
 
                 ctx.fillStyle = this.dial.options.value.font.fillStyle;
                 ctx.strokeStyle = this.dial.options.value.font.strokeStyle;
-
+                ctx.shadowOffsetX = 0;
+                ctx.shadowOffsetY = 0;
+                ctx.shadowColor = "rgba(0,0,0,0)";
                 var txt = $.number(stepValue, this.dial.options.value.decimalPlaces);
 
                 var ty = 0;
@@ -1218,8 +1220,7 @@ var DbDashboards;
                     value: {
                         font: {
                             fillStyle: "#fff"
-                        },
-                        margin: 60
+                        }
                     },
                     bezel: {
                         strokeStyle: "rgba(126,126,255, 0.3)",
@@ -1366,6 +1367,44 @@ var DbDashboards;
                             strokeStyle: "#FFFFFF",
                             fillStyle: "#FFFFFF",
                             family: "Helvetica"
+                        }
+                    }
+                },
+                paper: {
+                    face: {
+                        gradientColor1: "#F0F5DF",
+                        gradientColor2: "#F5F1DF"
+                    },
+                    value: {
+                        font: {
+                            strokeStyle: "#444444",
+                            fillStyle: "#444444"
+                        }
+                    },
+                    bezel: {
+                        strokeStyle: "#555555",
+                        margin: 4
+                    },
+                    needle: {
+                        fillStyle: "#ffffff",
+                        strokeStyle: "#000",
+                        shadowColor: "rgba(0,0,0,0)",
+                        style: Dials.DialNeedleFactory.triangle,
+                        width: 5,
+                        margin: 20
+                    },
+                    scale: {
+                        strokeStyle: "#000000",
+                        margin: 4,
+                        majorTicks: {
+                            strokeStyle: "#444444"
+                        },
+                        minorTicks: {
+                            strokeStyle: "#888888"
+                        },
+                        font: {
+                            strokeStyle: "#000",
+                            fillStyle: "#000"
                         }
                     }
                 }
@@ -1933,7 +1972,7 @@ var DbDashboards;
                     needleLength: this.needleLength,
                     minPoint: new Dials.Point(this.needleMinimumOffSet(), y),
                     maxPoint: new Dials.Point(this.effectiveWidth() - this.needleMinimumOffSet(), y),
-                    needleRotation: 0
+                    needleRotation: Math.PI
                 };
             }
             return SliderN;
@@ -1972,7 +2011,7 @@ var DbDashboards;
                     needleLength: this.needleLength,
                     minPoint: new Dials.Point(this.needleMinimumOffSet(), y),
                     maxPoint: new Dials.Point(this.effectiveWidth() - this.needleMinimumOffSet(), y),
-                    needleRotation: Math.PI
+                    needleRotation: 0
                 };
             }
             return SliderS;
@@ -2011,7 +2050,7 @@ var DbDashboards;
                     needleLength: this.needleLength,
                     minPoint: new Dials.Point(x, this.needleMinimumOffSet()),
                     maxPoint: new Dials.Point(x, this.effectiveHeight() - this.needleMinimumOffSet()),
-                    needleRotation: Math.PI / 2
+                    needleRotation: 3 * (Math.PI / 2)
                 };
             }
             return SliderE;
@@ -2050,7 +2089,7 @@ var DbDashboards;
                     needleLength: this.needleLength,
                     minPoint: new Dials.Point(x, this.needleMinimumOffSet()),
                     maxPoint: new Dials.Point(x, this.effectiveHeight() - this.needleMinimumOffSet()),
-                    needleRotation: 3 * (Math.PI / 2)
+                    needleRotation: Math.PI / 2
                 };
             }
             return SliderW;
@@ -2915,7 +2954,7 @@ var DbDashboards;
 
                 this.needleContext.beginPath();
                 this.arrow(pos.x, pos.y - this.options.prv.needleLength / 2);
-                this.needleContext.lineTo(pos.x, pos.y + this.options.prv.needleLength / 2);
+                this.needleContext.lineTo(pos.x, pos.y + this.options.prv.needleLength);
 
                 this.needleContext.stroke();
             };
@@ -2940,7 +2979,7 @@ var DbDashboards;
                 this.needleContext.beginPath();
                 this.arrow(pos.x, pos.y - this.options.prv.needleLength / 2);
                 this.needleContext.lineTo(pos.x, pos.y + this.options.prv.needleLength / 2);
-                this.circle(pos.x, pos.y + this.options.prv.needleLength / 2);
+                this.circle(pos.x, pos.y + this.options.prv.needleLength);
                 this.needleContext.stroke();
             };
             return SliderNeedleCircleArrow;
@@ -2964,7 +3003,7 @@ var DbDashboards;
                 this.needleContext.beginPath();
                 this.arrow(pos.x, pos.y - this.options.prv.needleLength / 2);
                 this.needleContext.lineTo(pos.x, pos.y + this.options.prv.needleLength / 2);
-                this.arrow(pos.x, pos.y);
+                this.arrow(pos.x, pos.y + this.options.prv.needleLength / 2);
                 this.needleContext.stroke();
             };
             return SliderNeedleDart;
@@ -2982,7 +3021,7 @@ var DbDashboards;
             SliderNeedleFactory.prototype.create = function (options, needleContext) {
                 switch (options.needle.style) {
                     case Dials.DialNeedleFactory.triangle:
-                        return new Dials.SliderNeedleLine(options, needleContext);
+                        return new Dials.SliderNeedleTriangle(options, needleContext);
                         break;
                     case Dials.DialNeedleFactory.arrow:
                         return new Dials.SliderNeedleArrow(options, needleContext);
@@ -3026,13 +3065,48 @@ var DbDashboards;
 
                 this.needleContext.beginPath();
                 this.needleContext.moveTo(pos.x, pos.y - this.options.prv.needleLength / 2);
-                this.needleContext.lineTo(pos.x, pos.y + this.options.prv.needleLength / 2);
+                this.needleContext.lineTo(pos.x, pos.y + this.options.prv.needleLength);
                 this.needleContext.closePath();
                 this.needleContext.stroke();
             };
             return SliderNeedleLine;
         })(Dials.SliderNeedle);
         Dials.SliderNeedleLine = SliderNeedleLine;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        var SliderNeedleTriangle = (function (_super) {
+            __extends(SliderNeedleTriangle, _super);
+            function SliderNeedleTriangle(options, needleContext) {
+                _super.call(this, options, needleContext);
+            }
+            SliderNeedleTriangle.prototype._renderNeedle = function (pos) {
+                var hw = this.options.needle.width / 2 - (this.options.needle.strokeWidth / 2);
+                var needleLength = this.options.prv.needleLength;
+
+                this.needleContext.lineWidth = this.options.needle.width;
+                this.needleContext.fillStyle = this.options.needle.fillStyle;
+                this.needleContext.strokeStyle = this.options.needle.strokeStyle;
+
+                this.needleContext.beginPath();
+
+                this.needleContext.moveTo(pos.x - this.options.needle.width / 2, pos.y + this.options.prv.needleLength);
+
+                this.needleContext.lineTo(pos.x, pos.y + this.options.prv.needleLength / 2);
+                this.needleContext.lineTo(pos.x + this.options.needle.width / 2, pos.y + this.options.prv.needleLength);
+
+                //this.needleContext.moveTo(pos.x - this.options.needle.width/2, pos.y - this.options.prv.needleLength / 2);
+                //this.needleContext.lineTo(pos.x, pos.y + this.options.prv.needleLength/2);
+                //this.needleContext.lineTo(pos.x + this.options.needle.width / 2, pos.y - this.options.prv.needleLength / 2);
+                this.needleContext.closePath();
+                this.needleContext.stroke();
+            };
+            return SliderNeedleTriangle;
+        })(Dials.SliderNeedle);
+        Dials.SliderNeedleTriangle = SliderNeedleTriangle;
     })(DbDashboards.Dials || (DbDashboards.Dials = {}));
     var Dials = DbDashboards.Dials;
 })(DbDashboards || (DbDashboards = {}));

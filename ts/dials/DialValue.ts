@@ -12,7 +12,9 @@ module DbDashboards.Dials {
 
             ctx.fillStyle = this.dial.options.value.font.fillStyle;
             ctx.strokeStyle = this.dial.options.value.font.strokeStyle;
-
+            ctx.shadowOffsetX = 0;
+            ctx.shadowOffsetY = 0;
+            ctx.shadowColor = "rgba(0,0,0,0)";
             var txt = $.number(stepValue, this.dial.options.value.decimalPlaces);
 
             var ty = 0;

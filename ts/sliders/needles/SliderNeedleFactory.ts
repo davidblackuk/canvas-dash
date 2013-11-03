@@ -19,7 +19,7 @@ module DbDashboards.Dials {
 
             switch (options.needle.style) {
                 case DialNeedleFactory.triangle:
-                    return new SliderNeedleLine(options, needleContext);
+                    return new SliderNeedleTriangle(options, needleContext);
                     break;
                 case DialNeedleFactory.arrow:
                     return new SliderNeedleArrow(options, needleContext);

@@ -387,8 +387,7 @@ module DbDashboards.Dials {
                 value: {
                     font: {
                         fillStyle: "#fff"
-                    },
-                    margin:60
+                    }
 
                 },
                 bezel: {
@@ -548,7 +547,46 @@ module DbDashboards.Dials {
                 }
 
 
-            }
+            },
+            paper: {
+                face: {
+                    gradientColor1: "#F0F5DF",
+                    gradientColor2: "#F5F1DF"
+                },
+                value: {
+                    font: {
+                        strokeStyle: "#444444",
+                        fillStyle: "#444444"
+                    }
+                },
+                bezel: {
+                    strokeStyle: "#555555",
+                    margin: 4
+                },
+                needle: {
+                    fillStyle: "#ffffff",
+                    strokeStyle: "#000",
+                    shadowColor: "rgba(0,0,0,0)",
+                    style: DialNeedleFactory.triangle,
+                    width: 5,
+                    margin: 20
+                },
+                scale: {
+                    strokeStyle: "#000000",
+                    margin: 4,
+                    majorTicks: {
+                        strokeStyle: "#444444"
+                    },
+                    minorTicks: {
+                        strokeStyle: "#888888"
+                    },
+                    font: {
+                        strokeStyle: "#000",
+                        fillStyle: "#000"
+                    }
+                }
+
+            },
         };
 
         public static settings = {

@@ -30,7 +30,7 @@ module DbDashboards.Dials {
                 needleLength: this.needleLength,
                 minPoint: new Point(this.needleMinimumOffSet(), y),
                 maxPoint: new Point(this.effectiveWidth() - this.needleMinimumOffSet() , y),
-                needleRotation: Math.PI
+                needleRotation:0
 
             };
 
