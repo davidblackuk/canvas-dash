@@ -43,15 +43,15 @@ Demo.prototype.initilize = function(titleElement, canvas) {
 	this.demos = [
 		{type: "dial180", theme:"chocolate", orientation:"W", title:"Dial 180 West (default theme)", width:180, height: 180},
 		{type: "dial360", theme:"blue", orientation:"N", title:"Dial 360 (blue theme)", width:180, height: 180},
-		{type: "slider", theme:"dark", orientation:"S", title:"Slider South (dark theme)", width:180, height: 75},
+		{type: "slider", theme:"dark", orientation:"S", title:"Slider South (dark theme)", width:180, height: 77},
 
 		{type: "marquee", theme:"metro", orientation:"", title:"Marquee (metro theme)", width:180, height: 180, message:"Hello world! "},
 		{type: "dial180", theme:"paper", orientation:"S", title:"Dial 180 South (paper theme)", width:180, height: 180},
 		{type: "dial360", theme:"chocolate", orientation:"W", title:"Dial 360 (default theme)", width:180, height: 180},
-		{type: "slider", styleSet:"medium", theme:"blue", orientation:"E", title:"Slider East (blue theme)", width:75, height: 180},
+		{type: "slider", styleSet:"medium", theme:"blue", orientation:"E", title:"Slider East (blue theme)", width:77, height: 180},
 
 		{type: "marquee", theme:"dark", orientation:"", title:"Marquee (dark theme)", width:180, height: 180, message:"Hello world! "},
 		{type: "dial360", theme:"metro", orientation:"S", title:"Dial 360 (metro theme)", width:180, height: 180, message:"Hello world! "},
-		{type: "slider", styleSet:"medium", theme:"paper", orientation:"W", title:"Slider West (paper theme)", width:75, height: 180},
+		{type: "slider", styleSet:"medium", theme:"paper", orientation:"W", title:"Slider West (paper theme)", width:77, height: 180},
 	];
 };
