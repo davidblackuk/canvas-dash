@@ -30,11 +30,7 @@ module DbDashboards.Dials {
             b.addLayer(ctx);
         }
 
-        drawNeedle(stepValue: number){
-           this.needle.render(stepValue);
-            var v = new DialValue(this);
-            v.addLayer(this.needle.needleContext, stepValue);
-        }
+  
 
         /**
          * Applies a mask to the prevent glass highlights etc over flowing

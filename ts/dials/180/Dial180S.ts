@@ -34,5 +34,18 @@ module DbDashboards.Dials {
             };
 
         }
+
+        /**
+        * Ask the dial where its value should be displayed
+        */
+        getDialValuePostion(): TranslationAndRotation {
+            var tx = this.options.prv.effectiveWidth / 2;
+            var ty = this.options.prv.needleY - this.options.needle.width - 3;
+            var r = 0;
+            return { x: tx, y: ty, r: r };
+        }
+
     }
+
+    
 }

@@ -251,11 +251,22 @@ module DbDashboards.Dials {
         }
 
 
-        drawNeedle(stepValue: number){
-            throw new Error("This method must be implemented");
+        drawNeedle(stepValue: number) {
+            this.needle.render(stepValue);
+            var v = new DialValue(this);
+            v.render(this.needle.needleContext, stepValue, this.getDialValuePostion());
         }
 
-      
+
+        /**
+         * Ask the dial where its value should be displayed
+         */
+        getDialValuePostion(): TranslationAndRotation {
+            // silly default to make it obvious it hasnt been implemented
+            var res = { x: 40, y: 40, r: Math.PI / 4 };
+
+            return res;
+        }
 
 
         /**

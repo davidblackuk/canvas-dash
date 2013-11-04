@@ -43,6 +43,7 @@
     <TypeScriptCompile Include="ts\common\ICreateNeedles.ts" />
     <TypeScriptCompile Include="ts\common\Orientations.ts" />
     <TypeScriptCompile Include="ts\common\Point.ts" />
+    <TypeScriptCompile Include="ts\common\TranslateionAndRotation.ts" />
     <TypeScriptCompile Include="ts\dials\180\Dial180Factory.ts" />
     <TypeScriptCompile Include="ts\dials\360\Dial360Factory.ts" />
     <TypeScriptCompile Include="ts\dials\needles\DialNeedleDot.ts" />

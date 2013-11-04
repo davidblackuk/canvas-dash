@@ -822,7 +822,7 @@ var DbDashboards;
             function DialValue(dial) {
                 this.dial = dial;
             }
-            DialValue.prototype.addLayer = function (ctx, stepValue) {
+            DialValue.prototype.render = function (ctx, stepValue, position) {
                 ctx.font = this.dial.options.value.font.pixelSize + "px " + this.dial.options.value.font.family;
 
                 ctx.fillStyle = this.dial.options.value.font.fillStyle;
@@ -832,73 +832,16 @@ var DbDashboards;
                 ctx.shadowColor = "rgba(0,0,0,0)";
                 var txt = $.number(stepValue, this.dial.options.value.decimalPlaces);
 
-                var ty = 0;
-                var tx = 0;
-                var r = 0;
-
-                switch (this.dial.options.type) {
-                    case Dials.DialBase.Dial360:
-                        tx = (this.dial.options.prv.effectiveWidth / 2);
-                        ty = (this.dial.options.prv.effectiveHeight - (this.dial.options.bezel.margin + this.dial.options.bezel.width / 2));
-                        ty = ty - this.dial.options.value.margin;
-                        break;
-                    case Dials.DialBase.Dial180N:
-                        tx = (this.dial.options.prv.effectiveWidth / 2);
-                        ty = this.dial.options.prv.needleY + this.dial.options.value.font.pixelSize + this.dial.options.needle.width;
-                        break;
-                    case Dials.DialBase.Dial180S:
-                        tx = this.dial.options.prv.effectiveWidth / 2;
-                        ty = this.dial.options.prv.needleY - this.dial.options.needle.width - 3;
-                        break;
-                    case Dials.DialBase.Dial180E:
-                        tx = this.dial.options.prv.needleX - this.dial.options.value.font.pixelSize - this.dial.options.needle.width;
-
-                        ty = this.dial.options.prv.effectiveHeight / 2;
-                        r = Math.PI / 2;
-                        break;
-                    case Dials.DialBase.Dial180W:
-                        tx = this.dial.options.prv.needleX + this.dial.options.value.font.pixelSize + this.dial.options.needle.width;
-                        ty = this.dial.options.prv.effectiveHeight / 2;
-                        r = 3 * Math.PI / 2;
-                        break;
-                    case Dials.DialBase.Slider:
-                        switch (this.dial.options.orientation) {
-                            case Dials.Orientations.North:
-                                tx = (this.dial.options.prv.effectiveWidth / 2);
-                                var bezOffset = (this.dial.options.bezel.width / 2) + this.dial.options.bezel.margin;
-                                ty = this.dial.options.height - (bezOffset + (this.dial.options.value.font.pixelSize / 2));
-                                break;
-                            case Dials.Orientations.South:
-                                tx = (this.dial.options.prv.effectiveWidth / 2);
-                                var bezOffset = (this.dial.options.bezel.width / 2) + this.dial.options.bezel.margin;
-                                ty = (bezOffset + (this.dial.options.value.font.pixelSize));
-                                ty += this.dial.options.value.margin;
-                                break;
-                            case Dials.Orientations.East:
-                                ty = (this.dial.options.prv.effectiveHeight / 2);
-                                var bezOffset = (this.dial.options.bezel.width / 2) + this.dial.options.bezel.margin;
-                                tx = (bezOffset + (this.dial.options.value.font.pixelSize)) + 2;
-                                break;
-                            case Dials.Orientations.West:
-                                ty = (this.dial.options.prv.effectiveHeight / 2);
-                                var bezOffset = (this.dial.options.bezel.width / 2) + this.dial.options.bezel.margin;
-                                tx = this.dial.options.width - (bezOffset + (this.dial.options.value.font.pixelSize) + 2);
-                                break;
-                        }
-                        r = 0;
-                        break;
-                }
-
                 ctx.textAlign = "center";
-                ctx.translate(tx, ty);
-                ctx.rotate(r);
-                ctx.translate(-tx, -ty);
+                ctx.translate(position.x, position.y);
+                ctx.rotate(position.r);
+                ctx.translate(-position.x, -position.y);
 
-                ctx.fillText(txt, tx, ty);
+                ctx.fillText(txt, position.x, position.y);
 
-                ctx.translate(tx, ty);
-                ctx.rotate(-r);
-                ctx.translate(-tx, -ty);
+                ctx.translate(position.x, position.y);
+                ctx.rotate(-position.r);
+                ctx.translate(-position.x, -position.y);
             };
             return DialValue;
         })();
@@ -1092,7 +1035,19 @@ var DbDashboards;
             };
 
             DialBase.prototype.drawNeedle = function (stepValue) {
-                throw new Error("This method must be implemented");
+                this.needle.render(stepValue);
+                var v = new Dials.DialValue(this);
+                v.render(this.needle.needleContext, stepValue, this.getDialValuePostion());
+            };
+
+            /**
+            * Ask the dial where its value should be displayed
+            */
+            DialBase.prototype.getDialValuePostion = function () {
+                // silly default to make it obvious it hasnt been implemented
+                var res = { x: 40, y: 40, r: Math.PI / 4 };
+
+                return res;
             };
 
             /**
@@ -1543,12 +1498,6 @@ var DbDashboards;
                 b.addLayer(ctx);
             };
 
-            Dial180.prototype.drawNeedle = function (stepValue) {
-                this.needle.render(stepValue);
-                var v = new Dials.DialValue(this);
-                v.addLayer(this.needle.needleContext, stepValue);
-            };
-
             /**
             * Applies a mask to the prevent glass highlights etc over flowing
             */
@@ -1607,6 +1556,19 @@ var DbDashboards;
                     needleLength: minAxisSize / 2
                 };
             }
+            /**
+            * Ask the dial where its value should be displayed
+            */
+            Dial180N.prototype.getDialValuePostion = function () {
+                var ty = 0;
+                var tx = 0;
+                var r = 0;
+
+                tx = (this.options.prv.effectiveWidth / 2);
+                ty = this.options.prv.needleY + this.options.value.font.pixelSize + this.options.needle.width;
+
+                return { x: tx, y: ty, r: r };
+            };
             return Dial180N;
         })(Dials.Dial180);
         Dials.Dial180N = Dial180N;
@@ -1649,6 +1611,15 @@ var DbDashboards;
                     needleLength: minAxisSize / 2
                 };
             }
+            /**
+            * Ask the dial where its value should be displayed
+            */
+            Dial180S.prototype.getDialValuePostion = function () {
+                var tx = this.options.prv.effectiveWidth / 2;
+                var ty = this.options.prv.needleY - this.options.needle.width - 3;
+                var r = 0;
+                return { x: tx, y: ty, r: r };
+            };
             return Dial180S;
         })(Dials.Dial180);
         Dials.Dial180S = Dial180S;
@@ -1691,6 +1662,17 @@ var DbDashboards;
                     needleLength: minAxisSize / 2
                 };
             }
+            /**
+            * Ask the dial where its value should be displayed
+            */
+            Dial180E.prototype.getDialValuePostion = function () {
+                var tx = this.options.prv.needleX - this.options.value.font.pixelSize - this.options.needle.width;
+
+                var ty = this.options.prv.effectiveHeight / 2;
+                var r = Math.PI / 2;
+
+                return { x: tx, y: ty, r: r };
+            };
             return Dial180E;
         })(Dials.Dial180);
         Dials.Dial180E = Dial180E;
@@ -1733,6 +1715,15 @@ var DbDashboards;
                     needleLength: minAxisSize / 2
                 };
             }
+            /**
+            * Ask the dial where its value should be displayed
+            */
+            Dial180W.prototype.getDialValuePostion = function () {
+                var tx = this.options.prv.needleX + this.options.value.font.pixelSize + this.options.needle.width;
+                var ty = this.options.prv.effectiveHeight / 2;
+                var r = 3 * Math.PI / 2;
+                return { x: tx, y: ty, r: r };
+            };
             return Dial180W;
         })(Dials.Dial180);
         Dials.Dial180W = Dial180W;
@@ -1823,15 +1814,20 @@ var DbDashboards;
                 s.addLayer(ctx);
             };
 
-            Dial360.prototype.drawNeedle = function (stepValue) {
-                this.needle.render(stepValue);
-                var v = new Dials.DialValue(this);
-                v.addLayer(this.needle.needleContext, stepValue);
-            };
-
             Dial360.prototype.addBezel = function (ctx) {
                 var b = new Dials.DialBezel(this);
                 b.addLayer(ctx);
+            };
+
+            /**
+            * Ask the dial where its value should be displayed
+            */
+            Dial360.prototype.getDialValuePostion = function () {
+                var res = { x: 0, y: 0, r: 0 };
+                res.x = (this.options.prv.effectiveWidth / 2);
+                res.y = (this.options.prv.effectiveHeight - (this.options.bezel.margin + this.options.bezel.width / 2));
+                res.y = res.y - this.options.value.margin;
+                return res;
             };
 
             Dial360.overrideDefaults = {
@@ -1907,12 +1903,6 @@ var DbDashboards;
                 s.addLayer(ctx);
             };
 
-            Slider.prototype.drawNeedle = function (stepValue) {
-                this.needle.render(stepValue);
-                var v = new Dials.DialValue(this);
-                v.addLayer(this.needle.needleContext, stepValue);
-            };
-
             Slider.prototype.addBezel = function (ctx) {
                 var b = new Dials.SliderBezel(this);
                 b.addLayer(ctx);
@@ -1979,6 +1969,16 @@ var DbDashboards;
                     needleRotation: Math.PI
                 };
             }
+            /**
+            * Ask the dial where its value should be displayed
+            */
+            SliderN.prototype.getDialValuePostion = function () {
+                var tx = (this.options.prv.effectiveWidth / 2);
+                var bezOffset = (this.options.bezel.width / 2) + this.options.bezel.margin;
+                var ty = this.options.height - (bezOffset + (this.options.value.font.pixelSize / 2));
+
+                return { x: tx, y: ty, r: 0 };
+            };
             return SliderN;
         })(Dials.Slider);
         Dials.SliderN = SliderN;
@@ -2018,6 +2018,17 @@ var DbDashboards;
                     needleRotation: 0
                 };
             }
+            /**
+            * Ask the dial where its value should be displayed
+            */
+            SliderS.prototype.getDialValuePostion = function () {
+                var tx = (this.options.prv.effectiveWidth / 2);
+                var bezOffset = (this.options.bezel.width / 2) + this.options.bezel.margin;
+                var ty = (bezOffset + (this.options.value.font.pixelSize));
+                ty += this.options.value.margin;
+
+                return { x: tx, y: ty, r: 0 };
+            };
             return SliderS;
         })(Dials.Slider);
         Dials.SliderS = SliderS;
@@ -2057,6 +2068,15 @@ var DbDashboards;
                     needleRotation: 3 * (Math.PI / 2)
                 };
             }
+            /**
+            * Ask the dial where its value should be displayed
+            */
+            SliderE.prototype.getDialValuePostion = function () {
+                var ty = (this.options.prv.effectiveHeight / 2);
+                var bezOffset = (this.options.bezel.width / 2) + this.options.bezel.margin;
+                var tx = (bezOffset + (this.options.value.font.pixelSize)) + 2;
+                return { x: tx, y: ty, r: 0 };
+            };
             return SliderE;
         })(Dials.Slider);
         Dials.SliderE = SliderE;
@@ -2096,6 +2116,15 @@ var DbDashboards;
                     needleRotation: Math.PI / 2
                 };
             }
+            /**
+            * Ask the dial where its value should be displayed
+            */
+            SliderW.prototype.getDialValuePostion = function () {
+                var ty = (this.options.prv.effectiveHeight / 2);
+                var bezOffset = (this.options.bezel.width / 2) + this.options.bezel.margin;
+                var tx = this.options.width - (bezOffset + (this.options.value.font.pixelSize) + 2);
+                return { x: tx, y: ty, r: 0 };
+            };
             return SliderW;
         })(Dials.Slider);
         Dials.SliderW = SliderW;
@@ -2891,6 +2920,22 @@ var DbDashboards;
             return Point;
         })();
         Dials.Point = Point;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        // Class
+        var TranslationAndRotation = (function () {
+            function TranslationAndRotation(x, y, r) {
+                this.x = x;
+                this.y = y;
+                this.r = r;
+            }
+            return TranslationAndRotation;
+        })();
+        Dials.TranslationAndRotation = TranslationAndRotation;
     })(DbDashboards.Dials || (DbDashboards.Dials = {}));
     var Dials = DbDashboards.Dials;
 })(DbDashboards || (DbDashboards = {}));

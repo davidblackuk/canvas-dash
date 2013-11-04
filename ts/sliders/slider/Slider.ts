@@ -48,11 +48,7 @@ module DbDashboards.Dials {
 
         }
 
-        drawNeedle( stepValue: number){
-            this.needle.render(stepValue);
-            var v = new DialValue(this);
-            v.addLayer(this.needle.needleContext, stepValue);
-        }
+       
 
 
 

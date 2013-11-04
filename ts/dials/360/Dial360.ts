@@ -59,13 +59,7 @@ module DbDashboards.Dials {
 
         }
 
-        drawNeedle(stepValue: number) {
-          
-           
-            this.needle.render( stepValue);
-            var v = new DialValue(this);
-            v.addLayer(this.needle.needleContext, stepValue);
-        }
+    
 
 
         addBezel(ctx: CanvasRenderingContext2D) {
@@ -73,6 +67,16 @@ module DbDashboards.Dials {
             b.addLayer(ctx);
         }
 
+        /**
+        * Ask the dial where its value should be displayed
+        */
+        getDialValuePostion(): TranslationAndRotation {            
+            var res = { x: 0, y: 0, r: 0 };
+            res.x = (this.options.prv.effectiveWidth / 2);
+            res.y = (this.options.prv.effectiveHeight - (this.options.bezel.margin + this.options.bezel.width / 2));
+            res.y = res.y - this.options.value.margin;
+            return res;
+        }
 
         public static overrideDefaults = {
             type: DialBase.Dial360,
