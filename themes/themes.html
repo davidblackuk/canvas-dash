@@ -9,11 +9,7 @@ title: cDash | Theme browser
 		create a theme and contribute it back. Please do so, I'd be very grateful.</p>
 
 		<select id="themeSelector">
-			<option selected value="chocolate">Chocolate</option>
-			<option value="blue">Blue</option>
-			<option value="dark">Dark</option>
-            <option value="metro">Metro</option>
-            <option value="paper">Paper</option>
+
 		</select>
 		<br/>
 
@@ -60,6 +56,7 @@ title: cDash | Theme browser
         }
 
         $(function () {
+            initializeThemeSelector();
             var theme = (typeof window.location.search == 'string' && window.location.search !== "") ? window.location.search.replace("?theme=","") : "chocolate";
             $("#themeSelector").val(theme);
             showTheme(theme + " ");
@@ -76,6 +73,11 @@ title: cDash | Theme browser
             }
         }
 
+        function initializeThemeSelector() {
+            for (var i in DbDashboards.Dials.DialBase.themes) {
+                $('<option value="'+i+'"> '+i+' </option>').appendTo($("#themeSelector"));
+            }
+        }
     </script>
 
 
