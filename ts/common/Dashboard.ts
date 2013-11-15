@@ -64,7 +64,7 @@ module DbDashboards.Common {
         dark: any;
         blue: any;
         chocolate: any;
-
+        paper: any;
     }
 
     export interface DialParameters{

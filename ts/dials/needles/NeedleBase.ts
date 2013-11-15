@@ -1,7 +1,7 @@
 
 module DbDashboards.Dials {
 
-    export class NeedleBase {
+    export class NeedleBase  {
 
 
         /** 

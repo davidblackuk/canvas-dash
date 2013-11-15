@@ -41,11 +41,16 @@
     <TypeScriptCompile Include="ts\common\Dashboard.ts" />
     <TypeScriptCompile Include="ts\common\FactoryFarm.ts" />
     <TypeScriptCompile Include="ts\common\ICreateNeedles.ts" />
+    <TypeScriptCompile Include="ts\common\IRender.ts" />
     <TypeScriptCompile Include="ts\common\Orientations.ts" />
     <TypeScriptCompile Include="ts\common\Point.ts" />
     <TypeScriptCompile Include="ts\common\TranslateionAndRotation.ts" />
     <TypeScriptCompile Include="ts\dials\180\Dial180Factory.ts" />
+    <TypeScriptCompile Include="ts\dials\360\DIAL360E.ts" />
     <TypeScriptCompile Include="ts\dials\360\Dial360Factory.ts" />
+    <TypeScriptCompile Include="ts\dials\360\Dial360N.ts" />
+    <TypeScriptCompile Include="ts\dials\360\Dial360S.ts" />
+    <TypeScriptCompile Include="ts\dials\360\DIAL360W.ts" />
     <TypeScriptCompile Include="ts\dials\needles\DialNeedleDot.ts" />
     <TypeScriptCompile Include="ts\dials\needles\NeedleBase.ts" />
     <TypeScriptCompile Include="ts\dials\180\Dial180.ts" />
@@ -98,6 +103,7 @@
     <TypeScriptCompile Include="ts\sliders\slider\SliderN.ts" />
     <TypeScriptCompile Include="ts\sliders\slider\SliderS.ts" />
     <TypeScriptCompile Include="ts\sliders\slider\SliderW.ts" />
+    <TypeScriptCompile Include="ts\themes\Themulator.ts" />
   </ItemGroup>
   <ItemGroup />
   <PropertyGroup>

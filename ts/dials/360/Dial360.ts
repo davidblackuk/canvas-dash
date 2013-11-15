@@ -41,6 +41,9 @@ module DbDashboards.Dials {
 
         };
 
+              this.setOptions(this.options.prv);
+
+
         }
 
 
@@ -84,6 +87,9 @@ module DbDashboards.Dials {
                 margin: 15
             }
         };
+
+        public setOptions(options: PrivateOptions) {
+        }
     }
 
 }

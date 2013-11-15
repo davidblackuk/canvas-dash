@@ -8,19 +8,19 @@ module DbDashboards.Dials {
         }
 
         north(options: DialOptions, target: JQuery) {
-            return new Dial360(options, target);
+            return new Dial360N(options, target);
        }
 
         south(options: DialOptions, target: JQuery) {
-            return this.north(options, target);
+            return new Dial360S(options, target);
         }
 
         east(options: DialOptions, target: JQuery) {
-            return this.north(options, target);
+            return new Dial360E(options, target);
         }
 
         west(options: DialOptions, target: JQuery) {
-            return this.north(options, target);
+            return new Dial360W(options, target);
         }
 
 

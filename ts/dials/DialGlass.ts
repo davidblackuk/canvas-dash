@@ -2,18 +2,19 @@
 
 module DbDashboards.Dials {
 
-    export class DialGlass {
+    export class DialGlass implements IRender {
         public static ShapeInOut: string = "inOut";
         public static ShapeOut: string = "out";
         public static ShapeNone: string = "none";
 
-        constructor(private dial: DialBase) {
+        constructor(private dial: DialBase, public context: CanvasRenderingContext2D) {
 
         }
 
-        addLayer(ctx: CanvasRenderingContext2D) {
+        render() {
             var w = this.dial.options.prv.effectiveWidth;
             var h = this.dial.options.prv.effectiveHeight;
+            var ctx = this.context;
             ctx.beginPath();
             ctx.fillStyle="rgba(255,255,255,0.2)";
 
@@ -31,6 +32,21 @@ module DbDashboards.Dials {
             // complete custom shape
             ctx.closePath();
             ctx.fill();
+        }
+
+      /**
+      * gets the canvas for render ops
+      */
+        canvas(): HTMLCanvasElement {
+            return this.context.canvas;
+        }
+
+
+        /**
+         * destroy this object freeing up resources
+         */
+        destroy() {
+            this.context = null;
         }
     }
 

@@ -39,6 +39,9 @@ module DbDashboards.Dials {
 
         public context: CanvasRenderingContext2D;
 
+
+
+
         // this layer contains the background and the scale and text etc
         private backgroundContext: CanvasRenderingContext2D;
 
@@ -49,8 +52,8 @@ module DbDashboards.Dials {
 
         // when typescript has a protected asttribute make this protected
         public needle: NeedleBase;
-
-
+        public face: DialFace;
+        public glass: DialGlass;
         public options: DialOptions;
 
 
@@ -68,7 +71,8 @@ module DbDashboards.Dials {
 
 
             this.context = (<any>this.target[0]).getContext("2d");
-            this.backgroundContext = this.createLayerContext(this.context, 0, 0);
+            
+             this.backgroundContext = this.createLayerContext(this.context, 0, 0);
         
             this.foregroundContext = this.createLayerContext(this.context, 0, 0);
 
@@ -80,6 +84,8 @@ module DbDashboards.Dials {
          */
         private initializeOnce() {
             this.needle = this.farm.needleFactory.create(this.options, this.createLayerContext(this.context, 0, 0));
+            this.face = new DialFace(this, this.createLayerContext(this.context, 0, 0));
+            this.glass = new DialGlass(this, this.createLayerContext(this.context, 0, 0));
         }
 
 
@@ -112,6 +118,8 @@ module DbDashboards.Dials {
             this.backgroundContext = null;
             this.needle.destroy();
             this.foregroundContext = null;
+            this.face.destroy();
+            this.glass.destroy();
             this.options = null;
         }
 
@@ -125,17 +133,20 @@ module DbDashboards.Dials {
             this.initializeOnce();
 
 
-            //this.applyMask(this.context);
+            // todo refactor this to iterate an array of IRender
+            this.applyMask(this.face.context);
             this.applyMask(this.backgroundContext);
             this.applyMask(this.needle.needleContext);
             this.applyMask(this.foregroundContext);
+            this.applyMask(this.glass.context);
 
-            this.addFace(this.backgroundContext);
+            this.face.render();
+
             this.addScale(this.backgroundContext);
             this.drawNeedle(this.options.value.min);
 
             if (this.options.glass.visible) {
-                this.addGlass(this.foregroundContext);
+                this.glass.render();
             }
 
             if (this.options.bezel.visible) {
@@ -149,10 +160,6 @@ module DbDashboards.Dials {
             if (this.options.value.value != this.options.value.min){
                 this.setValue(this.options.value.value);
             }
-
-
-            
-
         }
 
 
@@ -208,11 +215,14 @@ module DbDashboards.Dials {
 
 
         private renderLayers() {
+            this.context.drawImage(this.face.canvas(), this.options.x, this.options.y);
      
            this.context.drawImage(this.backgroundContext.canvas, this.options.x,this.options.y);
                    
            this.context.drawImage(this.needle.canvas(),  this.options.x,this.options.y);
            this.context.drawImage(this.foregroundContext.canvas,  this.options.x,this.options.y);
+
+            this.context.drawImage(this.glass.canvas(), this.options.x, this.options.y);
         }
 
 
@@ -224,21 +234,9 @@ module DbDashboards.Dials {
             throw new Error("This method must be implemented");
         }
 
-        /**
-         * Renders the face of the dial
-         */
-            addFace(ctx: CanvasRenderingContext2D) {
-            var df = new DialFace(this);
-            df.addLayer(ctx)
-        }
+       
 
-        /**
-         * Adds the galss
-         */
-            addGlass(ctx: CanvasRenderingContext2D) {
-            var g = new DialGlass(this);
-            g.addLayer(ctx);
-        }
+
 
         addBezel(ctx: CanvasRenderingContext2D) {
             throw new Error("This method must be implemented");
@@ -289,7 +287,10 @@ module DbDashboards.Dials {
         }
 
 
-        public  getThemeFromOptions(options: any, themes: any) {
+        public getThemeFromOptions(options: any, themes: any) {
+            if (typeof options == 'undefined' || typeof options.theme == 'undefined') {
+                return {};
+            }
             var name = options.theme.trim();
             if (typeof name == "string") {
                 for (var t in themes) {
