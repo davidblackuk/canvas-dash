@@ -17,6 +17,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="all.png" />
+    <Content Include="editor.html" />
     <Content Include="index.html" />
     <Content Include="lib\jquery-1.9.1.min.js" />
     <Content Include="lib\jquery.number.min.js" />
