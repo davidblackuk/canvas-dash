@@ -124,19 +124,37 @@ var DbDashboards;
 (function (DbDashboards) {
     (function (Dials) {
         var DialFace = (function () {
-            function DialFace(dial) {
+            function DialFace(dial, context) {
                 this.dial = dial;
+                this.context = context;
             }
-            DialFace.prototype.addLayer = function (ctx) {
+            /**
+            * render the face onto the context provided
+            */
+            DialFace.prototype.render = function () {
                 var w = this.dial.options.prv.effectiveWidth;
                 var h = this.dial.options.prv.effectiveHeight;
 
-                var gf = ctx.createLinearGradient(w / 2, h, w / 2, 0);
+                var gf = this.context.createLinearGradient(w / 2, h, w / 2, 0);
                 gf.addColorStop(0, this.dial.options.face.gradientColor2);
                 gf.addColorStop(1, this.dial.options.face.gradientColor1);
-                ctx.fillStyle = gf;
+                this.context.fillStyle = gf;
 
-                ctx.fillRect(0, 0, w, h + this.dial.options.baseRunOutSize);
+                this.context.fillRect(0, 0, w, h + this.dial.options.baseRunOutSize);
+            };
+
+            /**
+            * gets the canvas for render ops
+            */
+            DialFace.prototype.canvas = function () {
+                return this.context.canvas;
+            };
+
+            /**
+            * destroy this object freeing up resources
+            */
+            DialFace.prototype.destroy = function () {
+                this.context = null;
             };
             return DialFace;
         })();
@@ -148,12 +166,14 @@ var DbDashboards;
 (function (DbDashboards) {
     (function (Dials) {
         var DialGlass = (function () {
-            function DialGlass(dial) {
+            function DialGlass(dial, context) {
                 this.dial = dial;
+                this.context = context;
             }
-            DialGlass.prototype.addLayer = function (ctx) {
+            DialGlass.prototype.render = function () {
                 var w = this.dial.options.prv.effectiveWidth;
                 var h = this.dial.options.prv.effectiveHeight;
+                var ctx = this.context;
                 ctx.beginPath();
                 ctx.fillStyle = "rgba(255,255,255,0.2)";
 
@@ -171,6 +191,20 @@ var DbDashboards;
                 // complete custom shape
                 ctx.closePath();
                 ctx.fill();
+            };
+
+            /**
+            * gets the canvas for render ops
+            */
+            DialGlass.prototype.canvas = function () {
+                return this.context.canvas;
+            };
+
+            /**
+            * destroy this object freeing up resources
+            */
+            DialGlass.prototype.destroy = function () {
+                this.context = null;
             };
             DialGlass.ShapeInOut = "inOut";
             DialGlass.ShapeOut = "out";
@@ -890,6 +924,7 @@ var DbDashboards;
                 this.setOrientation();
 
                 this.context = (this.target[0]).getContext("2d");
+
                 this.backgroundContext = this.createLayerContext(this.context, 0, 0);
 
                 this.foregroundContext = this.createLayerContext(this.context, 0, 0);
@@ -900,6 +935,8 @@ var DbDashboards;
             */
             DialBase.prototype.initializeOnce = function () {
                 this.needle = this.farm.needleFactory.create(this.options, this.createLayerContext(this.context, 0, 0));
+                this.face = new Dials.DialFace(this, this.createLayerContext(this.context, 0, 0));
+                this.glass = new Dials.DialGlass(this, this.createLayerContext(this.context, 0, 0));
             };
 
             /**
@@ -927,6 +964,8 @@ var DbDashboards;
                 this.backgroundContext = null;
                 this.needle.destroy();
                 this.foregroundContext = null;
+                this.face.destroy();
+                this.glass.destroy();
                 this.options = null;
             };
 
@@ -936,17 +975,20 @@ var DbDashboards;
             DialBase.prototype.render = function () {
                 this.initializeOnce();
 
-                //this.applyMask(this.context);
+                // todo refactor this to iterate an array of IRender
+                this.applyMask(this.face.context);
                 this.applyMask(this.backgroundContext);
                 this.applyMask(this.needle.needleContext);
                 this.applyMask(this.foregroundContext);
+                this.applyMask(this.glass.context);
 
-                this.addFace(this.backgroundContext);
+                this.face.render();
+
                 this.addScale(this.backgroundContext);
                 this.drawNeedle(this.options.value.min);
 
                 if (this.options.glass.visible) {
-                    this.addGlass(this.foregroundContext);
+                    this.glass.render();
                 }
 
                 if (this.options.bezel.visible) {
@@ -997,10 +1039,14 @@ var DbDashboards;
             };
 
             DialBase.prototype.renderLayers = function () {
+                this.context.drawImage(this.face.canvas(), this.options.x, this.options.y);
+
                 this.context.drawImage(this.backgroundContext.canvas, this.options.x, this.options.y);
 
                 this.context.drawImage(this.needle.canvas(), this.options.x, this.options.y);
                 this.context.drawImage(this.foregroundContext.canvas, this.options.x, this.options.y);
+
+                this.context.drawImage(this.glass.canvas(), this.options.x, this.options.y);
             };
 
             /**
@@ -1008,22 +1054,6 @@ var DbDashboards;
             */
             DialBase.prototype.applyMask = function (ctx) {
                 throw new Error("This method must be implemented");
-            };
-
-            /**
-            * Renders the face of the dial
-            */
-            DialBase.prototype.addFace = function (ctx) {
-                var df = new Dials.DialFace(this);
-                df.addLayer(ctx);
-            };
-
-            /**
-            * Adds the galss
-            */
-            DialBase.prototype.addGlass = function (ctx) {
-                var g = new Dials.DialGlass(this);
-                g.addLayer(ctx);
             };
 
             DialBase.prototype.addBezel = function (ctx) {
@@ -1070,6 +1100,9 @@ var DbDashboards;
             };
 
             DialBase.prototype.getThemeFromOptions = function (options, themes) {
+                if (typeof options == 'undefined' || typeof options.theme == 'undefined') {
+                    return {};
+                }
                 var name = options.theme.trim();
                 if (typeof name == "string") {
                     for (var t in themes) {
@@ -1800,6 +1833,8 @@ var DbDashboards;
                     needleY: minAxisSize / 2,
                     needleLength: minAxisSize / 2
                 };
+
+                this.setOptions(this.options.prv);
             }
             /**
             * Applies a mask to the prevent glass highlights etc over flowing
@@ -1830,6 +1865,8 @@ var DbDashboards;
                 return res;
             };
 
+            Dial360.prototype.setOptions = function (options) {
+            };
             Dial360.overrideDefaults = {
                 type: Dials.DialBase.Dial360,
                 value: {
@@ -1851,19 +1888,19 @@ var DbDashboards;
                 _super.call(this, options, target, Dials.ControlFactoryBase.dial360);
             }
             Dial360Factory.prototype.north = function (options, target) {
-                return new Dials.Dial360(options, target);
+                return new Dials.Dial360N(options, target);
             };
 
             Dial360Factory.prototype.south = function (options, target) {
-                return this.north(options, target);
+                return new Dials.Dial360S(options, target);
             };
 
             Dial360Factory.prototype.east = function (options, target) {
-                return this.north(options, target);
+                return new Dials.Dial360E(options, target);
             };
 
             Dial360Factory.prototype.west = function (options, target) {
-                return this.north(options, target);
+                return new Dials.Dial360W(options, target);
             };
             return Dial360Factory;
         })(Dials.ControlFactoryBase);
@@ -2942,6 +2979,156 @@ var DbDashboards;
 var DbDashboards;
 (function (DbDashboards) {
     (function (Dials) {
+        /**
+        * A circular 240 degree dial with a sweep of approximately 240 degrees
+        */
+        var Dial360E = (function (_super) {
+            __extends(Dial360E, _super);
+            function Dial360E(options, target) {
+                _super.call(this, options, target);
+                this.target = target;
+            }
+            Dial360E.prototype.setOptions = function (options) {
+                options.scaleStartAngle = ((3 * Math.PI) / 4) + Math.PI / 2;
+                options.scaleEndAngle = ((Math.PI) / 4) + Math.PI / 2;
+                options.needleZeroOffset = -Math.PI / 4;
+            };
+
+            /**
+            * Ask the dial where its value should be displayed
+            */
+            Dial360E.prototype.getDialValuePostion = function () {
+                var res = { x: 0, y: 0, r: 0 };
+                res.y = (this.options.prv.effectiveWidth / 2);
+
+                res.x = this.options.bezel.margin + this.options.bezel.width / 2;
+                res.x += this.options.scale.margin + this.options.scale.width / 2;
+                res.x += this.options.value.margin;
+
+                return res;
+            };
+            return Dial360E;
+        })(Dials.Dial360);
+        Dials.Dial360E = Dial360E;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        /**
+        * A circular 240 degree dial with a sweep of approximately 240 degrees
+        */
+        var Dial360N = (function (_super) {
+            __extends(Dial360N, _super);
+            function Dial360N(options, target) {
+                _super.call(this, options, target);
+                this.target = target;
+            }
+            Dial360N.prototype.setOptions = function (options) {
+                options.scaleStartAngle = (3 * Math.PI) / 4;
+                options.scaleEndAngle = (Math.PI) / 4;
+                options.needleZeroOffset = -(3 * Math.PI) / 4;
+            };
+
+            /**
+            * Ask the dial where its value should be displayed
+            */
+            Dial360N.prototype.getDialValuePostion = function () {
+                var res = { x: 0, y: 0, r: 0 };
+                res.x = (this.options.prv.effectiveWidth / 2);
+
+                res.y = this.options.bezel.margin + this.options.bezel.width / 2;
+                res.y += this.options.scale.margin + this.options.scale.width / 2;
+                res.y += this.options.value.margin;
+
+                res.y = this.options.prv.effectiveHeight - res.y;
+                return res;
+            };
+            return Dial360N;
+        })(Dials.Dial360);
+        Dials.Dial360N = Dial360N;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        /**
+        * A circular 240 degree dial with a sweep of approximately 240 degrees
+        */
+        var Dial360S = (function (_super) {
+            __extends(Dial360S, _super);
+            function Dial360S(options, target) {
+                _super.call(this, options, target);
+                this.target = target;
+            }
+            Dial360S.prototype.setOptions = function (options) {
+                options.scaleEndAngle = -(3 * Math.PI) / 4;
+                options.scaleStartAngle = -(Math.PI) / 4;
+                options.needleZeroOffset = (Math.PI) / 4;
+            };
+
+            /**
+            * Ask the dial where its value should be displayed
+            */
+            Dial360S.prototype.getDialValuePostion = function () {
+                var res = { x: 0, y: 0, r: 0 };
+                res.x = (this.options.prv.effectiveWidth / 2);
+                res.y = this.options.bezel.margin + this.options.bezel.width / 2;
+                res.y += this.options.scale.margin + this.options.scale.width / 2;
+                res.y += this.options.value.font.pixelSize / 2;
+                res.y += this.options.value.margin;
+
+                return res;
+            };
+            return Dial360S;
+        })(Dials.Dial360);
+        Dials.Dial360S = Dial360S;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        /**
+        * A circular 240 degree dial with a sweep of approximately 240 degrees
+        */
+        var Dial360W = (function (_super) {
+            __extends(Dial360W, _super);
+            function Dial360W(options, target) {
+                _super.call(this, options, target);
+                this.target = target;
+            }
+            Dial360W.prototype.setOptions = function (options) {
+                options.scaleStartAngle = ((3 * Math.PI) / 4) - Math.PI / 2;
+                options.scaleEndAngle = ((Math.PI) / 4) - Math.PI / 2;
+                options.needleZeroOffset = Math.PI * 3 / 4;
+            };
+
+            /**
+            * Ask the dial where its value should be displayed
+            */
+            Dial360W.prototype.getDialValuePostion = function () {
+                var res = { x: 0, y: 0, r: 0 };
+                res.y = (this.options.prv.effectiveWidth / 2);
+
+                res.x = this.options.bezel.margin + this.options.bezel.width / 2;
+                res.x += this.options.scale.margin + this.options.scale.width / 2;
+                res.x += this.options.value.margin;
+
+                res.x = this.options.prv.effectiveHeight - res.x;
+                return res;
+            };
+            return Dial360W;
+        })(Dials.Dial360);
+        Dials.Dial360W = Dial360W;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
         var DialNeedleDot = (function (_super) {
             __extends(DialNeedleDot, _super);
             function DialNeedleDot(options, needleContext) {
@@ -3219,6 +3406,69 @@ var DbDashboards;
             return SliderNeedleTriangle;
         })(Dials.SliderNeedle);
         Dials.SliderNeedleTriangle = SliderNeedleTriangle;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        var Themulator = (function () {
+            function Themulator(editorDiv, canvas) {
+                this.editorDiv = editorDiv;
+                this.canvas = canvas;
+                this.initializeOptions();
+            }
+            Themulator.prototype.process = function () {
+                this.dialFromOptions();
+                this.initializeUI();
+            };
+
+            Themulator.prototype.dialFromOptions = function () {
+                if (this.dial != null) {
+                    this.dial.destroy();
+                }
+                this.canvas.width = this.canvas.width;
+                this.dial = new Dials.Dial360E(this.options, this.canvas);
+                this.dial.render();
+            };
+
+            Themulator.prototype.initializeOptions = function () {
+                this.options = $.extend({}, Dials.DialBase.themes.chocolate);
+            };
+
+            Themulator.prototype.initializeUI = function () {
+                this.initializeFace(this.editorDiv);
+            };
+
+            Themulator.prototype.initializeFace = function (list) {
+                var _this = this;
+                var faceSection = this.addSection(list, "Face");
+                this.addColorEditor(faceSection, "Gradient color 1", this.options.face.gradientColor1, function (color) {
+                    _this.options.face.gradientColor1 = color;
+                    _this.dialFromOptions();
+                });
+                this.addColorEditor(faceSection, "Gradient color 2", this.options.face.gradientColor2, function (color) {
+                    _this.options.face.gradientColor2 = color;
+                    _this.dialFromOptions();
+                });
+            };
+
+            Themulator.prototype.addSection = function (parent, title) {
+                $("<h2>" + title + "</h2>").appendTo(parent);
+                return $("<dl/>").appendTo(parent);
+            };
+
+            Themulator.prototype.addColorEditor = function (list, title, value, callback) {
+                $("<dt>" + title + "</dt>").appendTo(list);
+                var tb = $("<input type='text'/>").appendTo(list);
+                tb.val(value);
+                tb.change(function (e) {
+                    callback($(this).val());
+                });
+            };
+            return Themulator;
+        })();
+        Dials.Themulator = Themulator;
     })(DbDashboards.Dials || (DbDashboards.Dials = {}));
     var Dials = DbDashboards.Dials;
 })(DbDashboards || (DbDashboards = {}));

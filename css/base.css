@@ -293,8 +293,28 @@ pre {
 
 
 
+/***********
+ * Theme park
+ *************/
+#themeParkLeft{
+    font-size: 12px;
+    float: left;
+}
 
 
+#themeParkRight{
+    float: left;
+    margin-left: 20px;
+}
+
+.themeParkSection {
+  width: 500px;
+
+}
+
+.themeParkSubSection {
+  
+}
 
 
 

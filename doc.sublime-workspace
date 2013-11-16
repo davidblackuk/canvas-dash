@@ -151,7 +151,7 @@
 			"file": "js/demos.js",
 			"settings":
 			{
-				"buffer_size": 1860,
+				"buffer_size": 2269,
 				"line_ending": "Unix"
 			}
 		},
@@ -162,6 +162,22 @@
 				"buffer_size": 34,
 				"line_ending": "Unix",
 				"name": "JKR6TP-JF94ST-ZGKGV3-9E8QNH-FQP1Z2"
+			}
+		},
+		{
+			"file": "themes/themes.html",
+			"settings":
+			{
+				"buffer_size": 3582,
+				"line_ending": "Unix"
+			}
+		},
+		{
+			"file": "index.html",
+			"settings":
+			{
+				"buffer_size": 2996,
+				"line_ending": "Unix"
 			}
 		}
 	],
@@ -457,7 +473,7 @@
 	"groups":
 	[
 		{
-			"selected": 4,
+			"selected": 5,
 			"sheets":
 			[
 				{
@@ -549,15 +565,15 @@
 					"file": "js/demos.js",
 					"settings":
 					{
-						"buffer_size": 1860,
+						"buffer_size": 2269,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1854,
-								1854
+								2247,
+								2247
 							]
 						],
 						"settings":
@@ -591,6 +607,62 @@
 						{
 							"auto_name": "JKR6TP-JF94ST-ZGKGV3-9E8QNH-FQP1Z2",
 							"syntax": "Packages/Text/Plain text.tmLanguage"
+						},
+						"translation.x": 0.0,
+						"translation.y": 0.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 5,
+					"file": "themes/themes.html",
+					"settings":
+					{
+						"buffer_size": 3582,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								2698,
+								2698
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
+						},
+						"translation.x": 0.0,
+						"translation.y": 518.0,
+						"zoom_level": 1.0
+					},
+					"type": "text"
+				},
+				{
+					"buffer": 6,
+					"file": "index.html",
+					"settings":
+					{
+						"buffer_size": 2996,
+						"regions":
+						{
+						},
+						"selection":
+						[
+							[
+								925,
+								925
+							]
+						],
+						"settings":
+						{
+							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
