@@ -1127,6 +1127,7 @@ var DbDashboards;
                 return {};
             };
             DialBase.Dial360 = "dial360";
+            DialBase.Dial180 = "dial180";
             DialBase.Dial180N = "dial180N";
             DialBase.Dial180S = "dial180S";
             DialBase.Dial180E = "dial180E";
@@ -3160,16 +3161,18 @@ var DbDashboards;
             function DialMaskFactory() {
             }
             DialMaskFactory.create = function (dial) {
-                switch (dial.options.type) {
-                    case Dials.DialBase.Dial360:
-                        return new Dials.DialMask360(dial);
-                    case Dials.DialBase.Dial180N:
+                var type = dial.options.type.toLocaleLowerCase();
+                if (type == Dials.DialBase.Dial360) {
+                    return new Dials.DialMask360(dial);
+                }
+                switch (dial.options.orientation) {
+                    case Dials.Orientations.North:
                         return new Dials.DialMask180N(dial);
-                    case Dials.DialBase.Dial180S:
+                    case Dials.Orientations.South:
                         return new Dials.DialMask180S(dial);
-                    case Dials.DialBase.Dial180E:
+                    case Dials.Orientations.East:
                         return new Dials.DialMask180E(dial);
-                    case Dials.DialBase.Dial180W:
+                    case Dials.Orientations.West:
                         return new Dials.DialMask180W(dial);
                 }
             };

@@ -29,6 +29,7 @@ module DbDashboards.Dials {
     export class DialBase extends DbDashboards.Common.Dashboard {
 
         public static Dial360:string = "dial360";
+        public static Dial180: string = "dial180";
         public static Dial180N:string = "dial180N";
         public static Dial180S:string = "dial180S";
         public static Dial180E:string = "dial180E";

@@ -26,6 +26,7 @@ module DbDashboards.Dials {
         strokeWidth: number;
         width: number;
         margin: number;
+
         shadowColor: string;
         shadowBlur: number;
         shadowX: number;

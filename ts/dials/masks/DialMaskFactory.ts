@@ -8,17 +8,18 @@ module DbDashboards.Dials {
         }
 
         static create(dial: DialBase) {
-
-            switch (dial.options.type) {
-                case DialBase.Dial360:
-                    return new DialMask360(dial);
-                case DialBase.Dial180N:
+            var type = dial.options.type.toLocaleLowerCase();
+            if (type == DialBase.Dial360) {
+                return new DialMask360(dial);
+            }           
+            switch (dial.options.orientation) {
+                case Orientations.North:
                     return new DialMask180N(dial);
-                case DialBase.Dial180S:
+                case Orientations.South:
                     return new DialMask180S(dial);
-                case DialBase.Dial180E:
+                case Orientations.East:
                     return new DialMask180E(dial);
-                case DialBase.Dial180W:
+                case Orientations.West:
                     return new DialMask180W(dial);
             }
 
