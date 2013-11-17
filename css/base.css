@@ -296,9 +296,20 @@ pre {
 /***********
  * Theme park
  *************/
+
+.numericPickers{
+    width: 50px;
+
+}
+
 #themeParkLeft{
     font-size: 12px;
     float: left;
+}
+
+#themeParkLeft label{
+    margin-right: 3px;
+    margin-left: 5px;
 }
 
 
@@ -306,6 +317,8 @@ pre {
     float: left;
     margin-left: 20px;
 }
+
+
 
 .themeParkSection {
   width: 500px;

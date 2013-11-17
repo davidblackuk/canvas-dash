@@ -1,12 +1,13 @@
-var ThemePark = function(editorDiv, canvas){
+var ThemePark = function(editorDiv, previewDiv, canvas){
 	this.editorDiv = editorDiv;
 	this.canvas = canvas;
+    this.previewDiv = previewDiv;
 	this.initializeOptions();
 	this.nextId = 1;
 }
 
 ThemePark.prototype.initializeOptions = function() {
-	this.options = $.extend(true, {}, DbDashboards.Dials.DialBase.defaults, DbDashboards.Dials.DialBase.themes.chocolate);
+	this.options = $.extend(true, {type:"Dial360", orientation:"n", x:0, y:0, width:200, height:200}, DbDashboards.Dials.DialBase.defaults, DbDashboards.Dials.DialBase.themes.chocolate);
 
 };
 
@@ -20,22 +21,78 @@ ThemePark.prototype.dialFromOptions=function(){
 	if (this.dial != null) {
         this.dial.destroy();
     }
-    this.canvas.width = this.canvas.width;
-    this.dial = new DbDashboards.Dials.Dial360E(this.options, this.canvas);
-    this.dial.render();
+    this.canvas[0].width = this.canvas[0].width;
+
+    this.dial = this.canvas.cDash(this.options).data("dbDashboard");
 };
 
 
 
 ThemePark.prototype.initializeUI = function() {
+    this.editorDiv.html("");
     this.initializeFace(this.editorDiv);
     this.initializeBezel(this.editorDiv);
     this.initializeScale(this.editorDiv);
     this.initializeNeedle(this.editorDiv);
     this.initializeValue(this.editorDiv);
     this.initializeGlass(this.editorDiv);
+
+    this.previewDiv.html("");
+    this.canvas.appendTo(this.previewDiv);
+
+    this.initializeGeneralOptions(this.previewDiv);
+    $(".colorPickers").spectrum({});
 };
 
+ThemePark.prototype.initializeGeneralOptions = function(list) {
+    var _that = this;
+ 
+    var section = list;
+   $("<br/>").appendTo(section);
+
+    this.addDropDownEditor(section, "Dial type", this.options.type, 
+        [
+            {name: "Dial 360", value:"dial360"},
+            {name: "Dial 180", value:"dial180"},
+            {name: "Slider", value:"slider"},
+        ], 
+        function(s){ _that.options.type = s; _that.setInitialDialSize();
+        });
+    this.addDropDownEditor(section, "Dial type", this.options.orientation, 
+        [
+            {name: "North", value:"n"},
+            {name: "South", value:"s"},
+            {name: "East", value:"e"},
+            {name: "West", value:"w"},
+        ], 
+        function(s){ _that.options.orientation = s; _that.setInitialDialSize();
+        });
+
+   $("<br/>").appendTo(section);
+    this.addNumericEditor(section, "X", this.options.x, function(num){ _that.options.x = num; _that.dialFromOptions();});
+    this.addNumericEditor(section, "Y", this.options.y, function(num){ _that.options.y = num; _that.dialFromOptions();});
+    $("<br/>").appendTo(section);
+    this.addNumericEditor(section, "Width", this.options.width, function(num){ _that.options.width = num; _that.dialFromOptions();});
+    this.addNumericEditor(section, "Height", this.options.height, function(num){ _that.options.height = num; _that.dialFromOptions();});
+     
+};
+
+ThemePark.prototype.setInitialDialSize = function(list) {
+    var w = 200;
+    var h = 200;
+    if (this.options.type=="slider"){
+        h = 80;
+    }
+    if (this.orientation == "e" || this.orientation =="w") {
+        t = w;
+        w = h;
+        h = t;
+    }
+    this.options.width = w;
+    this.options.height = h;
+    this.initializeUI();
+    this.dialFromOptions();
+};
 
 
 ThemePark.prototype.initializeFace = function(list) {
@@ -65,7 +122,7 @@ ThemePark.prototype.initializeScale = function(list) {
     this.addNumericEditor(section, "Margin", this.options.scale.margin, function(num){ _that.options.scale.margin = num; _that.dialFromOptions();});
     this.addNumericEditor(section, "Width", this.options.scale.width, function(num){ _that.options.scale.width = num; _that.dialFromOptions();});
     this.addColorEditor(section, "Color", this.options.scale.strokeStyle, function(color){ _that.options.scale.strokeStyle = color; _that.dialFromOptions();});
-    $("<br/>").appendTo(section);
+ 
  	this.addNumericEditor(section, "Decimals", this.options.scale.decimalPlaces, function(num){ _that.options.scale.decimalPlaces = num; _that.dialFromOptions();});
  	this.addNumericEditor(section, "Side margin", this.options.scale.sideMargin, function(num){ _that.options.scale.sideMargin = num; _that.dialFromOptions();});
  	this.addFontEditor(section, this.options.scale.font);

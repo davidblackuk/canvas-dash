@@ -4,12 +4,32 @@
 		"selected_items":
 		[
 			[
-				"al",
-				"vertical-align"
+				"fon",
+				"font-size"
 			],
 			[
-				"fon",
-				"font-style"
+				"add",
+				"addSection"
+			],
+			[
+				"addDropDownEd",
+				"addDropDownEditor"
+			],
+			[
+				"va",
+				"value"
+			],
+			[
+				"get",
+				"getNextId"
+			],
+			[
+				"ini",
+				"initializeGlass"
+			],
+			[
+				"al",
+				"vertical-align"
 			],
 			[
 				"tit",
@@ -26,10 +46,6 @@
 			[
 				"mar",
 				"margin-left"
-			],
-			[
-				"get",
-				"getCanvas"
 			],
 			[
 				"can",
@@ -114,69 +130,51 @@
 			[
 				"find",
 				"findItemComplete"
-			],
-			[
-				"add",
-				"addPropertyValue"
 			]
 		]
 	},
 	"buffers":
 	[
 		{
-			"file": "documentation/dials.html",
+			"file": "js/ThemePark.js",
 			"settings":
 			{
-				"buffer_size": 15277,
+				"buffer_size": 9617,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "_layouts/default.html",
+			"file": "themes/themePark.html",
 			"settings":
 			{
-				"buffer_size": 1555,
+				"buffer_size": 725,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "js/editor.js",
+			"contents": "/*****************************************************************************/\n/*\n/* Common\n/*\n/*****************************************************************************/\n\n/* Global Reset */\n* {\n  margin: 0;\n  padding: 0;\n}\n\nhtml, body { height: 100%; }\n\nbody {\n  background-color: #FFF;\n  font: 13.34px Helvetica, Arial, sans-serif;\n  font-size: small;\n  text-align: center;\n}\n\nh1, h2, h3, h4, h5, h6 {\n  font-size: 100%; }\n\nh1 { margin-bottom: 1em; }\np { margin: 1em 0; }\n\na         { color: #00a; }\na:hover   { color: #000; }\na:visited { color: #a0a; }\n\ntable {\n  font-size: inherit;\n  font: 100%;\n}\n\n/*****************************************************************************/\n/*\n/* Home\n/*\n/*****************************************************************************/\nul.posts {\n  list-style-type: none;\n  margin-bottom: 2em;\n}\n\nul.posts li {\n  line-height: 1.75em;\n}\n\nul.posts span {\n  color: #aaa;\n  font-family: Monaco, \"Courier New\", monospace;\n  font-size: 80%;\n}\n\n/*****************************************************************************/\n/*\n/* Site\n/*\n/*****************************************************************************/\n\n.site {\n  font-size: 115%;\n  text-align: justify;\n  width: 42em;\n  margin: 3em auto 2em;\n  line-height: 1.5em;\n}\n\n.site .header a {\n  font-weight: bold;\n  text-decoration: none;\n}\n\n.site .header h1.title {\n  display: inline-block;\n  margin-bottom: 2em;\n}\n\n.site .header h1.title a {\n  color: #a00;\n}\n\n.site .header h1.title a:hover {\n  color: #000;\n}\n\n.site .header a.extra {\n  color: #aaa;\n  margin-left: 1em;\n}\n\n.site .header a.extra:hover {\n  color: #000;\n}\n\n.site .meta {\n  color: #aaa;\n}\n\n.site .footer {\n  font-size: 80%;\n  color: #666;\n  border-top: 4px solid #eee;\n  margin-top: 2em;\n  overflow: hidden;\n}\n\n.site .footer .contact {\n  float: left;\n  margin-right: 3em;\n}\n\n.site .footer .contact a {\n  color: #8085C1;\n}\n\n.site .footer .rss {\n  margin-top: 1.1em;\n  margin-right: -.2em;\n  float: right;\n}\n\n.site .footer .rss img {\n  border: 0;\n}\n\n/*****************************************************************************/\n/*\n/* Posts\n/*\n/*****************************************************************************/\n\n/* standard */\n#post pre {\n  border: 1px solid #ddd;\n  background-color: #eef;\n  padding: 0 .4em;\n}\n\n#post ul, #post ol {\n  margin-left: 1.35em;\n}\n\n#post code {\n  border: 1px solid #ddd;\n  background-color: #eef;\n  padding: 0 .2em;\n}\n\n#post pre code {\n  border: none;\n}\n\n/* terminal */\n#post pre.terminal {\n  border: 1px solid #000;\n  background-color: #333;\n  color: #FFF;\n}\n\n#post pre.terminal code {\n  background-color: #333;\n}\n\n\n\n\n\n",
+			"file": "css/main.css",
+			"file_size": 2705,
+			"file_write_time": 1384612718000000,
 			"settings":
 			{
-				"buffer_size": 1644,
+				"buffer_size": 2624,
 				"line_ending": "Unix"
 			}
 		},
 		{
-			"file": "js/demos.js",
+			"file": "css/base.css",
 			"settings":
 			{
-				"buffer_size": 2269,
+				"buffer_size": 5985,
 				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "/Volumes/internal/davidblack/Desktop/parallels",
-			"settings":
-			{
-				"buffer_size": 34,
-				"line_ending": "Unix",
-				"name": "JKR6TP-JF94ST-ZGKGV3-9E8QNH-FQP1Z2"
 			}
 		},
 		{
 			"file": "themes/themes.html",
 			"settings":
 			{
-				"buffer_size": 3582,
-				"line_ending": "Unix"
-			}
-		},
-		{
-			"file": "index.html",
-			"settings":
-			{
-				"buffer_size": 2996,
+				"buffer_size": 3688,
 				"line_ending": "Unix"
 			}
 		}
@@ -269,16 +267,23 @@
 	},
 	"file_history":
 	[
+		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/documentation/dials.html",
+		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/_layouts/default.html",
+		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/js/editor.js",
+		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/js/demos.js",
+		"/Volumes/internal/davidblack/Desktop/parallels",
+		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/themes/themes.html",
+		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/themes/themePark.html",
+		"/Volumes/Internal/davidblack/Projects/canvas-dash/build",
+		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/index.html",
+		"/Volumes/Internal/davidblack/Projects/canvas-dash-doc/js/themepark.js",
+		"/Volumes/Internal/davidblack/Projects/canvas-dash-doc/js/ThemePark.ts",
 		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/_config.yml",
 		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/_site/documentation/dials.html",
-		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/_layouts/default.html",
 		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/_layouts/sbEdit.html",
 		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/_includes/menu.ext",
-		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/themes/themes.html",
-		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/index.html",
 		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/CNAME",
 		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/css/base.css",
-		"/Volumes/internal/davidblack/Projects/canvas-dash-doc/documentation/dials.html",
 		"/Volumes/internal/davidblack/Downloads/incomplete/1370860390/princess charming.bmp",
 		"/Volumes/internal/davidblack/jtest/fruity/editor/editor.html",
 		"/Volumes/internal/davidblack/jtest/fruity/js/editor.js",
@@ -355,6 +360,8 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"}}/",
+			".propsTable td",
 			"\n",
 			"org",
 			"Editor.initializePAge",
@@ -473,51 +480,51 @@
 	"groups":
 	[
 		{
-			"selected": 5,
+			"selected": 4,
 			"sheets":
 			[
 				{
 					"buffer": 0,
-					"file": "documentation/dials.html",
+					"file": "js/ThemePark.js",
 					"settings":
 					{
-						"buffer_size": 15277,
+						"buffer_size": 9617,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								15200,
-								15203
+								6338,
+								6338
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
+							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
 							"tab_size": 4,
 							"translate_tabs_to_spaces": true
 						},
-						"translation.x": 0.0,
-						"translation.y": 10703.0,
+						"translation.x": 5.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "_layouts/default.html",
+					"file": "themes/themePark.html",
 					"settings":
 					{
-						"buffer_size": 1555,
+						"buffer_size": 725,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								1518,
-								1518
+								261,
+								261
 							]
 						],
 						"settings":
@@ -534,24 +541,24 @@
 				},
 				{
 					"buffer": 2,
-					"file": "js/editor.js",
+					"file": "css/main.css",
 					"settings":
 					{
-						"buffer_size": 1644,
+						"buffer_size": 2624,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								205,
-								220
+								2622,
+								2622
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"tab_size": 4,
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 2,
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
@@ -562,24 +569,25 @@
 				},
 				{
 					"buffer": 3,
-					"file": "js/demos.js",
+					"file": "css/base.css",
 					"settings":
 					{
-						"buffer_size": 2269,
+						"buffer_size": 5985,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2247,
-								2247
+								5193,
+								5193
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/JavaScript/JavaScript.tmLanguage",
-							"translate_tabs_to_spaces": false
+							"syntax": "Packages/CSS/CSS.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
 						"translation.y": 0.0,
@@ -589,73 +597,18 @@
 				},
 				{
 					"buffer": 4,
-					"file": "/Volumes/internal/davidblack/Desktop/parallels",
-					"settings":
-					{
-						"buffer_size": 34,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								34,
-								34
-							]
-						],
-						"settings":
-						{
-							"auto_name": "JKR6TP-JF94ST-ZGKGV3-9E8QNH-FQP1Z2",
-							"syntax": "Packages/Text/Plain text.tmLanguage"
-						},
-						"translation.x": 0.0,
-						"translation.y": 0.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 5,
 					"file": "themes/themes.html",
 					"settings":
 					{
-						"buffer_size": 3582,
+						"buffer_size": 3688,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								2698,
-								2698
-							]
-						],
-						"settings":
-						{
-							"syntax": "Packages/HTML/HTML.tmLanguage",
-							"tab_size": 4,
-							"translate_tabs_to_spaces": true
-						},
-						"translation.x": 0.0,
-						"translation.y": 518.0,
-						"zoom_level": 1.0
-					},
-					"type": "text"
-				},
-				{
-					"buffer": 6,
-					"file": "index.html",
-					"settings":
-					{
-						"buffer_size": 2996,
-						"regions":
-						{
-						},
-						"selection":
-						[
-							[
-								925,
-								925
+								445,
+								445
 							]
 						],
 						"settings":

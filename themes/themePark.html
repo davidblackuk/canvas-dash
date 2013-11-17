@@ -3,6 +3,11 @@ layout: default
 title: cDash | Theme park, create a custom theme
 ---
 
+ <link rel="stylesheet" href="{{ site.baseurl }}/css/spectrum.css" type="text/css" media="screen"/>
+   
+<script type="text/javascript" src="{{ site.baseurl }}/js/spectrum.js"></script>
+
+
 
 
 <div id="content-single">
@@ -22,10 +27,11 @@ title: cDash | Theme park, create a custom theme
 
     <script type="text/javascript">
         $(function(){
-            var editor = new ThemePark($("#themeParkLeft"), $("#dashboard"));
+            var editor = new ThemePark($("#themeParkLeft"), $("#themeParkRight"), $("#dashboard"));
             editor.process();
         });
     </script>
+
 
 
 
