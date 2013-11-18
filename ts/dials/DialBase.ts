@@ -56,7 +56,7 @@ module DbDashboards.Dials {
         public face: DialFace;
         public glass: DialGlass;
         public options: DialOptions;
-
+        public mask: DialMask;
 
         /**
          * Constructs a new DialBase
@@ -84,6 +84,7 @@ module DbDashboards.Dials {
          * renderers once the sub class has initialized its internal sizing options
          */
         private initializeOnce() {
+            this.mask = this.getMask();
             this.needle = this.farm.needleFactory.create(this.options, this.createLayerContext(this.context, 0, 0));
             this.face = new DialFace(this, this.createLayerContext(this.context, 0, 0));
             this.glass = new DialGlass(this, this.createLayerContext(this.context, 0, 0));
@@ -135,11 +136,11 @@ module DbDashboards.Dials {
 
 
             // todo refactor this to iterate an array of IRender
-            this.applyMask(this.face.context);
-            this.applyMask(this.backgroundContext);
-            this.applyMask(this.needle.needleContext);
-            this.applyMask(this.foregroundContext);
-            this.applyMask(this.glass.context);
+            this.mask.apply(this.face.context);
+            this.mask.apply(this.backgroundContext);
+            this.mask.apply(this.needle.needleContext);
+            this.mask.apply(this.foregroundContext);
+            this.mask.apply(this.glass.context);
 
             this.face.render();
 
@@ -231,7 +232,7 @@ module DbDashboards.Dials {
         /**
          * Applies a mask to the prevent glass highlights etc over flowing
          */
-        applyMask(ctx: CanvasRenderingContext2D) {
+        getMask() : DialMask {
             throw new Error("This method must be implemented");
         }
 

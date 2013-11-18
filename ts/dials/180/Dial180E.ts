@@ -51,5 +51,12 @@ module DbDashboards.Dials {
             return { x: tx, y: ty, r: r };
         }
 
+        /**
+        * Applies a mask to the prevent glass highlights etc over flowing
+        */
+        getMask() {
+            return new DialMask180E(this);
+        }
+
     }
 }

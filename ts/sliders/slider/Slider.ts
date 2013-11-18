@@ -37,9 +37,8 @@ module DbDashboards.Dials {
         /**
          * Applies a mask to the prevent glass highlights etc over flowing
          */
-            applyMask(ctx: CanvasRenderingContext2D) {
-            var m = new SliderMask(this);
-            m.addLayer(ctx);
+        getMask() {
+            return new SliderMask(this);
         }
 
         addScale(ctx: CanvasRenderingContext2D) {

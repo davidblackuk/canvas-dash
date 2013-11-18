@@ -19,6 +19,7 @@ module DbDashboards.Dials  {
             ctx.clip();
         }
 
+
     }
 
 }

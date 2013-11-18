@@ -2,13 +2,13 @@
 
 module DbDashboards.Dials {
 
-    export class SliderMask {
+    export class SliderMask extends DialMask {
 
-        constructor(private dial: DialBase) {
-
+        constructor( dial: DialBase) {
+            super(dial);
         }
 
-        addLayer(ctx: CanvasRenderingContext2D) {
+        apply(ctx: CanvasRenderingContext2D) {
 
 
             var w = this.dial.options.prv.effectiveWidth;

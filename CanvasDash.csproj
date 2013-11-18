@@ -70,7 +70,6 @@
     <TypeScriptCompile Include="ts\dials\masks\DialMask180S.ts" />
     <TypeScriptCompile Include="ts\dials\masks\DialMask180W.ts" />
     <TypeScriptCompile Include="ts\dials\masks\DialMask360.ts" />
-    <TypeScriptCompile Include="ts\dials\masks\DialMaskFactory.ts" />
     <TypeScriptCompile Include="ts\dials\needles\DialNeedle.ts" />
     <TypeScriptCompile Include="ts\dials\needles\DialNeedleArrow.ts" />
     <TypeScriptCompile Include="ts\dials\needles\DialNeedleCircleArrow.ts" />

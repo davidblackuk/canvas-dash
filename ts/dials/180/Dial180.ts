@@ -32,13 +32,7 @@ module DbDashboards.Dials {
 
   
 
-        /**
-         * Applies a mask to the prevent glass highlights etc over flowing
-         */
-            applyMask(ctx: CanvasRenderingContext2D) {
-            var m = DialMaskFactory.create(this);
-            m.apply(ctx);
-        }
+
 
     }
 

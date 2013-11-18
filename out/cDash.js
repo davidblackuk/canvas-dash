@@ -934,6 +934,7 @@ var DbDashboards;
             * renderers once the sub class has initialized its internal sizing options
             */
             DialBase.prototype.initializeOnce = function () {
+                this.mask = this.getMask();
                 this.needle = this.farm.needleFactory.create(this.options, this.createLayerContext(this.context, 0, 0));
                 this.face = new Dials.DialFace(this, this.createLayerContext(this.context, 0, 0));
                 this.glass = new Dials.DialGlass(this, this.createLayerContext(this.context, 0, 0));
@@ -976,11 +977,11 @@ var DbDashboards;
                 this.initializeOnce();
 
                 // todo refactor this to iterate an array of IRender
-                this.applyMask(this.face.context);
-                this.applyMask(this.backgroundContext);
-                this.applyMask(this.needle.needleContext);
-                this.applyMask(this.foregroundContext);
-                this.applyMask(this.glass.context);
+                this.mask.apply(this.face.context);
+                this.mask.apply(this.backgroundContext);
+                this.mask.apply(this.needle.needleContext);
+                this.mask.apply(this.foregroundContext);
+                this.mask.apply(this.glass.context);
 
                 this.face.render();
 
@@ -1052,7 +1053,7 @@ var DbDashboards;
             /**
             * Applies a mask to the prevent glass highlights etc over flowing
             */
-            DialBase.prototype.applyMask = function (ctx) {
+            DialBase.prototype.getMask = function () {
                 throw new Error("This method must be implemented");
             };
 
@@ -1531,14 +1532,6 @@ var DbDashboards;
                 var b = new Dials.DialBezel(this);
                 b.addLayer(ctx);
             };
-
-            /**
-            * Applies a mask to the prevent glass highlights etc over flowing
-            */
-            Dial180.prototype.applyMask = function (ctx) {
-                var m = Dials.DialMaskFactory.create(this);
-                m.apply(ctx);
-            };
             Dial180.overrideDefaults = {
                 value: {
                     margin: 5
@@ -1603,6 +1596,13 @@ var DbDashboards;
 
                 return { x: tx, y: ty, r: r };
             };
+
+            /**
+            * Applies a mask to the prevent glass highlights etc over flowing
+            */
+            Dial180N.prototype.getMask = function () {
+                return new Dials.DialMask180N(this);
+            };
             return Dial180N;
         })(Dials.Dial180);
         Dials.Dial180N = Dial180N;
@@ -1653,6 +1653,13 @@ var DbDashboards;
                 var ty = this.options.prv.needleY - this.options.needle.width - 3;
                 var r = 0;
                 return { x: tx, y: ty, r: r };
+            };
+
+            /**
+            * Applies a mask to the prevent glass highlights etc over flowing
+            */
+            Dial180S.prototype.getMask = function () {
+                return new Dials.DialMask180S(this);
             };
             return Dial180S;
         })(Dials.Dial180);
@@ -1707,6 +1714,13 @@ var DbDashboards;
 
                 return { x: tx, y: ty, r: r };
             };
+
+            /**
+            * Applies a mask to the prevent glass highlights etc over flowing
+            */
+            Dial180E.prototype.getMask = function () {
+                return new Dials.DialMask180E(this);
+            };
             return Dial180E;
         })(Dials.Dial180);
         Dials.Dial180E = Dial180E;
@@ -1757,6 +1771,13 @@ var DbDashboards;
                 var ty = this.options.prv.effectiveHeight / 2;
                 var r = 3 * Math.PI / 2;
                 return { x: tx, y: ty, r: r };
+            };
+
+            /**
+            * Applies a mask to the prevent glass highlights etc over flowing
+            */
+            Dial180W.prototype.getMask = function () {
+                return new Dials.DialMask180W(this);
             };
             return Dial180W;
         })(Dials.Dial180);
@@ -1840,9 +1861,8 @@ var DbDashboards;
             /**
             * Applies a mask to the prevent glass highlights etc over flowing
             */
-            Dial360.prototype.applyMask = function (ctx) {
-                var m = Dials.DialMaskFactory.create(this);
-                m.apply(ctx);
+            Dial360.prototype.getMask = function () {
+                return new Dials.DialMask360(this);
             };
 
             Dial360.prototype.addScale = function (ctx) {
@@ -1931,9 +1951,8 @@ var DbDashboards;
             /**
             * Applies a mask to the prevent glass highlights etc over flowing
             */
-            Slider.prototype.applyMask = function (ctx) {
-                var m = new Dials.SliderMask(this);
-                m.addLayer(ctx);
+            Slider.prototype.getMask = function () {
+                return new Dials.SliderMask(this);
             };
 
             Slider.prototype.addScale = function (ctx) {
@@ -2447,11 +2466,12 @@ var DbDashboards;
 var DbDashboards;
 (function (DbDashboards) {
     (function (Dials) {
-        var SliderMask = (function () {
+        var SliderMask = (function (_super) {
+            __extends(SliderMask, _super);
             function SliderMask(dial) {
-                this.dial = dial;
+                _super.call(this, dial);
             }
-            SliderMask.prototype.addLayer = function (ctx) {
+            SliderMask.prototype.apply = function (ctx) {
                 var w = this.dial.options.prv.effectiveWidth;
                 var h = this.dial.options.prv.effectiveHeight;
 
@@ -2459,7 +2479,7 @@ var DbDashboards;
                 ctx.clip();
             };
             return SliderMask;
-        })();
+        })(Dials.DialMask);
         Dials.SliderMask = SliderMask;
     })(DbDashboards.Dials || (DbDashboards.Dials = {}));
     var Dials = DbDashboards.Dials;
@@ -3151,34 +3171,6 @@ var DbDashboards;
             return DialNeedleDot;
         })(Dials.DialNeedle);
         Dials.DialNeedleDot = DialNeedleDot;
-    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
-    var Dials = DbDashboards.Dials;
-})(DbDashboards || (DbDashboards = {}));
-var DbDashboards;
-(function (DbDashboards) {
-    (function (Dials) {
-        var DialMaskFactory = (function () {
-            function DialMaskFactory() {
-            }
-            DialMaskFactory.create = function (dial) {
-                var type = dial.options.type.toLocaleLowerCase();
-                if (type == Dials.DialBase.Dial360) {
-                    return new Dials.DialMask360(dial);
-                }
-                switch (dial.options.orientation) {
-                    case Dials.Orientations.North:
-                        return new Dials.DialMask180N(dial);
-                    case Dials.Orientations.South:
-                        return new Dials.DialMask180S(dial);
-                    case Dials.Orientations.East:
-                        return new Dials.DialMask180E(dial);
-                    case Dials.Orientations.West:
-                        return new Dials.DialMask180W(dial);
-                }
-            };
-            return DialMaskFactory;
-        })();
-        Dials.DialMaskFactory = DialMaskFactory;
     })(DbDashboards.Dials || (DbDashboards.Dials = {}));
     var Dials = DbDashboards.Dials;
 })(DbDashboards || (DbDashboards = {}));
