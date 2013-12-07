@@ -7,7 +7,8 @@ module DbDashboards.Dials {
         constructor(private type: string, 
             public dialSpecificOverrides: DialOptions, public userOverrides:DialOptions, public target:JQuery) {
                 super(dialSpecificOverrides, userOverrides, target, {
-                    needleFactory: new DialNeedleFactory()
+                    needleFactory: new DialNeedleFactory(),
+                    scaleFactory: new DialScaleFactory()
                 });
             this.options.type = type;
         }
@@ -19,11 +20,11 @@ module DbDashboards.Dials {
             }
         };
 
-        addScale(ctx: CanvasRenderingContext2D) {
-            var s = new DialScale(this);
-            s.addLayer(ctx);
+        //addScale(ctx: CanvasRenderingContext2D) {
+        //    var s = new DialScale(this.options, ctx);
+        //    s.render();
 
-        }
+        //}
 
         addBezel(ctx: CanvasRenderingContext2D) {
             var b = new DialBezel(this);

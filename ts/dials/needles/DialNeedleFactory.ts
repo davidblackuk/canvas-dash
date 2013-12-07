@@ -16,29 +16,36 @@ module DbDashboards.Dials {
 
         create(options: DialOptions, needleContext: CanvasRenderingContext2D) : NeedleBase {
 
-            switch (options.needle.style) {
-                case DialNeedleFactory.triangle:
-                    return new DialNeedleTriangle(options, needleContext);
-                    break;
-                case DialNeedleFactory.arrow:
-                    return new DialNeedleArrow(options, needleContext);
-                    break;
-                case DialNeedleFactory.line:
-                    return new DialNeedleLine(options, needleContext);
-                    break;
-                case DialNeedleFactory.circleArrow:
-                    return new DialNeedleCircleArrow(options, needleContext);
-                    break;
-                case DialNeedleFactory.dart:
-                    return new DialNeedleDart(options, needleContext);
-                    break;
-                case DialNeedleFactory.dot:
-                    return new DialNeedleDot(options, needleContext);
-                    break;
-
+            if (typeof this[options.needle.style] == 'function') {
+                return this[options.needle.style](options, needleContext);
             }
-
+            return this.triangle(options, needleContext);
         }
+
+        triangle(options: DialOptions, needleContext: CanvasRenderingContext2D) {
+            return new DialNeedleTriangle(options, needleContext);
+        }
+
+        arrow(options: DialOptions, needleContext: CanvasRenderingContext2D) {
+            return new DialNeedleArrow(options, needleContext);
+        }
+
+        line(options: DialOptions, needleContext: CanvasRenderingContext2D) {
+            return new DialNeedleLine(options, needleContext);
+        }
+
+        circleArrow(options: DialOptions, needleContext: CanvasRenderingContext2D) {
+            return new DialNeedleCircleArrow(options, needleContext);
+        }
+
+        dart(options: DialOptions, needleContext: CanvasRenderingContext2D) {
+            return new DialNeedleDart(options, needleContext);
+        }
+
+        dot(options: DialOptions, needleContext: CanvasRenderingContext2D) {
+            return new DialNeedleDot(options, needleContext);
+        }
+
 
     }
 

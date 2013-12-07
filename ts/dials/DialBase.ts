@@ -53,6 +53,7 @@ module DbDashboards.Dials {
 
         // when typescript has a protected asttribute make this protected
         public needle: NeedleBase;
+        public scale: ScaleBase;
         public face: DialFace;
         public glass: DialGlass;
         public options: DialOptions;
@@ -86,6 +87,7 @@ module DbDashboards.Dials {
         private initializeOnce() {
             this.mask = this.getMask();
             this.needle = this.farm.needleFactory.create(this.options, this.createLayerContext(this.context, 0, 0));
+            this.scale = this.farm.scaleFactory.create(this.options, this.backgroundContext);
             this.face = new DialFace(this, this.createLayerContext(this.context, 0, 0));
             this.glass = new DialGlass(this, this.createLayerContext(this.context, 0, 0));
         }
@@ -122,6 +124,7 @@ module DbDashboards.Dials {
             this.foregroundContext = null;
             this.face.destroy();
             this.glass.destroy();
+            this.scale.destroy();
             this.options = null;
         }
 
@@ -139,12 +142,13 @@ module DbDashboards.Dials {
             this.mask.apply(this.face.context);
             this.mask.apply(this.backgroundContext);
             this.mask.apply(this.needle.needleContext);
+            this.mask.apply(this.scale.context);
             this.mask.apply(this.foregroundContext);
             this.mask.apply(this.glass.context);
 
             this.face.render();
 
-            this.addScale(this.backgroundContext);
+            this.scale.render();
             this.drawNeedle(this.options.value.min);
 
             if (this.options.glass.visible) {
@@ -245,10 +249,10 @@ module DbDashboards.Dials {
 
         }
 
-        addScale(ctx: CanvasRenderingContext2D) {
-           throw new Error("This method must be implemented");
+        //addScale(ctx: CanvasRenderingContext2D) {
+        //   throw new Error("This method must be implemented");
 
-        }
+        //}
 
 
         drawNeedle(stepValue: number) {

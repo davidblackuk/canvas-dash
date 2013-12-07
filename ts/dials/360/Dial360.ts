@@ -12,7 +12,8 @@ module DbDashboards.Dials {
          */
           constructor( options:DialOptions, public target:JQuery) {
               super(<DialOptions> Dial360.overrideDefaults, options, target,  {
-                  needleFactory: new DialNeedleFactory()
+                  needleFactory: new DialNeedleFactory(),
+                  scaleFactory: new DialScaleFactory()
               });
 
             var w = this.target.width();
@@ -55,11 +56,11 @@ module DbDashboards.Dials {
         }
 
 
-        addScale(ctx: CanvasRenderingContext2D) {
-            var s = new DialScale(this);
-            s.addLayer(ctx);
+        //addScale(ctx: CanvasRenderingContext2D) {
+        //    var s = new DialScale(this.options, ctx);
+        //    s.render();
 
-        }
+        //}
 
     
 

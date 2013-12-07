@@ -356,6 +356,347 @@ var DbDashboards;
 var DbDashboards;
 (function (DbDashboards) {
     (function (Dials) {
+        var ScaleBase = (function () {
+            /**
+            * constructs a new NeedleBase
+            */
+            function ScaleBase(dialOptions, context) {
+                this.dialOptions = dialOptions;
+                this.context = context;
+                // make needle context protected in typescript 1.1?
+            }
+            /**
+            * render the needle onto the context provided
+            */
+            ScaleBase.prototype.render = function () {
+                throw Error("Do not call the base render method, must be implemented in the derived class");
+            };
+
+            /**
+            * gets the canvas for render ops
+            */
+            ScaleBase.prototype.canvas = function () {
+                return this.context.canvas;
+            };
+
+            /**
+            * clear the canvas to all transparent
+            */
+            ScaleBase.prototype.clear = function () {
+                // There was a bug using the canvas on parallels with ie 10 where clear rect on the
+                // context does not work. This workaround resizes the canvas to the same size causeing a clear.
+                // Not pretty but necessary.
+                this.context.canvas.width = this.context.canvas.width;
+            };
+
+            /**
+            * destroy this object freeing up resources
+            */
+            ScaleBase.prototype.destroy = function () {
+                this.dialOptions = null;
+                this.context = null;
+            };
+
+            ScaleBase.prototype.drawTickLine = function (line, tickOptions) {
+                this.context.beginPath();
+                this.context.strokeStyle = tickOptions.strokeStyle;
+                this.context.lineWidth = tickOptions.width;
+                this.context.moveTo(line.start.x, line.start.y);
+                this.context.lineTo(line.end.x, line.end.y);
+                this.context.closePath();
+                this.context.stroke();
+            };
+            return ScaleBase;
+        })();
+        Dials.ScaleBase = ScaleBase;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        var DialScale = (function (_super) {
+            __extends(DialScale, _super);
+            function DialScale(dialOptions, context) {
+                _super.call(this, dialOptions, context);
+            }
+            DialScale.prototype.render = function () {
+                var c = this.getMetrics();
+
+                this.drawMajorTicks(this.context, c);
+                this.drawScaleBand(this.context, c);
+                this.drawScaleValues(this.context, c);
+            };
+
+            /**
+            * draws the minor ticks for a single major tick division
+            * @param target jquery canvas target
+            * @param metrics dial metrics
+            * @param angle the start angle of the major tick
+            */
+            DialScale.prototype.drawMinorTicks = function (ctx, metrics, angle) {
+                ctx.beginPath();
+                ctx.strokeStyle = this.dialOptions.scale.minorTicks.strokeStyle;
+                ctx.lineWidth = this.dialOptions.scale.minorTicks.width;
+
+                for (var min = 0; min < this.dialOptions.scale.minorTicks.count + 1; min++) {
+                    var majStep = metrics.step;
+                    var minStep = majStep / (this.dialOptions.scale.minorTicks.count + 1);
+                    var stepAngle = angle + min * minStep;
+                    var minorOuter = this.pointOnCircle(metrics.x, metrics.y, metrics.w + this.dialOptions.scale.width / 2, stepAngle);
+                    var minorInner = this.pointOnCircle(metrics.x, metrics.y, metrics.w - (this.dialOptions.scale.width / 2) - this.dialOptions.scale.minorTicks.length, stepAngle);
+
+                    ctx.moveTo(minorInner.x, minorInner.y);
+                    ctx.lineTo(minorOuter.x, minorOuter.y);
+                }
+                ctx.closePath();
+                ctx.stroke();
+            };
+
+            /**
+            * draws the major tick lines for the dial
+            * @param target jQuery target to render to
+            * @param metrics the metrics for the dial
+            */
+            DialScale.prototype.drawMajorTicks = function (ctx, metrics) {
+                for (var maj = 0; maj < this.dialOptions.scale.majorTicks.count; maj++) {
+                    var angle = (metrics.startAngle + (maj * metrics.step));
+                    var majorOuter = this.pointOnCircle(metrics.x, metrics.y, metrics.w + this.dialOptions.scale.width / 2, angle);
+                    var majorInner = this.pointOnCircle(metrics.x, metrics.y, metrics.w - (this.dialOptions.scale.width / 2) - this.dialOptions.scale.majorTicks.length, angle);
+
+                    if (maj < this.dialOptions.scale.majorTicks.count - 1) {
+                        this.drawMinorTicks(ctx, metrics, angle);
+                    }
+                    ctx.beginPath();
+                    ctx.strokeStyle = this.dialOptions.scale.majorTicks.strokeStyle;
+                    ctx.lineWidth = this.dialOptions.scale.majorTicks.width;
+                    ctx.moveTo(majorInner.x, majorInner.y);
+                    ctx.lineTo(majorOuter.x, majorOuter.y);
+                    ctx.closePath();
+                    ctx.stroke();
+                }
+            };
+
+            DialScale.prototype.drawScaleValues = function (ctx, metrics) {
+                ctx.font = this.dialOptions.scale.font.pixelSize + "px " + this.dialOptions.scale.font.family;
+
+                for (var maj = 0; maj < this.dialOptions.scale.majorTicks.count; maj++) {
+                    var angle = (metrics.startAngle + (maj * metrics.step));
+
+                    var fontRadius = metrics.w - (this.dialOptions.scale.width / 2);
+                    fontRadius -= this.dialOptions.scale.majorTicks.length;
+                    fontRadius -= this.dialOptions.scale.font.pixelSize;
+
+                    var centerText = this.pointOnCircle(metrics.x, metrics.y, fontRadius, angle);
+
+                    ctx.fillStyle = this.dialOptions.scale.font.fillStyle;
+                    ctx.strokeStyle = this.dialOptions.scale.font.strokeStyle;
+                    var stepValue = ((this.dialOptions.value.max - this.dialOptions.value.min) / (this.dialOptions.scale.majorTicks.count - 1)) * maj;
+
+                    var txt = $.number(stepValue + this.dialOptions.value.min, this.dialOptions.scale.decimalPlaces);
+
+                    ctx.lineWidth = 1;
+
+                    angle = (3 * Math.PI) / 2 - (Math.PI - angle);
+
+                    ctx.save();
+                    ctx.textAlign = "center";
+                    ctx.translate(centerText.x, centerText.y);
+                    ctx.rotate(angle);
+                    ctx.fillText(txt, 0, 0);
+
+                    ctx.restore();
+                }
+            };
+
+            /**
+            * draw the outer scale band
+            * @param ctx
+            * @param metrics
+            */
+            DialScale.prototype.drawScaleBand = function (ctx, metrics) {
+                ctx.beginPath();
+
+                ctx.strokeStyle = this.dialOptions.scale.strokeStyle;
+                ctx.lineWidth = this.dialOptions.scale.width;
+                ctx.arc(metrics.x, metrics.y, metrics.w, metrics.startAngle, metrics.endAngle, false);
+                ctx.stroke();
+                ctx.closePath();
+            };
+
+            /**
+            * Calculates the x,y coordinates of a point on the circumference
+            * a circle.
+            * @param cx the origin of the circle's x coordinate
+            * @param cy the origin of the circle's y coordinate
+            * @param radius of the circle
+            * @param angle (in degrees of the point around the circle)
+            * @returns {{x: number, y: number}}
+            */
+            DialScale.prototype.pointOnCircle = function (cx, cy, radius, angle) {
+                return {
+                    x: cx + radius * Math.cos(angle),
+                    y: cy + radius * Math.sin(angle)
+                };
+            };
+
+            DialScale.prototype.getMetrics = function () {
+                var bezelInnerEdge = this.dialOptions.bezel.margin + (this.dialOptions.bezel.width);
+                var scaleInnerEdge = this.dialOptions.scale.margin + (this.dialOptions.scale.width / 2);
+                var offset = 0;
+
+                var c = {
+                    x: this.dialOptions.prv.effectiveWidth / 2,
+                    y: this.dialOptions.prv.effectiveHeight / 2,
+                    w: this.dialOptions.prv.effectiveWidth / 2 - (bezelInnerEdge + scaleInnerEdge),
+                    startAngle: this.dialOptions.prv.scaleStartAngle,
+                    endAngle: this.dialOptions.prv.scaleEndAngle,
+                    step: 0
+                };
+
+                c.step = (Math.PI * 2 - (c.startAngle - c.endAngle)) / (this.dialOptions.scale.majorTicks.count - 1);
+
+                switch (this.dialOptions.type) {
+                    case Dials.DialBase.Dial360:
+                        break;
+                    case Dials.DialBase.Dial180N:
+                        break;
+                    case Dials.DialBase.Dial180S:
+                        c.y = this.dialOptions.baseRunOutSize;
+                        c.step = (c.endAngle - c.startAngle) / (this.dialOptions.scale.majorTicks.count - 1);
+                        break;
+                    case Dials.DialBase.Dial180E:
+                        c.x = this.dialOptions.prv.needleX;
+                        c.y = this.dialOptions.prv.needleY;
+                        break;
+                    case Dials.DialBase.Dial180W:
+                        c.w = this.dialOptions.prv.effectiveHeight / 2 - (bezelInnerEdge + scaleInnerEdge);
+                        c.step = (c.endAngle - c.startAngle) / (this.dialOptions.scale.majorTicks.count - 1);
+                        c.x = this.dialOptions.prv.needleX;
+                        c.y = this.dialOptions.prv.needleY;
+                        break;
+                }
+
+                return c;
+            };
+            DialScale.piOver180 = Math.PI / 180;
+            return DialScale;
+        })(Dials.ScaleBase);
+        Dials.DialScale = DialScale;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        var SliderScale = (function (_super) {
+            __extends(SliderScale, _super);
+            function SliderScale(dialOptions, context) {
+                _super.call(this, dialOptions, context);
+                this.options = dialOptions.scale;
+
+                this.scaleY = this.dialOptions.bezel.margin + this.dialOptions.bezel.width + this.options.margin + (this.options.width);
+                this.scaleInnerEdge = this.options.sideMargin + this.scaleY;
+                this.scaleOuterEdge = this.dialOptions.prv.effectiveWidth - this.scaleInnerEdge;
+                this.minorTickSpacing = this.majorTickSpacing / this.options.minorTicks.count;
+            }
+            SliderScale.prototype.render = function () {
+                this.drawMajorTicks();
+                this.drawScaleBand(this.context);
+                this.drawScaleValues(this.context);
+            };
+
+            SliderScale.prototype.drawMinorTicks = function (step) {
+                for (var min = 0; min < this.options.minorTicks.count; min++) {
+                    var line = this.getMinorTickLine(step, min);
+                    this.drawTickLine(line, this.options.minorTicks);
+                }
+            };
+
+            /**
+            * draws the major tick lines for the dial
+            * @param target jQuery target to render to
+            * @param metrics the metrics for the dial
+            */
+            SliderScale.prototype.drawMajorTicks = function () {
+                for (var maj = 0; maj < this.options.majorTicks.count; maj++) {
+                    var line = this.getMajorTickLine(maj);
+
+                    if (maj < this.options.majorTicks.count - 1) {
+                        this.drawMinorTicks(maj);
+                    }
+                    this.drawTickLine(line, this.options.majorTicks);
+                }
+            };
+
+            SliderScale.prototype.drawScaleValues = function (ctx) {
+                ctx.save();
+                ctx.font = this.options.font.pixelSize + "px " + this.options.font.family;
+                ctx.fillStyle = this.options.font.fillStyle;
+                ctx.strokeStyle = this.options.font.strokeStyle;
+                ctx.lineWidth = 1;
+
+                ctx.textAlign = "center";
+
+                for (var maj = 0; maj < this.options.majorTicks.count; maj++) {
+                    var stepValue = ((this.dialOptions.value.max - this.dialOptions.value.min) / (this.options.majorTicks.count - 1)) * maj;
+                    var txt = $.number(stepValue + this.dialOptions.value.min, this.options.decimalPlaces);
+
+                    var at = this.getPointFoprScaleNumber(maj);
+
+                    ctx.save();
+                    ctx.translate(at.x, at.y);
+                    ctx.rotate(at.r);
+                    ctx.fillText(txt, 0, 0);
+                    ctx.restore();
+                }
+                ctx.restore();
+            };
+
+            /**
+            * draw the outer scale band
+            * @param ctx
+            * @param metrics
+            */
+            SliderScale.prototype.drawScaleBand = function (ctx) {
+                ctx.beginPath();
+                ctx.strokeStyle = this.options.strokeStyle;
+                ctx.lineWidth = this.options.width;
+                ctx.moveTo(this.scaleBandX1, this.scaleBandY1);
+                ctx.lineTo(this.scaleBandX2, this.scaleBandY2);
+                ctx.stroke();
+                ctx.closePath();
+            };
+
+            /**
+            * calculate the start and end points of a major tick line for this dial and orientation
+            */
+            SliderScale.prototype.getMajorTickLine = function (step) {
+                throw Error("must be implemented in derived class");
+            };
+
+            /**
+            * calculate the start and end points of a minor tick line for this dial and orientation
+            */
+            SliderScale.prototype.getMinorTickLine = function (step, increment) {
+                throw Error("must be implemented in derived class");
+            };
+
+            /**
+            * gets the point at which the text for a major tick value should be rendered
+            */
+            SliderScale.prototype.getPointFoprScaleNumber = function (maj) {
+                throw Error("must be implemented in derived class");
+            };
+            return SliderScale;
+        })(Dials.ScaleBase);
+        Dials.SliderScale = SliderScale;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
         var NeedleBase = (function () {
             /**
             * constructs a new NeedleBase
@@ -500,26 +841,34 @@ var DbDashboards;
             function DialNeedleFactory() {
             }
             DialNeedleFactory.prototype.create = function (options, needleContext) {
-                switch (options.needle.style) {
-                    case DialNeedleFactory.triangle:
-                        return new Dials.DialNeedleTriangle(options, needleContext);
-                        break;
-                    case DialNeedleFactory.arrow:
-                        return new Dials.DialNeedleArrow(options, needleContext);
-                        break;
-                    case DialNeedleFactory.line:
-                        return new Dials.DialNeedleLine(options, needleContext);
-                        break;
-                    case DialNeedleFactory.circleArrow:
-                        return new Dials.DialNeedleCircleArrow(options, needleContext);
-                        break;
-                    case DialNeedleFactory.dart:
-                        return new Dials.DialNeedleDart(options, needleContext);
-                        break;
-                    case DialNeedleFactory.dot:
-                        return new Dials.DialNeedleDot(options, needleContext);
-                        break;
+                if (typeof this[options.needle.style] == 'function') {
+                    return this[options.needle.style](options, needleContext);
                 }
+                return this.triangle(options, needleContext);
+            };
+
+            DialNeedleFactory.prototype.triangle = function (options, needleContext) {
+                return new Dials.DialNeedleTriangle(options, needleContext);
+            };
+
+            DialNeedleFactory.prototype.arrow = function (options, needleContext) {
+                return new Dials.DialNeedleArrow(options, needleContext);
+            };
+
+            DialNeedleFactory.prototype.line = function (options, needleContext) {
+                return new Dials.DialNeedleLine(options, needleContext);
+            };
+
+            DialNeedleFactory.prototype.circleArrow = function (options, needleContext) {
+                return new Dials.DialNeedleCircleArrow(options, needleContext);
+            };
+
+            DialNeedleFactory.prototype.dart = function (options, needleContext) {
+                return new Dials.DialNeedleDart(options, needleContext);
+            };
+
+            DialNeedleFactory.prototype.dot = function (options, needleContext) {
+                return new Dials.DialNeedleDot(options, needleContext);
             };
             DialNeedleFactory.triangle = "triangle";
             DialNeedleFactory.arrow = "arrow";
@@ -679,179 +1028,6 @@ var DbDashboards;
 var DbDashboards;
 (function (DbDashboards) {
     (function (Dials) {
-        var DialScale = (function () {
-            function DialScale(dial) {
-                this.dial = dial;
-            }
-            DialScale.prototype.addLayer = function (ctx) {
-                var c = this.getMetrics();
-
-                this.drawMajorTicks(ctx, c);
-                this.drawScaleBand(ctx, c);
-                this.drawScaleValues(ctx, c);
-            };
-
-            /**
-            * draws the minor ticks for a single major tick division
-            * @param target jquery canvas target
-            * @param metrics dial metrics
-            * @param angle the start angle of the major tick
-            */
-            DialScale.prototype.drawMinorTicks = function (ctx, metrics, angle) {
-                ctx.beginPath();
-                ctx.strokeStyle = this.dial.options.scale.minorTicks.strokeStyle;
-                ctx.lineWidth = this.dial.options.scale.minorTicks.width;
-
-                for (var min = 0; min < this.dial.options.scale.minorTicks.count + 1; min++) {
-                    var majStep = metrics.step;
-                    var minStep = majStep / (this.dial.options.scale.minorTicks.count + 1);
-                    var stepAngle = angle + min * minStep;
-                    var minorOuter = this.pointOnCircle(metrics.x, metrics.y, metrics.w + this.dial.options.scale.width / 2, stepAngle);
-                    var minorInner = this.pointOnCircle(metrics.x, metrics.y, metrics.w - (this.dial.options.scale.width / 2) - this.dial.options.scale.minorTicks.length, stepAngle);
-
-                    ctx.moveTo(minorInner.x, minorInner.y);
-                    ctx.lineTo(minorOuter.x, minorOuter.y);
-                }
-                ctx.closePath();
-                ctx.stroke();
-            };
-
-            /**
-            * draws the major tick lines for the dial
-            * @param target jQuery target to render to
-            * @param metrics the metrics for the dial
-            */
-            DialScale.prototype.drawMajorTicks = function (ctx, metrics) {
-                for (var maj = 0; maj < this.dial.options.scale.majorTicks.count; maj++) {
-                    var angle = (metrics.startAngle + (maj * metrics.step));
-                    var majorOuter = this.pointOnCircle(metrics.x, metrics.y, metrics.w + this.dial.options.scale.width / 2, angle);
-                    var majorInner = this.pointOnCircle(metrics.x, metrics.y, metrics.w - (this.dial.options.scale.width / 2) - this.dial.options.scale.majorTicks.length, angle);
-
-                    if (maj < this.dial.options.scale.majorTicks.count - 1) {
-                        this.drawMinorTicks(ctx, metrics, angle);
-                    }
-                    ctx.beginPath();
-                    ctx.strokeStyle = this.dial.options.scale.majorTicks.strokeStyle;
-                    ctx.lineWidth = this.dial.options.scale.majorTicks.width;
-                    ctx.moveTo(majorInner.x, majorInner.y);
-                    ctx.lineTo(majorOuter.x, majorOuter.y);
-                    ctx.closePath();
-                    ctx.stroke();
-                }
-            };
-
-            DialScale.prototype.drawScaleValues = function (ctx, metrics) {
-                ctx.font = this.dial.options.scale.font.pixelSize + "px " + this.dial.options.scale.font.family;
-
-                for (var maj = 0; maj < this.dial.options.scale.majorTicks.count; maj++) {
-                    var angle = (metrics.startAngle + (maj * metrics.step));
-
-                    var fontRadius = metrics.w - (this.dial.options.scale.width / 2);
-                    fontRadius -= this.dial.options.scale.majorTicks.length;
-                    fontRadius -= this.dial.options.scale.font.pixelSize;
-
-                    var centerText = this.pointOnCircle(metrics.x, metrics.y, fontRadius, angle);
-
-                    ctx.fillStyle = this.dial.options.scale.font.fillStyle;
-                    ctx.strokeStyle = this.dial.options.scale.font.strokeStyle;
-                    var stepValue = ((this.dial.options.value.max - this.dial.options.value.min) / (this.dial.options.scale.majorTicks.count - 1)) * maj;
-
-                    var txt = $.number(stepValue + this.dial.options.value.min, this.dial.options.scale.decimalPlaces);
-
-                    ctx.lineWidth = 1;
-
-                    angle = (3 * Math.PI) / 2 - (Math.PI - angle);
-
-                    ctx.save();
-                    ctx.textAlign = "center";
-                    ctx.translate(centerText.x, centerText.y);
-                    ctx.rotate(angle);
-                    ctx.fillText(txt, 0, 0);
-
-                    ctx.restore();
-                }
-            };
-
-            /**
-            * draw the outer scale band
-            * @param ctx
-            * @param metrics
-            */
-            DialScale.prototype.drawScaleBand = function (ctx, metrics) {
-                ctx.beginPath();
-
-                ctx.strokeStyle = this.dial.options.scale.strokeStyle;
-                ctx.lineWidth = this.dial.options.scale.width;
-                ctx.arc(metrics.x, metrics.y, metrics.w, metrics.startAngle, metrics.endAngle, false);
-                ctx.stroke();
-                ctx.closePath();
-            };
-
-            /**
-            * Calculates the x,y coordinates of a point on the circumference
-            * a circle.
-            * @param cx the origin of the circle's x coordinate
-            * @param cy the origin of the circle's y coordinate
-            * @param radius of the circle
-            * @param angle (in degrees of the point around the circle)
-            * @returns {{x: number, y: number}}
-            */
-            DialScale.prototype.pointOnCircle = function (cx, cy, radius, angle) {
-                return {
-                    x: cx + radius * Math.cos(angle),
-                    y: cy + radius * Math.sin(angle)
-                };
-            };
-
-            DialScale.prototype.getMetrics = function () {
-                var bezelInnerEdge = this.dial.options.bezel.margin + (this.dial.options.bezel.width);
-                var scaleInnerEdge = this.dial.options.scale.margin + (this.dial.options.scale.width / 2);
-                var offset = 0;
-
-                var c = {
-                    x: this.dial.options.prv.effectiveWidth / 2,
-                    y: this.dial.options.prv.effectiveHeight / 2,
-                    w: this.dial.options.prv.effectiveWidth / 2 - (bezelInnerEdge + scaleInnerEdge),
-                    startAngle: this.dial.options.prv.scaleStartAngle,
-                    endAngle: this.dial.options.prv.scaleEndAngle,
-                    step: 0
-                };
-
-                c.step = (Math.PI * 2 - (c.startAngle - c.endAngle)) / (this.dial.options.scale.majorTicks.count - 1);
-
-                switch (this.dial.options.type) {
-                    case Dials.DialBase.Dial360:
-                        break;
-                    case Dials.DialBase.Dial180N:
-                        break;
-                    case Dials.DialBase.Dial180S:
-                        c.y = this.dial.options.baseRunOutSize;
-                        c.step = (c.endAngle - c.startAngle) / (this.dial.options.scale.majorTicks.count - 1);
-                        break;
-                    case Dials.DialBase.Dial180E:
-                        c.x = this.dial.options.prv.needleX;
-                        c.y = this.dial.options.prv.needleY;
-                        break;
-                    case Dials.DialBase.Dial180W:
-                        c.w = this.dial.options.prv.effectiveHeight / 2 - (bezelInnerEdge + scaleInnerEdge);
-                        c.step = (c.endAngle - c.startAngle) / (this.dial.options.scale.majorTicks.count - 1);
-                        c.x = this.dial.options.prv.needleX;
-                        c.y = this.dial.options.prv.needleY;
-                        break;
-                }
-
-                return c;
-            };
-            DialScale.piOver180 = Math.PI / 180;
-            return DialScale;
-        })();
-        Dials.DialScale = DialScale;
-    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
-    var Dials = DbDashboards.Dials;
-})(DbDashboards || (DbDashboards = {}));
-var DbDashboards;
-(function (DbDashboards) {
-    (function (Dials) {
         var DialValue = (function () {
             function DialValue(dial) {
                 this.dial = dial;
@@ -936,6 +1112,7 @@ var DbDashboards;
             DialBase.prototype.initializeOnce = function () {
                 this.mask = this.getMask();
                 this.needle = this.farm.needleFactory.create(this.options, this.createLayerContext(this.context, 0, 0));
+                this.scale = this.farm.scaleFactory.create(this.options, this.backgroundContext);
                 this.face = new Dials.DialFace(this, this.createLayerContext(this.context, 0, 0));
                 this.glass = new Dials.DialGlass(this, this.createLayerContext(this.context, 0, 0));
             };
@@ -967,6 +1144,7 @@ var DbDashboards;
                 this.foregroundContext = null;
                 this.face.destroy();
                 this.glass.destroy();
+                this.scale.destroy();
                 this.options = null;
             };
 
@@ -980,12 +1158,13 @@ var DbDashboards;
                 this.mask.apply(this.face.context);
                 this.mask.apply(this.backgroundContext);
                 this.mask.apply(this.needle.needleContext);
+                this.mask.apply(this.scale.context);
                 this.mask.apply(this.foregroundContext);
                 this.mask.apply(this.glass.context);
 
                 this.face.render();
 
-                this.addScale(this.backgroundContext);
+                this.scale.render();
                 this.drawNeedle(this.options.value.min);
 
                 if (this.options.glass.visible) {
@@ -1061,10 +1240,9 @@ var DbDashboards;
                 throw new Error("This method must be implemented");
             };
 
-            DialBase.prototype.addScale = function (ctx) {
-                throw new Error("This method must be implemented");
-            };
-
+            //addScale(ctx: CanvasRenderingContext2D) {
+            //   throw new Error("This method must be implemented");
+            //}
             DialBase.prototype.drawNeedle = function (stepValue) {
                 this.needle.render(stepValue);
                 var v = new Dials.DialValue(this);
@@ -1515,7 +1693,8 @@ var DbDashboards;
             __extends(Dial180, _super);
             function Dial180(type, dialSpecificOverrides, userOverrides, target) {
                 _super.call(this, dialSpecificOverrides, userOverrides, target, {
-                    needleFactory: new Dials.DialNeedleFactory()
+                    needleFactory: new Dials.DialNeedleFactory(),
+                    scaleFactory: new Dials.DialScaleFactory()
                 });
                 this.type = type;
                 this.dialSpecificOverrides = dialSpecificOverrides;
@@ -1523,11 +1702,10 @@ var DbDashboards;
                 this.target = target;
                 this.options.type = type;
             }
-            Dial180.prototype.addScale = function (ctx) {
-                var s = new Dials.DialScale(this);
-                s.addLayer(ctx);
-            };
-
+            //addScale(ctx: CanvasRenderingContext2D) {
+            //    var s = new DialScale(this.options, ctx);
+            //    s.render();
+            //}
             Dial180.prototype.addBezel = function (ctx) {
                 var b = new Dials.DialBezel(this);
                 b.addLayer(ctx);
@@ -1828,7 +2006,8 @@ var DbDashboards;
             */
             function Dial360(options, target) {
                 _super.call(this, Dial360.overrideDefaults, options, target, {
-                    needleFactory: new Dials.DialNeedleFactory()
+                    needleFactory: new Dials.DialNeedleFactory(),
+                    scaleFactory: new Dials.DialScaleFactory()
                 });
                 this.target = target;
 
@@ -1865,11 +2044,10 @@ var DbDashboards;
                 return new Dials.DialMask360(this);
             };
 
-            Dial360.prototype.addScale = function (ctx) {
-                var s = new Dials.DialScale(this);
-                s.addLayer(ctx);
-            };
-
+            //addScale(ctx: CanvasRenderingContext2D) {
+            //    var s = new DialScale(this.options, ctx);
+            //    s.render();
+            //}
             Dial360.prototype.addBezel = function (ctx) {
                 var b = new Dials.DialBezel(this);
                 b.addLayer(ctx);
@@ -1943,7 +2121,8 @@ var DbDashboards;
             */
             function Slider(options, target) {
                 _super.call(this, Slider.overrideDefaults, options, target, {
-                    needleFactory: new Dials.SliderNeedleFactory()
+                    needleFactory: new Dials.SliderNeedleFactory(),
+                    scaleFactory: new Dials.SliderScaleFactory()
                 });
                 this.target = target;
                 this.needleLength = 10;
@@ -1955,11 +2134,10 @@ var DbDashboards;
                 return new Dials.SliderMask(this);
             };
 
-            Slider.prototype.addScale = function (ctx) {
-                var s = new Dials.SliderScale(this);
-                s.addLayer(ctx);
-            };
-
+            //addScale(ctx: CanvasRenderingContext2D) {
+            //    var s = new SliderScale(this.options, ctx);
+            //    s.render();
+            //}
             Slider.prototype.addBezel = function (ctx) {
                 var b = new Dials.SliderBezel(this);
                 b.addLayer(ctx);
@@ -2242,224 +2420,6 @@ var DbDashboards;
             return SliderBezel;
         })();
         Dials.SliderBezel = SliderBezel;
-    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
-    var Dials = DbDashboards.Dials;
-})(DbDashboards || (DbDashboards = {}));
-var DbDashboards;
-(function (DbDashboards) {
-    (function (Dials) {
-        var SliderScale = (function () {
-            function SliderScale(dial) {
-                this.dial = dial;
-                this.options = dial.options.scale;
-            }
-            SliderScale.prototype.addLayer = function (ctx) {
-                this.getMetrics();
-
-                this.drawMajorTicks(ctx);
-                this.drawScaleBand(ctx);
-                this.drawScaleValues(ctx);
-            };
-
-            SliderScale.prototype.drawMinorTicks = function (ctx, step) {
-                for (var min = 0; min < this.options.minorTicks.count; min++) {
-                    switch (this.dial.options.orientation) {
-                        case Dials.Orientations.North:
-                            var start = this.scaleBandX1 + (this.majorTickSpacing * step);
-                            var x1 = start + (this.minorTickSpacing * min);
-                            var y1 = this.scaleBandY1;
-                            var x2 = x1;
-                            var y2 = y1 + this.options.minorTicks.length + this.options.majorTicks.width;
-                            break;
-                        case Dials.Orientations.South:
-                            var start = this.scaleBandX1 + (this.majorTickSpacing * step);
-                            var x1 = start + (this.minorTickSpacing * min);
-                            var y1 = this.scaleBandY1;
-                            var x2 = x1;
-                            var y2 = y1 - (this.options.minorTicks.length + this.options.majorTicks.width);
-                            break;
-                        case Dials.Orientations.West:
-                            var start = this.scaleBandY1 + (this.majorTickSpacing * step);
-                            var x1 = this.scaleBandX1;
-                            var y1 = start + (this.minorTickSpacing * min);
-                            var x2 = this.scaleBandX1 + this.options.minorTicks.length + this.options.majorTicks.width;
-                            var y2 = y1;
-
-                            break;
-                        case Dials.Orientations.East:
-                            var start = this.scaleBandY1 + (this.majorTickSpacing * step);
-                            var x1 = this.scaleBandX1;
-                            var y1 = start + (this.minorTickSpacing * min);
-                            var x2 = this.scaleBandX1 - (this.options.minorTicks.length + this.options.majorTicks.width);
-                            var y2 = y1;
-                            break;
-                    }
-
-                    ctx.beginPath();
-                    ctx.strokeStyle = this.options.minorTicks.strokeStyle;
-                    ctx.lineWidth = this.options.minorTicks.width;
-                    ctx.moveTo(x1, y1);
-                    ctx.lineTo(x2, y2);
-                    ctx.closePath();
-                    ctx.stroke();
-                }
-            };
-
-            /**
-            * draws the major tick lines for the dial
-            * @param target jQuery target to render to
-            * @param metrics the metrics for the dial
-            */
-            SliderScale.prototype.drawMajorTicks = function (ctx) {
-                for (var maj = 0; maj < this.options.majorTicks.count; maj++) {
-                    switch (this.dial.options.orientation) {
-                        case Dials.Orientations.North:
-                            var x1 = this.scaleBandX1 + (this.majorTickSpacing * maj);
-                            var y1 = this.scaleBandY1;
-                            var x2 = x1;
-                            var y2 = y1 + this.options.majorTicks.length + this.options.width;
-                            break;
-                        case Dials.Orientations.South:
-                            var x1 = this.scaleBandX1 + (this.majorTickSpacing * maj);
-                            var y1 = this.scaleBandY1;
-                            var x2 = x1;
-                            var y2 = y1 - (this.options.majorTicks.length + this.options.width);
-                            break;
-                        case Dials.Orientations.West:
-                            var x1 = this.scaleBandX1;
-                            var y1 = this.scaleBandY1 + (this.majorTickSpacing * maj);
-                            var x2 = this.scaleBandX1 + this.options.majorTicks.length + this.options.width;
-                            var y2 = y1;
-
-                            break;
-                        case Dials.Orientations.East:
-                            var x1 = this.scaleBandX1;
-                            var y1 = this.scaleBandY1 + (this.majorTickSpacing * maj);
-                            var x2 = this.scaleBandX1 - (this.options.majorTicks.length + +this.options.width);
-                            var y2 = y1;
-                            break;
-                    }
-
-                    if (maj < this.options.majorTicks.count - 1) {
-                        this.drawMinorTicks(ctx, maj);
-                    }
-                    ctx.beginPath();
-                    ctx.strokeStyle = this.options.majorTicks.strokeStyle;
-                    ctx.lineWidth = this.options.majorTicks.width;
-                    ctx.moveTo(x1, y1);
-                    ctx.lineTo(x2, y2);
-                    ctx.closePath();
-                    ctx.stroke();
-                }
-            };
-
-            SliderScale.prototype.drawScaleValues = function (ctx) {
-                ctx.save();
-                ctx.font = this.options.font.pixelSize + "px " + this.options.font.family;
-                ctx.fillStyle = this.options.font.fillStyle;
-                ctx.strokeStyle = this.options.font.strokeStyle;
-                ctx.lineWidth = 1;
-                var x, y = 0;
-
-                ctx.textAlign = "center";
-
-                for (var maj = 0; maj < this.options.majorTicks.count; maj++) {
-                    var stepValue = ((this.dial.options.value.max - this.dial.options.value.min) / (this.options.majorTicks.count - 1)) * maj;
-                    var txt = $.number(stepValue + this.dial.options.value.min, this.options.decimalPlaces);
-                    var r = 0;
-                    switch (this.dial.options.orientation) {
-                        case Dials.Orientations.North:
-                            x = this.options.sideMargin + (this.majorTickSpacing * maj);
-                            y = this.scaleY + this.options.width + this.options.margin + this.options.majorTicks.length + this.options.font.pixelSize / 2;
-                            break;
-                        case Dials.Orientations.South:
-                            x = this.options.sideMargin + (this.majorTickSpacing * maj);
-                            y = this.dial.options.height - (this.scaleY + this.options.width + this.options.margin + this.options.majorTicks.length - 3);
-                            break;
-                        case Dials.Orientations.East:
-                            x = this.dial.options.width - (this.scaleY + this.options.width + this.options.margin + this.options.majorTicks.length + this.options.font.pixelSize / 2);
-                            y = this.options.sideMargin + (this.majorTickSpacing * maj);
-                            r = Math.PI / 2;
-                            break;
-                        case Dials.Orientations.West:
-                            x = (this.scaleY + this.options.width + this.options.margin + this.options.majorTicks.length) + this.options.font.pixelSize / 2;
-                            y = this.options.sideMargin + (this.majorTickSpacing * maj);
-                            r = -Math.PI / 2;
-                            break;
-                    }
-                    ctx.save();
-                    ctx.translate(x, y);
-                    ctx.rotate(r);
-                    ctx.fillText(txt, 0, 0);
-                    ctx.restore();
-                }
-                ctx.restore();
-            };
-
-            /**
-            * draw the outer scale band
-            * @param ctx
-            * @param metrics
-            */
-            SliderScale.prototype.drawScaleBand = function (ctx) {
-                ctx.beginPath();
-
-                ctx.strokeStyle = this.options.strokeStyle;
-                ctx.lineWidth = this.options.width;
-                ctx.moveTo(this.scaleBandX1, this.scaleBandY1);
-                ctx.lineTo(this.scaleBandX2, this.scaleBandY2);
-                ctx.stroke();
-                ctx.closePath();
-            };
-
-            SliderScale.prototype.getMetrics = function () {
-                this.scaleBandX1 = 0;
-                this.scaleBandX2 = 0;
-                this.scaleBandY1 = 0;
-                this.scaleBandY2 = 0;
-
-                this.scaleY = this.dial.options.bezel.margin + this.dial.options.bezel.width + this.options.margin + (this.options.width);
-
-                switch (this.dial.options.orientation) {
-                    case Dials.Orientations.North:
-                        this.scaleBandX1 = this.options.sideMargin;
-                        this.scaleBandY1 = this.dial.options.bezel.margin + this.dial.options.bezel.width + this.options.margin + (this.options.width);
-                        this.scaleBandX2 = this.dial.options.width - this.options.sideMargin;
-                        this.scaleBandY2 = this.scaleBandY1;
-                        this.majorTickSpacing = (this.scaleBandX2 - this.scaleBandX1) / (this.options.majorTicks.count - 1);
-                        break;
-                    case Dials.Orientations.South:
-                        this.scaleBandX1 = this.options.sideMargin;
-                        this.scaleBandY1 = this.dial.options.height - (this.dial.options.bezel.margin + this.dial.options.bezel.width + this.options.margin + (this.options.width));
-                        this.scaleBandX2 = this.dial.options.width - this.options.sideMargin;
-                        this.scaleBandY2 = this.scaleBandY1;
-                        this.majorTickSpacing = (this.scaleBandX2 - this.scaleBandX1) / (this.options.majorTicks.count - 1);
-                        break;
-                    case Dials.Orientations.West:
-                        this.scaleBandX1 = (this.dial.options.bezel.margin + this.dial.options.bezel.width + this.options.margin + (this.options.width));
-                        this.scaleBandY1 = this.options.sideMargin;
-                        this.scaleBandX2 = this.scaleBandX1;
-                        this.scaleBandY2 = this.dial.options.height - this.options.sideMargin;
-                        this.majorTickSpacing = (this.scaleBandY2 - this.scaleBandY1) / (this.options.majorTicks.count - 1);
-                        break;
-                    case Dials.Orientations.East:
-                        this.scaleBandX1 = this.dial.options.width - (this.dial.options.bezel.margin + this.dial.options.bezel.width + this.options.margin + (this.options.width));
-                        this.scaleBandY1 = this.options.sideMargin;
-                        this.scaleBandX2 = this.scaleBandX1;
-                        this.scaleBandY2 = this.dial.options.height - this.options.sideMargin;
-                        this.majorTickSpacing = (this.scaleBandY2 - this.scaleBandY1) / (this.options.majorTicks.count - 1);
-                        break;
-                }
-
-                this.scaleInnerEdge = this.options.sideMargin + this.scaleY;
-                this.scaleOuterEdge = this.dial.options.prv.effectiveWidth - this.scaleInnerEdge;
-
-                //            this.majorTickSpacing = (this.scaleOuterEdge-this.scaleInnerEdge)/(this.options.majorTicks.count-1);
-                this.minorTickSpacing = this.majorTickSpacing / this.options.minorTicks.count;
-            };
-            return SliderScale;
-        })();
-        Dials.SliderScale = SliderScale;
     })(DbDashboards.Dials || (DbDashboards.Dials = {}));
     var Dials = DbDashboards.Dials;
 })(DbDashboards || (DbDashboards = {}));
@@ -2920,6 +2880,25 @@ var DbDashboards;
 })(DbDashboards || (DbDashboards = {}));
 var DbDashboards;
 (function (DbDashboards) {
+    (function (Dials) {
+        // Class
+        var Line = (function () {
+            function Line(x1, y1, x2, y2) {
+                this.x1 = x1;
+                this.y1 = y1;
+                this.x2 = x2;
+                this.y2 = y2;
+                this.start = new Dials.Point(x1, y1);
+                this.end = new Dials.Point(x2, y2);
+            }
+            return Line;
+        })();
+        Dials.Line = Line;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
     /// <reference path="../d/jquery-1.9.1.d.ts" />
     (function (Dials) {
         var Orientations = (function () {
@@ -3176,6 +3155,21 @@ var DbDashboards;
 })(DbDashboards || (DbDashboards = {}));
 var DbDashboards;
 (function (DbDashboards) {
+    (function (Dials) {
+        var DialScaleFactory = (function () {
+            function DialScaleFactory() {
+            }
+            DialScaleFactory.prototype.create = function (options, context) {
+                return new Dials.DialScale(options, context);
+            };
+            return DialScaleFactory;
+        })();
+        Dials.DialScaleFactory = DialScaleFactory;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
     (function (Marquees) {
         var MarqueeFactory = (function (_super) {
             __extends(MarqueeFactory, _super);
@@ -3312,26 +3306,34 @@ var DbDashboards;
             function SliderNeedleFactory() {
             }
             SliderNeedleFactory.prototype.create = function (options, needleContext) {
-                switch (options.needle.style) {
-                    case Dials.DialNeedleFactory.triangle:
-                        return new Dials.SliderNeedleTriangle(options, needleContext);
-                        break;
-                    case Dials.DialNeedleFactory.arrow:
-                        return new Dials.SliderNeedleArrow(options, needleContext);
-                        break;
-                    case Dials.DialNeedleFactory.line:
-                        return new Dials.SliderNeedleLine(options, needleContext);
-                        break;
-                    case Dials.DialNeedleFactory.circleArrow:
-                        return new Dials.SliderNeedleCircleArrow(options, needleContext);
-                        break;
-                    case Dials.DialNeedleFactory.dart:
-                        return new Dials.SliderNeedleDart(options, needleContext);
-                        break;
-                    case Dials.DialNeedleFactory.dot:
-                        return new Dials.SliderNeedleDot(options, needleContext);
-                        break;
+                if (typeof this[options.needle.style] == 'function') {
+                    return this[options.needle.style](options, needleContext);
                 }
+                return this.triangle(options, needleContext);
+            };
+
+            SliderNeedleFactory.prototype.triangle = function (options, needleContext) {
+                return new Dials.SliderNeedleTriangle(options, needleContext);
+            };
+
+            SliderNeedleFactory.prototype.DialNeedleFactory = function (options, needleContext) {
+                return new Dials.SliderNeedleArrow(options, needleContext);
+            };
+
+            SliderNeedleFactory.prototype.line = function (options, needleContext) {
+                return new Dials.SliderNeedleLine(options, needleContext);
+            };
+
+            SliderNeedleFactory.prototype.circleArrow = function (options, needleContext) {
+                return new Dials.SliderNeedleCircleArrow(options, needleContext);
+            };
+
+            SliderNeedleFactory.prototype.dart = function (options, needleContext) {
+                return new Dials.SliderNeedleDart(options, needleContext);
+            };
+
+            SliderNeedleFactory.prototype.dot = function (options, needleContext) {
+                return new Dials.SliderNeedleDot(options, needleContext);
             };
             SliderNeedleFactory.triangle = "triangle";
             SliderNeedleFactory.arrow = "arrow";
@@ -3401,6 +3403,247 @@ var DbDashboards;
             return SliderNeedleTriangle;
         })(Dials.SliderNeedle);
         Dials.SliderNeedleTriangle = SliderNeedleTriangle;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        var SliderScaleE = (function (_super) {
+            __extends(SliderScaleE, _super);
+            function SliderScaleE(dialOptions, context) {
+                _super.call(this, dialOptions, context);
+
+                this.scaleBandX1 = this.dialOptions.width - (this.dialOptions.bezel.margin + this.dialOptions.bezel.width + this.options.margin + (this.options.width));
+                this.scaleBandY1 = this.options.sideMargin;
+                this.scaleBandX2 = this.scaleBandX1;
+                this.scaleBandY2 = this.dialOptions.height - this.options.sideMargin;
+                this.majorTickSpacing = (this.scaleBandY2 - this.scaleBandY1) / (this.options.majorTicks.count - 1);
+            }
+            /**
+            * calculate the start and end points of a major tick line for this dial and orientation
+            */
+            SliderScaleE.prototype.getMajorTickLine = function (step) {
+                var x1 = this.scaleBandX1;
+                var y1 = this.scaleBandY1 + (this.majorTickSpacing * step);
+                var x2 = this.scaleBandX1 - (this.options.majorTicks.length + +this.options.width);
+                var y2 = y1;
+                return new Dials.Line(x1, y1, x2, y2);
+            };
+
+            /**
+            * calculate the start and end points of a minor tick line for this dial and orientation
+            */
+            SliderScaleE.prototype.getMinorTickLine = function (step, increment) {
+                var start = this.scaleBandY1 + (this.majorTickSpacing * step);
+                var x1 = this.scaleBandX1;
+                var y1 = start + (this.minorTickSpacing * increment);
+                var x2 = this.scaleBandX1 - (this.options.minorTicks.length + this.options.majorTicks.width);
+                var y2 = y1;
+                return new Dials.Line(x1, y1, x2, y2);
+            };
+
+            /**
+            * gets the point at which the text for a major tick value should be rendered
+            */
+            SliderScaleE.prototype.getPointFoprScaleNumber = function (maj) {
+                var x = this.dialOptions.width - (this.scaleY + this.options.width + this.options.margin + this.options.majorTicks.length + this.options.font.pixelSize / 2);
+                var y = this.options.sideMargin + (this.majorTickSpacing * maj);
+                var r = Math.PI / 2;
+                ;
+                return new Dials.TranslationAndRotation(x, y, r);
+            };
+            return SliderScaleE;
+        })(Dials.SliderScale);
+        Dials.SliderScaleE = SliderScaleE;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        var SliderScaleFactory = (function () {
+            function SliderScaleFactory() {
+            }
+            SliderScaleFactory.prototype.create = function (options, context) {
+                if (typeof this[options.orientation] == 'function') {
+                    return this[options.orientation](options, context);
+                }
+                return this.north(options, context);
+            };
+
+            SliderScaleFactory.prototype.north = function (options, context) {
+                return new Dials.SliderScaleN(options, context);
+            };
+
+            SliderScaleFactory.prototype.south = function (options, context) {
+                return new Dials.SliderScaleS(options, context);
+            };
+
+            SliderScaleFactory.prototype.east = function (options, context) {
+                return new Dials.SliderScaleE(options, context);
+            };
+
+            SliderScaleFactory.prototype.west = function (options, context) {
+                return new Dials.SliderScaleW(options, context);
+            };
+            return SliderScaleFactory;
+        })();
+        Dials.SliderScaleFactory = SliderScaleFactory;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        var SliderScaleN = (function (_super) {
+            __extends(SliderScaleN, _super);
+            function SliderScaleN(dialOptions, context) {
+                _super.call(this, dialOptions, context);
+
+                this.scaleBandX1 = this.options.sideMargin;
+                this.scaleBandY1 = this.dialOptions.bezel.margin + this.dialOptions.bezel.width + this.options.margin + (this.options.width);
+                this.scaleBandX2 = this.dialOptions.width - this.options.sideMargin;
+                this.scaleBandY2 = this.scaleBandY1;
+                this.majorTickSpacing = (this.scaleBandX2 - this.scaleBandX1) / (this.options.majorTicks.count - 1);
+            }
+            /**
+            * calculate the start and end points of a major tick line for this dial and orientation
+            */
+            SliderScaleN.prototype.getMajorTickLine = function (step) {
+                var x1 = this.scaleBandX1 + (this.majorTickSpacing * step);
+                var y1 = this.scaleBandY1;
+                var x2 = x1;
+                var y2 = y1 + this.options.majorTicks.length + this.options.width;
+                return new Dials.Line(x1, y1, x2, y2);
+            };
+
+            /**
+            * calculate the start and end points of a minor tick line for this dial and orientation
+            */
+            SliderScaleN.prototype.getMinorTickLine = function (step, increment) {
+                var start = this.scaleBandX1 + (this.majorTickSpacing * step);
+                var x1 = start + (this.minorTickSpacing * increment);
+                var y1 = this.scaleBandY1;
+                var x2 = x1;
+                var y2 = y1 + this.options.minorTicks.length + this.options.majorTicks.width;
+                return new Dials.Line(x1, y1, x2, y2);
+            };
+
+            /**
+            * gets the point at which the text for a major tick value should be rendered
+            */
+            SliderScaleN.prototype.getPointFoprScaleNumber = function (maj) {
+                var x = this.options.sideMargin + (this.majorTickSpacing * maj);
+                var y = this.scaleY + this.options.width + this.options.margin + this.options.majorTicks.length + this.options.font.pixelSize / 2;
+                return new Dials.TranslationAndRotation(x, y, 0);
+            };
+            return SliderScaleN;
+        })(Dials.SliderScale);
+        Dials.SliderScaleN = SliderScaleN;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        var SliderScaleS = (function (_super) {
+            __extends(SliderScaleS, _super);
+            function SliderScaleS(dialOptions, context) {
+                _super.call(this, dialOptions, context);
+
+                this.scaleBandX1 = this.options.sideMargin;
+                this.scaleBandY1 = this.dialOptions.height - (this.dialOptions.bezel.margin + this.dialOptions.bezel.width + this.options.margin + (this.options.width));
+                this.scaleBandX2 = this.dialOptions.width - this.options.sideMargin;
+                this.scaleBandY2 = this.scaleBandY1;
+                this.majorTickSpacing = (this.scaleBandX2 - this.scaleBandX1) / (this.options.majorTicks.count - 1);
+            }
+            /**
+            * calculate the start and end points of a major tick line for this dial and orientation
+            */
+            SliderScaleS.prototype.getMajorTickLine = function (step) {
+                var x1 = this.scaleBandX1 + (this.majorTickSpacing * step);
+                var y1 = this.scaleBandY1;
+                var x2 = x1;
+                var y2 = y1 - (this.options.majorTicks.length + this.options.width);
+                return new Dials.Line(x1, y1, x2, y2);
+            };
+
+            /**
+            * calculate the start and end points of a minor tick line for this dial and orientation
+            */
+            SliderScaleS.prototype.getMinorTickLine = function (step, increment) {
+                var start = this.scaleBandX1 + (this.majorTickSpacing * step);
+                var x1 = start + (this.minorTickSpacing * increment);
+                var y1 = this.scaleBandY1;
+                var x2 = x1;
+                var y2 = y1 - (this.options.minorTicks.length + this.options.majorTicks.width);
+                return new Dials.Line(x1, y1, x2, y2);
+            };
+
+            /**
+            * gets the point at which the text for a major tick value should be rendered
+            */
+            SliderScaleS.prototype.getPointFoprScaleNumber = function (maj) {
+                var x = this.options.sideMargin + (this.majorTickSpacing * maj);
+                var y = this.dialOptions.height - (this.scaleY + this.options.width + this.options.margin + this.options.majorTicks.length - 3);
+                return new Dials.TranslationAndRotation(x, y, 0);
+            };
+            return SliderScaleS;
+        })(Dials.SliderScale);
+        Dials.SliderScaleS = SliderScaleS;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        var SliderScaleW = (function (_super) {
+            __extends(SliderScaleW, _super);
+            function SliderScaleW(dialOptions, context) {
+                _super.call(this, dialOptions, context);
+
+                this.scaleBandX1 = (this.dialOptions.bezel.margin + this.dialOptions.bezel.width + this.options.margin + (this.options.width));
+                this.scaleBandY1 = this.options.sideMargin;
+                this.scaleBandX2 = this.scaleBandX1;
+                this.scaleBandY2 = this.dialOptions.height - this.options.sideMargin;
+                this.majorTickSpacing = (this.scaleBandY2 - this.scaleBandY1) / (this.options.majorTicks.count - 1);
+            }
+            /**
+            * calculate the start and end points of a major tick line for this dial and orientation
+            */
+            SliderScaleW.prototype.getMajorTickLine = function (step) {
+                var x1 = this.scaleBandX1;
+                var y1 = this.scaleBandY1 + (this.majorTickSpacing * step);
+                var x2 = this.scaleBandX1 + this.options.majorTicks.length + this.options.width;
+                var y2 = y1;
+                return new Dials.Line(x1, y1, x2, y2);
+            };
+
+            /**
+            * calculate the start and end points of a minor tick line for this dial and orientation
+            */
+            SliderScaleW.prototype.getMinorTickLine = function (step, increment) {
+                var start = this.scaleBandY1 + (this.majorTickSpacing * step);
+                var x1 = this.scaleBandX1;
+                var y1 = start + (this.minorTickSpacing * increment);
+                var x2 = this.scaleBandX1 + this.options.minorTicks.length + this.options.majorTicks.width;
+                var y2 = y1;
+                return new Dials.Line(x1, y1, x2, y2);
+            };
+
+            /**
+            * gets the point at which the text for a major tick value should be rendered
+            */
+            SliderScaleW.prototype.getPointFoprScaleNumber = function (maj) {
+                var x = (this.scaleY + this.options.width + this.options.margin + this.options.majorTicks.length) + this.options.font.pixelSize / 2;
+                var y = this.options.sideMargin + (this.majorTickSpacing * maj);
+                var r = -Math.PI / 2;
+                return new Dials.TranslationAndRotation(x, y, r);
+            };
+            return SliderScaleW;
+        })(Dials.SliderScale);
+        Dials.SliderScaleW = SliderScaleW;
     })(DbDashboards.Dials || (DbDashboards.Dials = {}));
     var Dials = DbDashboards.Dials;
 })(DbDashboards || (DbDashboards = {}));

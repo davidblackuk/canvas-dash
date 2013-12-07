@@ -16,7 +16,8 @@ module DbDashboards.Dials {
          */
             constructor(options:DialOptions, public target:JQuery) {
                 super(<DialOptions> Slider.overrideDefaults, options, target, {
-                    needleFactory: new SliderNeedleFactory()
+                    needleFactory: new SliderNeedleFactory(),
+                    scaleFactory: new SliderScaleFactory()
                 });
 
 
@@ -41,11 +42,11 @@ module DbDashboards.Dials {
             return new SliderMask(this);
         }
 
-        addScale(ctx: CanvasRenderingContext2D) {
-            var s = new SliderScale(this);
-            s.addLayer(ctx);
+        //addScale(ctx: CanvasRenderingContext2D) {
+        //    var s = new SliderScale(this.options, ctx);
+        //    s.render();
 
-        }
+        //}
 
        
 
