@@ -1285,7 +1285,6 @@ var DbDashboards;
                 var name = options.theme.trim();
                 if (typeof name == "string") {
                     for (var t in themes) {
-                        console.log("[" + t + "]" + "|" + name + "|");
                         if (t == name) {
                             return themes[name];
                         }
@@ -1312,6 +1311,7 @@ var DbDashboards;
             DialBase.Dial180E = "dial180E";
             DialBase.Dial180W = "dial180W";
             DialBase.Slider = "slider";
+            DialBase.Thermometer = "thermometer";
 
             DialBase.defaults = {
                 baseRunOutSize: 33,
@@ -1680,6 +1680,7 @@ var DbDashboards;
             ControlFactoryBase.dial180 = "dial180";
             ControlFactoryBase.dial360 = "dial360";
             ControlFactoryBase.marquee = "marquee";
+            ControlFactoryBase.thermometer = "thermometer";
             return ControlFactoryBase;
         })();
         Dials.ControlFactoryBase = ControlFactoryBase;
@@ -2659,7 +2660,6 @@ var DbDashboards;
                 var name = options.theme.trim();
                 if (typeof name == "string") {
                     for (var t in themes) {
-                        console.log("[" + t + "]" + "|" + name + "|");
                         if (t == name) {
                             return themes[name];
                         }
@@ -2853,6 +2853,9 @@ Lightweight JQuery integration
                         break;
                     case DbDashboards.Dials.ControlFactoryBase.slider:
                         factory = new DbDashboards.Dials.SliderFactory(options, $(this));
+                        break;
+                    case DbDashboards.Dials.ControlFactoryBase.thermometer:
+                        factory = new DbDashboards.Dials.ThermometerFactory(options, $(this));
                         break;
                     case DbDashboards.Dials.ControlFactoryBase.marquee:
                         factory = new DbDashboards.Marquees.MarqueeFactory(options, $(this));
@@ -3650,63 +3653,366 @@ var DbDashboards;
 var DbDashboards;
 (function (DbDashboards) {
     (function (Dials) {
-        var Themulator = (function () {
-            function Themulator(editorDiv, canvas) {
-                this.editorDiv = editorDiv;
-                this.canvas = canvas;
-                this.initializeOptions();
+        var ThermometerNeedle = (function (_super) {
+            __extends(ThermometerNeedle, _super);
+            function ThermometerNeedle(options, needleContext) {
+                _super.call(this, options, needleContext);
+                this.calculateMetrics();
             }
-            Themulator.prototype.process = function () {
-                this.dialFromOptions();
-                this.initializeUI();
+            ThermometerNeedle.prototype.render = function (stepValue) {
+                var normalized = (stepValue - this.options.value.min) / (this.options.value.max - this.options.value.min);
+                this.clear();
+
+                this.showMetrics();
+
+                this.needleContext.rotate(this.options.prv.needleRotation);
+
+                this.needleContext.fillStyle = this.options.needle.fillStyle;
+                this.needleContext.strokeStyle = this.options.needle.strokeStyle;
+                this.needleContext.lineWidth = this.options.needle.strokeWidth + 1;
+
+                this.needleContext.save();
+                this.createPath();
+                this.needleContext.clip();
+
+                //  var lg = this.needleContext.createLinearGradient(0, 0, this.options.prv.effectiveWidth, this.options.prv.effectiveHeight);
+                var lg = this.needleContext.createRadialGradient(this.bowlCenter.x, this.bowlCenter.y, 5, this.bowlCenter.x, this.bowlCenter.y, this.bowlRadius);
+                lg.addColorStop(1, "#000");
+                lg.addColorStop(0, this.options.needle.fillStyle);
+
+                //this.needleContext.fillStyle = lg;
+                this.needleContext.fillRect(this.bowlCenter.x - this.bowlRadius, this.bowlCenter.y - this.bowlRadius, this.bowlRadius * 2, this.bowlRadius * 2);
+
+                this.needleContext.restore();
+
+                this.createPath();
+                this.needleContext.stroke();
             };
 
-            Themulator.prototype.dialFromOptions = function () {
-                if (this.dial != null) {
-                    this.dial.destroy();
-                }
-                this.canvas.width = this.canvas.width;
-                this.dial = new Dials.Dial360E(this.options, this.canvas);
-                this.dial.render();
+            ThermometerNeedle.prototype.createPath = function () {
+                var r = this.bubbleRadius;
+
+                this.needleContext.beginPath();
+                this.needleContext.moveTo(this.x, this.y + r);
+                this.needleContext.lineTo(this.x, this.tubeBaseY);
+                this.needleContext.arc(this.x, this.tubeBaseY + r, r, 1.5 * Math.PI, Math.PI, true);
+
+                this.bowlCenter = new Dials.Point(this.x + this.w / 2, this.tubeBaseY + r);
+                this.bowlRadius = r + this.w / 2;
+
+                this.needleContext.arc(this.bowlCenter.x, this.bowlCenter.y, this.bowlRadius, Math.PI, 0, true);
+                this.needleContext.arc(this.x + r, this.tubeBaseY + r, r, 0, 1.5 * Math.PI, true);
+                this.needleContext.lineTo(this.x + this.w, this.y + r);
+                this.needleContext.arc(this.x + this.w / 2, this.y + r, this.w / 2, 0, Math.PI, true);
+                this.needleContext.closePath();
             };
 
-            Themulator.prototype.initializeOptions = function () {
-                this.options = $.extend({}, Dials.DialBase.themes.chocolate);
+            ThermometerNeedle.prototype.tween = function (normalizedValue) {
+                return new Dials.Point(this.options.prv.minPoint.x + ((this.options.prv.maxPoint.x - this.options.prv.minPoint.x) * normalizedValue), this.options.prv.minPoint.y + ((this.options.prv.maxPoint.y - this.options.prv.minPoint.y) * normalizedValue));
             };
 
-            Themulator.prototype.initializeUI = function () {
-                this.initializeFace(this.editorDiv);
+            ThermometerNeedle.prototype.calculateMetrics = function () {
+                console.log("bm: " + this.options.bezel.margin + ", bw: " + this.options.bezel.width + ", vm: " + this.options.value.margin + ", sm: " + this.options.scale.margin);
+
+                var toTop = this.options.bezel.margin * 2 + this.options.bezel.width + this.options.scale.margin;
+                var maxis = Math.max(this.options.prv.effectiveHeight, this.options.prv.effectiveWidth);
+
+                var bottomSpaceForValue = toTop + this.options.value.margin * 2 + this.options.value.font.pixelSize / 2;
+
+                this.x = (this.options.prv.effectiveWidth / 2) - this.options.needle.width / 2;
+                this.y = toTop;
+                this.w = this.options.needle.width * 2;
+                this.bubbleRadius = this.options.needle.width * 2;
+                this.h = maxis - (toTop + bottomSpaceForValue);
+                this.tubeBaseY = this.h - this.bubbleRadius;
             };
 
-            Themulator.prototype.initializeFace = function (list) {
-                var _this = this;
-                var faceSection = this.addSection(list, "Face");
-                this.addColorEditor(faceSection, "Gradient color 1", this.options.face.gradientColor1, function (color) {
-                    _this.options.face.gradientColor1 = color;
-                    _this.dialFromOptions();
-                });
-                this.addColorEditor(faceSection, "Gradient color 2", this.options.face.gradientColor2, function (color) {
-                    _this.options.face.gradientColor2 = color;
-                    _this.dialFromOptions();
-                });
-            };
+            ThermometerNeedle.prototype.showMetrics = function () {
+                var c = this.needleContext;
+                c.strokeStyle = "#00dd00";
+                c.strokeRect(this.x, this.y, this.w, this.h);
+                c.strokeRect(0, this.y, this.options.prv.effectiveWidth, this.h);
 
-            Themulator.prototype.addSection = function (parent, title) {
-                $("<h2>" + title + "</h2>").appendTo(parent);
-                return $("<dl/>").appendTo(parent);
+                c.strokeStyle = "#dd00dd";
+                c.strokeRect(0, this.y, this.options.prv.effectiveWidth, this.tubeBaseY - this.y);
             };
-
-            Themulator.prototype.addColorEditor = function (list, title, value, callback) {
-                $("<dt>" + title + "</dt>").appendTo(list);
-                var tb = $("<input type='text'/>").appendTo(list);
-                tb.val(value);
-                tb.change(function (e) {
-                    callback($(this).val());
-                });
+            return ThermometerNeedle;
+        })(Dials.NeedleBase);
+        Dials.ThermometerNeedle = ThermometerNeedle;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        var ThermometerNeedleFactory = (function () {
+            function ThermometerNeedleFactory() {
+            }
+            ThermometerNeedleFactory.prototype.create = function (options, needleContext) {
+                return new Dials.ThermometerNeedle(options, needleContext);
             };
-            return Themulator;
+            return ThermometerNeedleFactory;
         })();
-        Dials.Themulator = Themulator;
+        Dials.ThermometerNeedleFactory = ThermometerNeedleFactory;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        var ThermometerScale = (function (_super) {
+            __extends(ThermometerScale, _super);
+            function ThermometerScale(dialOptions, context) {
+                _super.call(this, dialOptions, context);
+                this.options = dialOptions.scale;
+            }
+            ThermometerScale.prototype.render = function () {
+                this.drawScaleBand(this.context);
+            };
+
+            /**
+            * draw the outer scale band
+            * @param ctx
+            * @param metrics
+            */
+            ThermometerScale.prototype.drawScaleBand = function (ctx) {
+                ctx.beginPath();
+                ctx.strokeStyle = this.options.strokeStyle;
+                ctx.lineWidth = this.options.width;
+
+                //  ctx.moveTo(this.scaleBandX1, this.scaleBandY1);
+                //  ctx.lineTo(this.scaleBandX2, this.scaleBandY2);
+                ctx.stroke();
+                ctx.closePath();
+            };
+            return ThermometerScale;
+        })(Dials.ScaleBase);
+        Dials.ThermometerScale = ThermometerScale;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        var ThermometerScaleFactory = (function () {
+            function ThermometerScaleFactory() {
+            }
+            ThermometerScaleFactory.prototype.create = function (options, context) {
+                if (typeof this[options.orientation] == 'function') {
+                    return this[options.orientation](options, context);
+                }
+                return this.north(options, context);
+            };
+
+            ThermometerScaleFactory.prototype.north = function (options, context) {
+                return new Dials.ThermometerScale(options, context);
+            };
+
+            ThermometerScaleFactory.prototype.south = function (options, context) {
+                return this.north(options, context);
+            };
+
+            ThermometerScaleFactory.prototype.east = function (options, context) {
+                return this.north(options, context);
+            };
+
+            ThermometerScaleFactory.prototype.west = function (options, context) {
+                return this.north(options, context);
+            };
+            return ThermometerScaleFactory;
+        })();
+        Dials.ThermometerScaleFactory = ThermometerScaleFactory;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        /**
+        * A horizontal gauge
+        */
+        var Thermometer = (function (_super) {
+            __extends(Thermometer, _super);
+            /**
+            * Constructs a new Dial360
+            * @param options the options for the Dial360
+            */
+            function Thermometer(options, target) {
+                _super.call(this, Thermometer.overrideDefaults, options, target, {
+                    needleFactory: new Dials.ThermometerNeedleFactory(),
+                    scaleFactory: new Dials.ThermometerScaleFactory()
+                });
+                this.target = target;
+                this.needleLength = 10;
+            }
+            /**
+            * Applies a mask to the prevent glass highlights etc over flowing
+            */
+            Thermometer.prototype.getMask = function () {
+                return new Dials.SliderMask(this);
+            };
+
+            Thermometer.prototype.addBezel = function (ctx) {
+                var b = new Dials.SliderBezel(this);
+                b.addLayer(ctx);
+            };
+
+            Thermometer.prototype.effectiveHeight = function () {
+                return this.options.height || this.target.height();
+            };
+
+            Thermometer.prototype.effectiveWidth = function () {
+                return this.options.width || this.target.width();
+            };
+
+            /**
+            * gets the y position for a horizontal gauges arrow in North orientation. This will be the x for a West dial and effective-that for other side
+            */
+            Thermometer.prototype.needleCenterFromTop = function () {
+                return (this.options.bezel.margin + this.options.bezel.width + this.options.scale.margin + this.options.scale.width + (this.needleLength / 2));
+            };
+
+            Thermometer.prototype.needleMinimumOffSet = function () {
+                return this.options.scale.sideMargin + this.options.scale.majorTicks.width / 2;
+            };
+            Thermometer.overrideDefaults = {
+                type: Dials.DialBase.Thermometer,
+                value: {}
+            };
+            return Thermometer;
+        })(Dials.DialBase);
+        Dials.Thermometer = Thermometer;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        /**
+        * A horizontal gauge
+        */
+        var ThermometerE = (function (_super) {
+            __extends(ThermometerE, _super);
+            /**
+            * Constructs a new Dial360
+            * @param options the options for the Dial360
+            */
+            function ThermometerE(options, target) {
+                _super.call(this, options, target);
+                this.target = target;
+
+                var x = this.effectiveWidth() - this.needleCenterFromTop();
+
+                this.options.prv = {
+                    effectiveHeight: this.effectiveHeight(),
+                    effectiveWidth: this.effectiveWidth(),
+                    scaleStartAngle: 0,
+                    scaleEndAngle: 0,
+                    needleZeroOffset: 0,
+                    needleSweep: 0,
+                    needleX: 0,
+                    needleY: 0,
+                    needleLength: this.needleLength,
+                    minPoint: new Dials.Point(x, this.needleMinimumOffSet()),
+                    maxPoint: new Dials.Point(x, this.effectiveHeight() - this.needleMinimumOffSet()),
+                    needleRotation: 0
+                };
+            }
+            /**
+            * Ask the dial where its value should be displayed
+            */
+            ThermometerE.prototype.getDialValuePostion = function () {
+                var tx = (this.options.prv.effectiveWidth / 2);
+                var margin = this.options.bezel.margin * 2 + this.options.bezel.width + this.options.value.margin * 2;
+                var ty = (this.options.height - margin) + this.options.value.font.pixelSize / 2;
+
+                var t = this.needle.needleContext.strokeStyle;
+                this.needle.needleContext.strokeStyle = "blue";
+                this.needle.needleContext.strokeRect(0, ty, 200, 1);
+                this.needle.needleContext.strokeStyle = t;
+
+                return { x: tx, y: ty, r: 0 };
+            };
+            return ThermometerE;
+        })(Dials.Thermometer);
+        Dials.ThermometerE = ThermometerE;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        var ThermometerFactory = (function (_super) {
+            __extends(ThermometerFactory, _super);
+            function ThermometerFactory(options, target) {
+                _super.call(this, options, target, Dials.ControlFactoryBase.thermometer);
+            }
+            ThermometerFactory.prototype.north = function (options, target) {
+                return new Dials.ThermometerN(options, target);
+            };
+
+            ThermometerFactory.prototype.south = function (options, target) {
+                return this.north(options, target);
+            };
+
+            ThermometerFactory.prototype.east = function (options, target) {
+                return new Dials.ThermometerE(options, target);
+            };
+
+            ThermometerFactory.prototype.west = function (options, target) {
+                return this.east(options, target);
+            };
+            return ThermometerFactory;
+        })(Dials.ControlFactoryBase);
+        Dials.ThermometerFactory = ThermometerFactory;
+    })(DbDashboards.Dials || (DbDashboards.Dials = {}));
+    var Dials = DbDashboards.Dials;
+})(DbDashboards || (DbDashboards = {}));
+var DbDashboards;
+(function (DbDashboards) {
+    (function (Dials) {
+        /**
+        * A horizontal gauge
+        */
+        var ThermometerN = (function (_super) {
+            __extends(ThermometerN, _super);
+            /**
+            * Constructs a new Dial360
+            * @param options the options for the Dial360
+            */
+            function ThermometerN(options, target) {
+                _super.call(this, options, target);
+                this.target = target;
+
+                var y = this.needleCenterFromTop();
+
+                this.options.prv = {
+                    effectiveHeight: this.effectiveHeight(),
+                    effectiveWidth: this.effectiveWidth(),
+                    scaleStartAngle: 0,
+                    scaleEndAngle: 0,
+                    needleZeroOffset: 0,
+                    needleSweep: 0,
+                    needleX: 0,
+                    needleY: 0,
+                    needleLength: this.needleLength,
+                    minPoint: new Dials.Point(this.needleMinimumOffSet(), y),
+                    maxPoint: new Dials.Point(this.effectiveWidth() - this.needleMinimumOffSet(), y),
+                    needleRotation: Math.PI / 2
+                };
+            }
+            /**
+            * Ask the dial where its value should be displayed
+            */
+            ThermometerN.prototype.getDialValuePostion = function () {
+                var ty = (this.options.prv.effectiveHeight / 2);
+                var bezOffset = (this.options.bezel.width / 2) + this.options.bezel.margin;
+                var tx = (bezOffset + (this.options.value.font.pixelSize / 2));
+                return { x: tx, y: ty, r: Math.PI / 2 };
+            };
+            return ThermometerN;
+        })(Dials.Thermometer);
+        Dials.ThermometerN = ThermometerN;
     })(DbDashboards.Dials || (DbDashboards.Dials = {}));
     var Dials = DbDashboards.Dials;
 })(DbDashboards || (DbDashboards = {}));

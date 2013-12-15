@@ -112,9 +112,18 @@
     <TypeScriptCompile Include="ts\sliders\slider\SliderN.ts" />
     <TypeScriptCompile Include="ts\sliders\slider\SliderS.ts" />
     <TypeScriptCompile Include="ts\sliders\slider\SliderW.ts" />
-    <TypeScriptCompile Include="ts\themes\Themulator.ts" />
+    <TypeScriptCompile Include="ts\thermoeters\needles\ThermometerNeedle.ts" />
+    <TypeScriptCompile Include="ts\thermoeters\needles\ThermometerNeedleFactory.ts" />
+    <TypeScriptCompile Include="ts\thermoeters\Scales\ThermometerScale.ts" />
+    <TypeScriptCompile Include="ts\thermoeters\Scales\THermometerScaleFactory.ts" />
+    <TypeScriptCompile Include="ts\thermoeters\Thermometer.ts" />
+    <TypeScriptCompile Include="ts\thermoeters\ThermometerE.ts" />
+    <TypeScriptCompile Include="ts\thermoeters\ThermometerFactory.ts" />
+    <TypeScriptCompile Include="ts\thermoeters\ThermometerN.ts" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="ts\themes\" />
+  </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
     <VSToolsPath Condition="'$(VSToolsPath)' == ''">$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)</VSToolsPath>

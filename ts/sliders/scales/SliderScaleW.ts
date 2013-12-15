@@ -10,7 +10,8 @@ module DbDashboards.Dials {
             this.scaleBandY1 = this.options.sideMargin;
             this.scaleBandX2 = this.scaleBandX1;
             this.scaleBandY2 = this.dialOptions.height - this.options.sideMargin;
-            this.majorTickSpacing = (this.scaleBandY2 - this.scaleBandY1) / (this.options.majorTicks.count - 1);        }
+            this.majorTickSpacing = (this.scaleBandY2 - this.scaleBandY1) / (this.options.majorTicks.count - 1);
+        }
 
         /**
          * calculate the start and end points of a major tick line for this dial and orientation

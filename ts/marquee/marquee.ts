@@ -50,7 +50,6 @@ module DbDashboards.Marquees {
             var name = options.theme.trim();
             if (typeof name == "string") {
                 for (var t in themes) {
-                    console.log("["+t+"]" +"|"+name+"|");
                     if (t == name) {
                         return themes[name];
                     }

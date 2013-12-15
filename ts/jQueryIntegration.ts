@@ -44,6 +44,9 @@
                     case DbDashboards.Dials.ControlFactoryBase.slider:
                         factory = new DbDashboards.Dials.SliderFactory(options, $(this));
                         break;   
+                    case DbDashboards.Dials.ControlFactoryBase.thermometer:
+                        factory = new DbDashboards.Dials.ThermometerFactory(options, $(this));
+                        break;   
                     case DbDashboards.Dials.ControlFactoryBase.marquee:
                         factory = new DbDashboards.Marquees.MarqueeFactory(options, $(this));
                         break;

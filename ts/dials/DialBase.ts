@@ -24,7 +24,7 @@
  */
 module DbDashboards.Dials {
 
-
+    
 
     export class DialBase extends DbDashboards.Common.Dashboard {
 
@@ -35,6 +35,7 @@ module DbDashboards.Dials {
         public static Dial180E:string = "dial180E";
         public static Dial180W:string = "dial180W";
         public static Slider:string = "slider";
+        public static Thermometer: string = "thermometer";
 
 
 
@@ -300,7 +301,6 @@ module DbDashboards.Dials {
             var name = options.theme.trim();
             if (typeof name == "string") {
                 for (var t in themes) {
-                    console.log("["+t+"]" +"|"+name+"|");
                    if (t == name) {
                        return themes[name];
                    }

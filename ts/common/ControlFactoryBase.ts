@@ -5,6 +5,7 @@ module DbDashboards.Dials {
         public static dial180: string = "dial180";
         public static dial360: string = "dial360";
         public static marquee: string = "marquee";
+        public static thermometer: string = "thermometer";
 
         constructor(public options: DialOptions, public target: JQuery, expectedType: string) {
             if (options.type.toLowerCase() != expectedType) {
