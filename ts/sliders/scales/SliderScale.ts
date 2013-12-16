@@ -24,7 +24,7 @@ module DbDashboards.Dials {
             this.scaleY = this.dialOptions.bezel.margin + this.dialOptions.bezel.width + this.options.margin + (this.options.width);
             this.scaleInnerEdge = this.options.sideMargin + this.scaleY;
             this.scaleOuterEdge = this.dialOptions.prv.effectiveWidth - this.scaleInnerEdge;
-            this.minorTickSpacing = this.majorTickSpacing / this.options.minorTicks.count;
+         
 
         }
 

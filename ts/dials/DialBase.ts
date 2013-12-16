@@ -389,7 +389,7 @@ module DbDashboards.Dials {
                     strokeStyle: "pink",
                     fillStyle: "red",
                     family: "Verdana",
-                    pixelSize: 10
+                    pixelSize: 12
                 }
             }
         };
@@ -455,7 +455,7 @@ module DbDashboards.Dials {
                 },
                 needle: {
                     fillStyle: "#CBCBF7",
-                    strokeStyle: "#000",
+                    strokeStyle: "rgba(0,0,0,0)",
                     strokeWidth: 1,
                     width: 4,
                     margin: 20,

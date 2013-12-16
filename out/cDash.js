@@ -602,7 +602,6 @@ var DbDashboards;
                 this.scaleY = this.dialOptions.bezel.margin + this.dialOptions.bezel.width + this.options.margin + (this.options.width);
                 this.scaleInnerEdge = this.options.sideMargin + this.scaleY;
                 this.scaleOuterEdge = this.dialOptions.prv.effectiveWidth - this.scaleInnerEdge;
-                this.minorTickSpacing = this.majorTickSpacing / this.options.minorTicks.count;
             }
             SliderScale.prototype.render = function () {
                 this.drawMajorTicks();
@@ -1382,7 +1381,7 @@ var DbDashboards;
                         strokeStyle: "pink",
                         fillStyle: "red",
                         family: "Verdana",
-                        pixelSize: 10
+                        pixelSize: 12
                     }
                 }
             };
@@ -1443,7 +1442,7 @@ var DbDashboards;
                     },
                     needle: {
                         fillStyle: "#CBCBF7",
-                        strokeStyle: "#000",
+                        strokeStyle: "rgba(0,0,0,0)",
                         strokeWidth: 1,
                         width: 4,
                         margin: 20,
@@ -3429,6 +3428,7 @@ var DbDashboards;
                 this.scaleBandX2 = this.scaleBandX1;
                 this.scaleBandY2 = this.dialOptions.height - this.options.sideMargin;
                 this.majorTickSpacing = (this.scaleBandY2 - this.scaleBandY1) / (this.options.majorTicks.count - 1);
+                this.minorTickSpacing = this.majorTickSpacing / this.options.minorTicks.count;
             }
             /**
             * calculate the start and end points of a major tick line for this dial and orientation
@@ -3516,6 +3516,7 @@ var DbDashboards;
                 this.scaleBandX2 = this.dialOptions.width - this.options.sideMargin;
                 this.scaleBandY2 = this.scaleBandY1;
                 this.majorTickSpacing = (this.scaleBandX2 - this.scaleBandX1) / (this.options.majorTicks.count - 1);
+                this.minorTickSpacing = this.majorTickSpacing / this.options.minorTicks.count;
             }
             /**
             * calculate the start and end points of a major tick line for this dial and orientation
@@ -3567,6 +3568,7 @@ var DbDashboards;
                 this.scaleBandX2 = this.dialOptions.width - this.options.sideMargin;
                 this.scaleBandY2 = this.scaleBandY1;
                 this.majorTickSpacing = (this.scaleBandX2 - this.scaleBandX1) / (this.options.majorTicks.count - 1);
+                this.minorTickSpacing = this.majorTickSpacing / this.options.minorTicks.count;
             }
             /**
             * calculate the start and end points of a major tick line for this dial and orientation
@@ -3618,6 +3620,7 @@ var DbDashboards;
                 this.scaleBandX2 = this.scaleBandX1;
                 this.scaleBandY2 = this.dialOptions.height - this.options.sideMargin;
                 this.majorTickSpacing = (this.scaleBandY2 - this.scaleBandY1) / (this.options.majorTicks.count - 1);
+                this.minorTickSpacing = this.majorTickSpacing / this.options.minorTicks.count;
             }
             /**
             * calculate the start and end points of a major tick line for this dial and orientation
@@ -3789,8 +3792,8 @@ var DbDashboards;
                 this.needleCenterBottom = new Dials.Point(this.metrics.x + this.metrics.w / 2, this.metrics.tubeBaseY);
             }
             ThermometerScale.prototype.render = function () {
-                this.drawScaleBand();
                 this.drawMajorTicks();
+                this.drawScaleBand();
             };
 
             /**
@@ -3812,7 +3815,7 @@ var DbDashboards;
             };
 
             ThermometerScale.prototype.drawMirrorScaleBand = function (offset) {
-                this.drawLine(new Dials.Line(this.needleCenterTop.x + offset, this.needleCenterTop.y, this.needleCenterBottom.x + offset, this.needleCenterBottom.y));
+                this.drawLine(new Dials.Line(this.needleCenterTop.x + offset, this.needleCenterTop.y - this.options.majorTicks.width / 2, this.needleCenterBottom.x + offset, this.needleCenterBottom.y + this.options.majorTicks.width / 2));
             };
 
             ThermometerScale.prototype.drawMajorTicks = function () {

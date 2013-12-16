@@ -11,6 +11,7 @@ module DbDashboards.Dials {
             this.scaleBandX2 = this.dialOptions.width - this.options.sideMargin;
             this.scaleBandY2 = this.scaleBandY1;
             this.majorTickSpacing = (this.scaleBandX2 - this.scaleBandX1) / (this.options.majorTicks.count - 1);
+            this.minorTickSpacing = this.majorTickSpacing / this.options.minorTicks.count;
         }
 
         /**

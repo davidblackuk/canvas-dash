@@ -20,8 +20,8 @@ module DbDashboards.Dials {
         }
 
         render() {
-            this.drawScaleBand();
             this.drawMajorTicks();
+            this.drawScaleBand();
         }
 
 
@@ -46,7 +46,8 @@ module DbDashboards.Dials {
         }
 
         drawMirrorScaleBand(offset: number) {
-            this.drawLine(new Line(this.needleCenterTop.x + offset, this.needleCenterTop.y, this.needleCenterBottom.x + offset, this.needleCenterBottom.y));
+            this.drawLine(new Line(this.needleCenterTop.x + offset,
+                this.needleCenterTop.y - this.options.majorTicks.width/2, this.needleCenterBottom.x + offset, this.needleCenterBottom.y + this.options.majorTicks.width/2));
         }
 
 
