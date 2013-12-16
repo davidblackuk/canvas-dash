@@ -43,13 +43,20 @@ module DbDashboards.Dials {
         */
         getDialValuePostion(): TranslationAndRotation {
             var tx = (this.options.prv.effectiveWidth / 2);
-            var margin = this.options.bezel.margin * 2 + this.options.bezel.width + this.options.value.margin*2;
-            var ty = (this.options.height -margin) + this.options.value.font.pixelSize/2;
 
-            var t = this.needle.needleContext.strokeStyle;
-            this.needle.needleContext.strokeStyle = "blue";
-            this.needle.needleContext.strokeRect(0, ty, 200,1);
-            this.needle.needleContext.strokeStyle = t;
+
+
+            var margin = this.options.bezel.margin * 2 + this.options.bezel.width + this.options.value.margin;
+
+
+
+
+            var ty = (this.options.height - margin) ;
+
+            //var t = this.needle.needleContext.strokeStyle;
+            //this.needle.needleContext.strokeStyle = "blue";
+            //this.needle.needleContext.strokeRect(0, this.options.height - margin, this.options.width, - this.options.value.font.pixelSize);
+            //this.needle.needleContext.strokeStyle = t;
 
             return { x: tx, y: ty, r: 0 };
 

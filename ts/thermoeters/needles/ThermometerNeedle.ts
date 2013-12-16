@@ -3,18 +3,12 @@ module DbDashboards.Dials {
 
     export class ThermometerNeedle extends NeedleBase {
 
-        private x: number;
-        private y: number;
-        private w: number;
-        private h: number;
-        private bubbleRadius: number;
-        private bowlCenter: Point;
-        private bowlRadius: number;
-        private tubeBaseY: number;
+        metrics: any;
 
         constructor(options: DialOptions, needleContext: CanvasRenderingContext2D) {
             super(options, needleContext);
-            this.calculateMetrics();
+            this.metrics = ThermometerNeedle.calculateMetrics(options);
+
         }
 
         render(stepValue: number) {
@@ -24,7 +18,7 @@ module DbDashboards.Dials {
             var normalized = (stepValue - this.options.value.min) / (this.options.value.max - this.options.value.min);
             this.clear();
 
-            this.showMetrics();
+           // this.showMetrics();
 
 
             this.needleContext.rotate(this.options.prv.needleRotation);
@@ -48,12 +42,20 @@ module DbDashboards.Dials {
 
             //  var lg = this.needleContext.createLinearGradient(0, 0, this.options.prv.effectiveWidth, this.options.prv.effectiveHeight);
 
-            var lg = this.needleContext.createRadialGradient(this.bowlCenter.x, this.bowlCenter.y, 5, this.bowlCenter.x, this.bowlCenter.y, this.bowlRadius);
-            lg.addColorStop(1, "#000");
-            lg.addColorStop(0, this.options.needle.fillStyle);
-            //this.needleContext.fillStyle = lg;
+            var lg = this.needleContext.createRadialGradient(this.metrics.bowlCenter.x, this.metrics.bowlCenter.y, 1, this.metrics.bowlCenter.x, this.metrics.bowlCenter.y, this.metrics.bowlRadius);
+            lg.addColorStop(0, "#fff");
+            lg.addColorStop(1, this.options.needle.fillStyle);
+            this.needleContext.fillStyle = lg;
 
-            this.needleContext.fillRect(this.bowlCenter.x - this.bowlRadius, this.bowlCenter.y - this.bowlRadius, this.bowlRadius * 2, this.bowlRadius*2);
+            this.needleContext.fillRect(this.metrics.bowlCenter.x - this.metrics.bowlRadius, this.metrics.bowlCenter.y - this.metrics.bowlRadius, this.metrics.bowlRadius * 2, this.metrics.bowlRadius*2);
+
+
+            var heightAtMax = (-(this.metrics.tubeBaseY - this.metrics.y));
+            this.needleContext.fillStyle = this.options.needle.fillStyle;
+            this.needleContext.fillRect(this.metrics.x, this.metrics.tubeBaseY, this.metrics.w, normalized*heightAtMax);
+
+          
+
 
 
             this.needleContext.restore();
@@ -70,20 +72,21 @@ module DbDashboards.Dials {
 
            
         
-            var r = this.bubbleRadius;
-      
+            var r = this.metrics.bubbleRadius;
+            var topRadius = this.metrics.w / 2;
+
             this.needleContext.beginPath();
-            this.needleContext.moveTo(this.x, this.y + r);
-            this.needleContext.lineTo(this.x, this.tubeBaseY);
-            this.needleContext.arc(this.x, this.tubeBaseY + r, r, 1.5 * Math.PI, Math.PI, true);
+            this.needleContext.moveTo(this.metrics.x, this.metrics.y + topRadius);
+            this.needleContext.lineTo(this.metrics.x, this.metrics.tubeBaseY);
+            this.needleContext.arc(this.metrics.x, this.metrics.tubeBaseY + r, r, 1.5 * Math.PI, Math.PI, true);
 
-            this.bowlCenter = new Point(this.x + this.w / 2, this.tubeBaseY + r);
-            this.bowlRadius = r + this.w / 2;
+            this.metrics["bowlCenter"] = new Point(this.metrics.x + this.metrics.w / 2, this.metrics.tubeBaseY + r);
+            this.metrics["bowlRadius"] = r + this.metrics.w / 2;
 
-            this.needleContext.arc(this.bowlCenter.x, this.bowlCenter.y, this.bowlRadius, Math.PI, 0, true);
-            this.needleContext.arc(this.x + r, this.tubeBaseY + r, r, 0, 1.5 * Math.PI, true);
-            this.needleContext.lineTo(this.x + this.w, this.y + r);
-            this.needleContext.arc(this.x + this.w / 2, this.y + r, this.w / 2, 0, Math.PI, true);
+            this.needleContext.arc(this.metrics.bowlCenter.x, this.metrics.bowlCenter.y, this.metrics.bowlRadius, Math.PI, 0, true);
+            this.needleContext.arc(this.metrics.x + r, this.metrics.tubeBaseY + r, r, 0, 1.5 * Math.PI, true);
+            this.needleContext.lineTo(this.metrics.x + this.metrics.w, this.metrics.y + topRadius);
+            this.needleContext.arc(this.metrics.x + this.metrics.w / 2, this.metrics.y + topRadius, topRadius, 0, Math.PI, true);
             this.needleContext.closePath();
         }
 
@@ -93,34 +96,37 @@ module DbDashboards.Dials {
 
         }
 
-        calculateMetrics() {
-            console.log("bm: "+ this.options.bezel.margin + ", bw: " + this.options.bezel.width + ", vm: " + this.options.value.margin + ", sm: " +  this.options.scale.margin);
+        public static calculateMetrics(options: DialOptions) {
+            var toTop = options.bezel.margin * 2 + options.bezel.width + options.scale.margin;
+            var maxis = Math.max(options.prv.effectiveHeight, options.prv.effectiveWidth);
+            var bottomSpaceForValue = options.bezel.margin * 2 + options.bezel.width + options.value.margin + options.value.font.pixelSize;
 
-
-            var toTop = this.options.bezel.margin * 2 + this.options.bezel.width + this.options.scale.margin;
-            var maxis = Math.max(this.options.prv.effectiveHeight, this.options.prv.effectiveWidth);
-
-
-        
-        
-            var bottomSpaceForValue = toTop+  this.options.value.margin * 2 + this.options.value.font.pixelSize/2;
-
-            this.x= (this.options.prv.effectiveWidth / 2) - this.options.needle.width / 2;
-            this.y= toTop ;
-            this.w= this.options.needle.width*2;
-            this.bubbleRadius= this.options.needle.width*2 ;
-            this.h = maxis - (toTop + bottomSpaceForValue)
-            this.tubeBaseY = this.h - this.bubbleRadius;
+            var mertics = {
+                x:  (options.prv.effectiveWidth / 2) - options.needle.width ,
+                y :  toTop,
+                w :  options.needle.width * 2,
+                bubbleRadius :  options.needle.width * 2,
+                h :  maxis - (toTop + bottomSpaceForValue),
+                
+            }
+            mertics["tubeBaseY"] = mertics.h - mertics.bubbleRadius;
+            return mertics;
         }
 
         showMetrics() {
+            
             var c = this.needleContext;
             c.strokeStyle = "#00dd00";
-            c.strokeRect(this.x, this.y, this.w, this.h);
-            c.strokeRect(0, this.y, this.options.prv.effectiveWidth, this.h);
+            c.strokeRect(this.metrics.x, this.metrics.y, this.metrics.w, this.metrics.h);
+            c.strokeRect(0, this.metrics.y, this.options.prv.effectiveWidth, this.metrics.h);
 
             c.strokeStyle = "#dd00dd";
-            c.strokeRect(0, this.y, this.options.prv.effectiveWidth, this.tubeBaseY - this.y);
+            c.strokeRect(0, this.metrics.y, this.options.prv.effectiveWidth, this.metrics.tubeBaseY - this.metrics.y);
+
+
+            c.strokeStyle = "#006677";
+            c.strokeRect( this.options.prv.effectiveWidth/2, 0, 0.5, 220);
+
         }
 
     }

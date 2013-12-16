@@ -451,13 +451,13 @@ module DbDashboards.Dials {
                 bezel: {
                     strokeStyle: "rgba(0,0,0,0)",
                     width:1.5,
-                    margin:0
+                    margin:2
                 },
                 needle: {
                     fillStyle: "#CBCBF7",
                     strokeStyle: "#000",
                     strokeWidth: 1,
-                    width: 3,
+                    width: 4,
                     margin: 20,
                     shadowColor: "#333",
                     style: DialNeedleFactory.circleArrow
@@ -496,7 +496,7 @@ module DbDashboards.Dials {
                 },
                 needle: {
                     fillStyle: "#DEC7A2",
-                    strokeStyle: "#000",
+                    strokeStyle: "#DEC7A2",
                     shadowColor: "#333",
                     style: DialNeedleFactory.arrow,
                     width: 3,
@@ -542,7 +542,7 @@ module DbDashboards.Dials {
                 },
                 needle: {
                     fillStyle: "#FFFFFF",
-                    strokeStyle: "#2881E3",
+                    strokeStyle: "#ffffff",
                     shadowColor: "rgba(0,0,0,0)",
                     style: DialNeedleFactory.line,
                     width: 3,
@@ -567,9 +567,11 @@ module DbDashboards.Dials {
 
             },
             paper: {
-                face: {
-                    gradientColor1: "#F0F5DF",
-                    gradientColor2: "#F5F1DF"
+                glass: {
+                    visible: false
+                },face: {
+                    gradientColor1: "#DCE0CE",
+                    gradientColor2: "#DCE0CE"
                 },
                 value: {
                     font: {

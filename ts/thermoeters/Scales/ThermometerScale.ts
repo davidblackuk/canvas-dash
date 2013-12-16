@@ -6,11 +6,12 @@ module DbDashboards.Dials {
 
 
         public options: ScaleOptions;
+        metrics: any;
 
         constructor(dialOptions: DialOptions, context: CanvasRenderingContext2D) {
             super(dialOptions, context);
             this.options = dialOptions.scale;
-
+            this.metrics = ThermometerNeedle.calculateMetrics(dialOptions);
 
         }
 
