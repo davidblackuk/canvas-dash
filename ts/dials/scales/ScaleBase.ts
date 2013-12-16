@@ -49,10 +49,14 @@ module DbDashboards.Dials {
             this.context.beginPath();
             this.context.strokeStyle = tickOptions.strokeStyle;
             this.context.lineWidth = tickOptions.width;
-            this.context.moveTo(line.start.x, line.start.y);
-            this.context.lineTo(line.end.x, line.end.y);
+            this.drawLine(line);
             this.context.closePath();
             this.context.stroke();
+        }
+
+        drawLine(line: Line) {
+            this.context.moveTo(line.start.x, line.start.y);
+            this.context.lineTo(line.end.x, line.end.y);
         }
     }
 

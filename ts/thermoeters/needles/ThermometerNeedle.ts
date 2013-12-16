@@ -1,9 +1,20 @@
 
 module DbDashboards.Dials {
 
+    export interface ThermometerMetrics {
+        x: number;
+        y: number;
+        w: number;
+        h: number;
+        bubbleRadius: number;
+        tubeBaseY: number;
+        bowlCenter: Point;
+        bowlRadius: number;
+    }
+
     export class ThermometerNeedle extends NeedleBase {
 
-        metrics: any;
+        metrics: ThermometerMetrics;
 
         constructor(options: DialOptions, needleContext: CanvasRenderingContext2D) {
             super(options, needleContext);
@@ -80,8 +91,7 @@ module DbDashboards.Dials {
             this.needleContext.lineTo(this.metrics.x, this.metrics.tubeBaseY);
             this.needleContext.arc(this.metrics.x, this.metrics.tubeBaseY + r, r, 1.5 * Math.PI, Math.PI, true);
 
-            this.metrics["bowlCenter"] = new Point(this.metrics.x + this.metrics.w / 2, this.metrics.tubeBaseY + r);
-            this.metrics["bowlRadius"] = r + this.metrics.w / 2;
+
 
             this.needleContext.arc(this.metrics.bowlCenter.x, this.metrics.bowlCenter.y, this.metrics.bowlRadius, Math.PI, 0, true);
             this.needleContext.arc(this.metrics.x + r, this.metrics.tubeBaseY + r, r, 0, 1.5 * Math.PI, true);
@@ -102,14 +112,21 @@ module DbDashboards.Dials {
             var bottomSpaceForValue = options.bezel.margin * 2 + options.bezel.width + options.value.margin + options.value.font.pixelSize;
 
             var mertics = {
-                x:  (options.prv.effectiveWidth / 2) - options.needle.width ,
-                y :  toTop,
-                w :  options.needle.width * 2,
-                bubbleRadius :  options.needle.width * 2,
-                h :  maxis - (toTop + bottomSpaceForValue),
-                
+                x: (options.prv.effectiveWidth / 2) - options.needle.width,
+                y: toTop,
+                w: options.needle.width * 2,
+                bubbleRadius: options.needle.width * 2,
+                h: maxis - (toTop + bottomSpaceForValue),
+                tubeBaseY: 0,
+                bowlCenter: { x: 0, y: 0 },
+                bowlRadius: 0
             }
-            mertics["tubeBaseY"] = mertics.h - mertics.bubbleRadius;
+            mertics.tubeBaseY = mertics.h - mertics.bubbleRadius;
+
+            var r = mertics.bubbleRadius;
+            mertics.bowlCenter = new Point(mertics.x + mertics.w / 2, mertics.tubeBaseY + r);
+            mertics.bowlRadius = r + mertics.w / 2;
+
             return mertics;
         }
 

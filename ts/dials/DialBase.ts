@@ -389,7 +389,7 @@ module DbDashboards.Dials {
                     strokeStyle: "pink",
                     fillStyle: "red",
                     family: "Verdana",
-                    pixelSize: 12
+                    pixelSize: 10
                 }
             }
         };

@@ -401,10 +401,14 @@ var DbDashboards;
                 this.context.beginPath();
                 this.context.strokeStyle = tickOptions.strokeStyle;
                 this.context.lineWidth = tickOptions.width;
-                this.context.moveTo(line.start.x, line.start.y);
-                this.context.lineTo(line.end.x, line.end.y);
+                this.drawLine(line);
                 this.context.closePath();
                 this.context.stroke();
+            };
+
+            ScaleBase.prototype.drawLine = function (line) {
+                this.context.moveTo(line.start.x, line.start.y);
+                this.context.lineTo(line.end.x, line.end.y);
             };
             return ScaleBase;
         })();
@@ -1378,7 +1382,7 @@ var DbDashboards;
                         strokeStyle: "pink",
                         fillStyle: "red",
                         family: "Verdana",
-                        pixelSize: 12
+                        pixelSize: 10
                     }
                 }
             };
@@ -3704,9 +3708,6 @@ var DbDashboards;
                 this.needleContext.lineTo(this.metrics.x, this.metrics.tubeBaseY);
                 this.needleContext.arc(this.metrics.x, this.metrics.tubeBaseY + r, r, 1.5 * Math.PI, Math.PI, true);
 
-                this.metrics["bowlCenter"] = new Dials.Point(this.metrics.x + this.metrics.w / 2, this.metrics.tubeBaseY + r);
-                this.metrics["bowlRadius"] = r + this.metrics.w / 2;
-
                 this.needleContext.arc(this.metrics.bowlCenter.x, this.metrics.bowlCenter.y, this.metrics.bowlRadius, Math.PI, 0, true);
                 this.needleContext.arc(this.metrics.x + r, this.metrics.tubeBaseY + r, r, 0, 1.5 * Math.PI, true);
                 this.needleContext.lineTo(this.metrics.x + this.metrics.w, this.metrics.y + topRadius);
@@ -3728,9 +3729,17 @@ var DbDashboards;
                     y: toTop,
                     w: options.needle.width * 2,
                     bubbleRadius: options.needle.width * 2,
-                    h: maxis - (toTop + bottomSpaceForValue)
+                    h: maxis - (toTop + bottomSpaceForValue),
+                    tubeBaseY: 0,
+                    bowlCenter: { x: 0, y: 0 },
+                    bowlRadius: 0
                 };
-                mertics["tubeBaseY"] = mertics.h - mertics.bubbleRadius;
+                mertics.tubeBaseY = mertics.h - mertics.bubbleRadius;
+
+                var r = mertics.bubbleRadius;
+                mertics.bowlCenter = new Dials.Point(mertics.x + mertics.w / 2, mertics.tubeBaseY + r);
+                mertics.bowlRadius = r + mertics.w / 2;
+
                 return mertics;
             };
 
@@ -3776,9 +3785,12 @@ var DbDashboards;
                 _super.call(this, dialOptions, context);
                 this.options = dialOptions.scale;
                 this.metrics = Dials.ThermometerNeedle.calculateMetrics(dialOptions);
+                this.needleCenterTop = new Dials.Point(this.metrics.x + this.metrics.w / 2, this.metrics.y);
+                this.needleCenterBottom = new Dials.Point(this.metrics.x + this.metrics.w / 2, this.metrics.tubeBaseY);
             }
             ThermometerScale.prototype.render = function () {
-                this.drawScaleBand(this.context);
+                this.drawScaleBand();
+                this.drawMajorTicks();
             };
 
             /**
@@ -3786,15 +3798,50 @@ var DbDashboards;
             * @param ctx
             * @param metrics
             */
-            ThermometerScale.prototype.drawScaleBand = function (ctx) {
-                ctx.beginPath();
-                ctx.strokeStyle = this.options.strokeStyle;
-                ctx.lineWidth = this.options.width;
+            ThermometerScale.prototype.drawScaleBand = function () {
+                this.context.beginPath();
+                this.context.strokeStyle = this.options.strokeStyle;
+                this.context.lineWidth = this.options.width;
 
-                //  ctx.moveTo(this.scaleBandX1, this.scaleBandY1);
-                //  ctx.lineTo(this.scaleBandX2, this.scaleBandY2);
-                ctx.stroke();
-                ctx.closePath();
+                var deltaX = this.metrics.w / 2 + this.options.margin + this.options.width / 2;
+                this.drawMirrorScaleBand(deltaX);
+                this.drawMirrorScaleBand(-deltaX);
+
+                this.context.stroke();
+                this.context.closePath();
+            };
+
+            ThermometerScale.prototype.drawMirrorScaleBand = function (offset) {
+                this.drawLine(new Dials.Line(this.needleCenterTop.x + offset, this.needleCenterTop.y, this.needleCenterBottom.x + offset, this.needleCenterBottom.y));
+            };
+
+            ThermometerScale.prototype.drawMajorTicks = function () {
+                var deltaX = this.metrics.w / 2 + this.options.margin + this.options.width / 2;
+                var majorTickSpacing = (this.metrics.tubeBaseY - this.metrics.y) / (this.options.majorTicks.count - 1);
+                var minorTickGap = (majorTickSpacing / (this.options.minorTicks.count));
+                for (var maj = 0; maj < this.options.majorTicks.count; maj++) {
+                    var step = maj / (this.options.majorTicks.count - 1);
+                    var pos = new Dials.Point(deltaX, this.metrics.tubeBaseY - ((this.metrics.tubeBaseY - this.metrics.y) * step));
+
+                    if (maj < this.options.majorTicks.count - 1) {
+                        this.drawMinorTicks(pos, minorTickGap);
+                    }
+                    this.drawMirrorTickLine(pos, 1, this.options.majorTicks);
+                    this.drawMirrorTickLine(pos, -1, this.options.majorTicks);
+                }
+            };
+
+            ThermometerScale.prototype.drawMirrorTickLine = function (pos, sense, tickOpts) {
+                var startX = this.needleCenterTop.x + (pos.x * sense);
+                this.drawTickLine(new Dials.Line(startX, pos.y, startX + (tickOpts.length * sense), pos.y), tickOpts);
+            };
+
+            ThermometerScale.prototype.drawMinorTicks = function (majorPos, gap) {
+                for (var min = 0; min < this.options.minorTicks.count + 1; min++) {
+                    var pos = { x: majorPos.x + this.options.majorTicks.width, y: majorPos.y - (min * gap) };
+                    this.drawMirrorTickLine(pos, 1, this.options.minorTicks);
+                    this.drawMirrorTickLine(pos, -1, this.options.minorTicks);
+                }
             };
             return ThermometerScale;
         })(Dials.ScaleBase);
