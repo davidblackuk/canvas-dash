@@ -468,6 +468,8 @@ var DbDashboards;
                     var majorOuter = this.pointOnCircle(metrics.x, metrics.y, metrics.w + this.dialOptions.scale.width / 2, angle);
                     var majorInner = this.pointOnCircle(metrics.x, metrics.y, metrics.w - (this.dialOptions.scale.width / 2) - this.dialOptions.scale.majorTicks.length, angle);
 
+                    // we draw minor tick ahead of the current major tick, so omit this step for the closing tick
+                    //
                     if (maj < this.dialOptions.scale.majorTicks.count - 1) {
                         this.drawMinorTicks(ctx, metrics, angle);
                     }
@@ -625,6 +627,7 @@ var DbDashboards;
                 for (var maj = 0; maj < this.options.majorTicks.count; maj++) {
                     var line = this.getMajorTickLine(maj);
 
+                    // we draw minor tick ahead of the current major tick, so omit this step for the closing tick
                     if (maj < this.options.majorTicks.count - 1) {
                         this.drawMinorTicks(maj);
                     }
@@ -1062,26 +1065,23 @@ var DbDashboards;
     })(DbDashboards.Dials || (DbDashboards.Dials = {}));
     var Dials = DbDashboards.Dials;
 })(DbDashboards || (DbDashboards = {}));
+/*
+Copyright (C) 2013 David Black and other contributors
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
+associated documentation files (the "Software"), to deal in the Software without restriction,
+including without limitation the rights to use, copy, modify, merge, publish, distribute,
+sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all copies or
+substantial portions of the Software.
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
+BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
+NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
+DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+*/
 var DbDashboards;
 (function (DbDashboards) {
-    /*
-    Copyright (C) 2013 David Black and other contributors
-    
-    Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
-    associated documentation files (the "Software"), to deal in the Software without restriction,
-    including without limitation the rights to use, copy, modify, merge, publish, distribute,
-    sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
-    furnished to do so, subject to the following conditions:
-    
-    The above copyright notice and this permission notice shall be included in all copies or
-    substantial portions of the Software.
-    
-    THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
-    BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
-    NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
-    DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-    OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-    */
     /**
     * Base class for all dials in the kit
     */
@@ -1102,7 +1102,7 @@ var DbDashboards;
                 this.options = this.mergeSettings(dialSpecificOverrides, userOverrides);
                 this.setOrientation();
 
-                this.context = (this.target[0]).getContext("2d");
+                this.context = this.target[0].getContext("2d");
 
                 this.backgroundContext = this.createLayerContext(this.context, 0, 0);
 
@@ -1190,6 +1190,9 @@ var DbDashboards;
 
                 var original = vals.value;
 
+                // when we initialize a dial with no value and say min = 20, max = 30, then set the value afterwards
+                // to 25, the animation starts from 0 (as original value not set). causing hilarious (not) results
+                // so we clamp the original in the same way we clamp the new value
                 if (original < vals.min) {
                     original = vals.min;
                 } else if (original > vals.max) {
@@ -1376,8 +1379,7 @@ var DbDashboards;
                         count: 4,
                         width: 2,
                         length: 3
-                    },
-                    font: {
+                    }, font: {
                         strokeStyle: "pink",
                         fillStyle: "red",
                         family: "Verdana",
@@ -1537,8 +1539,7 @@ var DbDashboards;
                         },
                         minorTicks: {
                             strokeStyle: "#FFFFFF"
-                        },
-                        font: {
+                        }, font: {
                             strokeStyle: "#FFFFFF",
                             fillStyle: "#FFFFFF",
                             family: "Helvetica"
@@ -1548,8 +1549,7 @@ var DbDashboards;
                 paper: {
                     glass: {
                         visible: false
-                    },
-                    face: {
+                    }, face: {
                         gradientColor1: "#DCE0CE",
                         gradientColor2: "#DCE0CE"
                     },
@@ -2655,7 +2655,7 @@ var DbDashboards;
 
                 this.content = this.options.message;
 
-                this.onScreenContext = (this.target[0]).getContext("2d");
+                this.onScreenContext = this.target[0].getContext("2d");
                 this.backBuffer = this.createLayerContext(this.onScreenContext, 0, 0);
                 this.fillBackBuffer();
                 this.characters = new Marquees.Characters();
@@ -2823,16 +2823,13 @@ var DbDashboards;
 })(DbDashboards || (DbDashboards = {}));
 /*
 Copyright (C) 2013 David Black and other contributors
-
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and
 associated documentation files (the "Software"), to deal in the Software without restriction,
 including without limitation the rights to use, copy, modify, merge, publish, distribute,
 sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is
 furnished to do so, subject to the following conditions:
-
 The above copyright notice and this permission notice shall be included in all copies or
 substantial portions of the Software.
-
 THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING
 BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
 NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM,
@@ -2875,6 +2872,51 @@ Lightweight JQuery integration
         }
     });
 })(jQuery);
+///<reference path='ts/dials/DialOptions.ts' />
+///<reference path='ts/common/Dashboard.ts' />
+///<reference path='ts/dials/DialBezel.ts' />
+///<reference path='ts/dials/DialFace.ts' />
+///<reference path='ts/dials/DialGlass.ts' />
+///<reference path='ts/dials/masks/DialMask.ts' />
+///<reference path='ts/dials/masks/DialMask360.ts' />
+///<reference path='ts/dials/masks/DialMask180N.ts' />
+///<reference path='ts/dials/masks/DialMask180S.ts' />
+///<reference path='ts/dials/masks/DialMask180E.ts' />
+///<reference path='ts/dials/masks/DialMask180W.ts' />
+///<reference path='ts/dials/scales/ScaleBase.ts' />
+///<reference path='ts/dials/scales/DialScale.ts' />
+///<reference path='ts/sliders/Scales/SliderScale.ts' />
+///<reference path='ts/dials/needles/NeedleBase.ts' />
+///<reference path='ts/dials/needles/DialNeedle.ts' />
+///<reference path='ts/dials/needles/DialNeedleFactory.ts' />
+///<reference path='ts/dials/needles/DialNeedleArrow.ts' />
+///<reference path='ts/dials/needles/DialNeedleLine.ts' />
+///<reference path='ts/dials/needles/DialNeedleTriangle.ts' />
+///<reference path='ts/dials/needles/DialNeedleCircleArrow.ts' />
+///<reference path='ts/dials/needles/DialNeedleDart.ts' />
+///<reference path='ts/dials/DialValue.ts' />
+///<reference path='ts/dials/DialBase.ts' />
+///<reference path='ts/common/ControlFactoryBase.ts' />
+///<reference path='ts/dials/180/Dial180.ts' />
+///<reference path='ts/dials/180/Dial180N.ts' />
+///<reference path='ts/dials/180/Dial180S.ts' />
+///<reference path='ts/dials/180/Dial180E.ts' />
+///<reference path='ts/dials/180/Dial180W.ts' />
+///<reference path='ts/dials/180/Dial180Factory.ts' />
+///<reference path='ts/dials/360/Dial360.ts' />
+///<reference path='ts/dials/360/Dial360Factory.ts' />
+///<reference path='ts/sliders/slider/Slider.ts' />
+///<reference path='ts/sliders/slider/SliderN.ts' />
+///<reference path='ts/sliders/slider/SliderS.ts' />
+///<reference path='ts/sliders/slider/SliderE.ts' />
+///<reference path='ts/sliders/slider/SliderW.ts' />
+///<reference path='ts/sliders/slider/SliderFactory.ts' />
+///<reference path='ts/sliders/SliderBezel.ts' />
+///<reference path='ts/sliders/SliderMask.ts' />
+///<reference path='ts/sliders/needles/SliderNeedle.ts' />
+///<reference path='ts/marquee/characters.ts' />
+///<reference path='ts/marquee/marquee.ts' />
+///<reference path='ts/jQueryIntegration.ts' />
 var DbDashboards;
 (function (DbDashboards) {
     (function (Dials) {
@@ -2913,10 +2955,10 @@ var DbDashboards;
         var Orientations = (function () {
             function Orientations() {
             }
-            Orientations.parse = /**
+            /**
             * parse an orientation from the outside world and alias n,s,e,w to the full names
             */
-            function (value) {
+            Orientations.parse = function (value) {
                 if (value == undefined) {
                     return Orientations.North;
                 }
@@ -3674,7 +3716,15 @@ var DbDashboards;
                 this.clear();
 
                 // this.showMetrics();
+                var ty = this.metrics.h / 2;
+
+                this.needleContext.translate((this.metrics.x + this.metrics.w / 2), (ty));
                 this.needleContext.rotate(this.options.prv.needleRotation);
+                this.needleContext.translate(-(this.metrics.x + this.metrics.w / 2), -(ty));
+                this.needleContext.translate(this.options.prv.needleX, this.options.prv.needleY);
+
+                this.needleContext.fillStyle = "rgba(245,123,45,1)";
+                this.needleContext.fillRect(0, 0, this.options.width, this.options.height);
 
                 this.needleContext.fillStyle = this.options.needle.fillStyle;
                 this.needleContext.strokeStyle = this.options.needle.strokeStyle;
@@ -3700,6 +3750,8 @@ var DbDashboards;
 
                 this.createPath();
                 this.needleContext.stroke();
+
+                this.needleContext.translate(-this.options.prv.needleX, -this.options.prv.needleY);
             };
 
             ThermometerNeedle.prototype.createPath = function () {
@@ -3826,6 +3878,7 @@ var DbDashboards;
                     var step = maj / (this.options.majorTicks.count - 1);
                     var pos = new Dials.Point(deltaX, this.metrics.tubeBaseY - ((this.metrics.tubeBaseY - this.metrics.y) * step));
 
+                    // we draw minor tick ahead of the current major tick, so omit this step for the closing tick
                     if (maj < this.options.majorTicks.count - 1) {
                         this.drawMinorTicks(pos, minorTickGap);
                     }
@@ -4055,12 +4108,12 @@ var DbDashboards;
                     scaleEndAngle: 0,
                     needleZeroOffset: 0,
                     needleSweep: 0,
-                    needleX: 0,
-                    needleY: 0,
                     needleLength: this.needleLength,
                     minPoint: new Dials.Point(this.needleMinimumOffSet(), y),
                     maxPoint: new Dials.Point(this.effectiveWidth() - this.needleMinimumOffSet(), y),
-                    needleRotation: Math.PI / 2
+                    needleRotation: Math.PI / 2,
+                    needleX: -40,
+                    needleY: 20
                 };
             }
             /**

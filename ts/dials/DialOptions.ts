@@ -75,12 +75,12 @@ module DbDashboards.Dials {
 
 
     export interface ValueOptions {
-        min: number;
-        max: number;
-        decimalPlaces: number;
-        value: number;
-        margin: number;
-        font: FontOptions;
+        min?: number;
+        max?: number;
+        decimalPlaces?: number;
+        value?: number;
+        margin?: number;
+        font?: FontOptions;
 
     }
 
@@ -140,37 +140,37 @@ module DbDashboards.Dials {
          * the 180 dial is a half circle with an additional rectangular portion below the needle (For a north facing dial).
          * This is the size of that area).
          */
-            baseRunOutSize:number;
+         baseRunOutSize?:number;
 
         /**
          * Values that control the appearance of the dial face
          */
-        face: FaceOptions;
+        face?: FaceOptions;
 
         /**
          * Values that control the display of the controls current value
          */
-        value:ValueOptions;
+        value?:ValueOptions;
 
         /**
          * The bezel is the outline around the dial
          */
-        bezel:BezelOptions;
+        bezel?:BezelOptions;
 
         /**
          * The scale options control the number of major and minor tick, the fonts for the dial values etc
          */
-        scale:ScaleOptions;
+        scale?:ScaleOptions;
 
         /**
          * Options to control the 'bit that moves'
          */
-        needle:NeedleOptions;
+        needle?:NeedleOptions;
 
         /**
          * The glass is the top layer of the stack and tries to look like a glass sheen
          */
-        glass: GlassOptions;
+        glass?: GlassOptions;
 
     }
 }

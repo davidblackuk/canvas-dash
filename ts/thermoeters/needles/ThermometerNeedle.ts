@@ -29,12 +29,17 @@ module DbDashboards.Dials {
             var normalized = (stepValue - this.options.value.min) / (this.options.value.max - this.options.value.min);
             this.clear();
 
-           // this.showMetrics();
+            // this.showMetrics();
+            var ty = this.metrics.h / 2; 
 
-
+            this.needleContext.translate(( this.metrics.x + this.metrics.w / 2), ( ty));
             this.needleContext.rotate(this.options.prv.needleRotation);
+            this.needleContext.translate(-(this.metrics.x + this.metrics.w / 2), -(ty));
+            this.needleContext.translate(this.options.prv.needleX, this.options.prv.needleY);
 
-       
+            this.needleContext.fillStyle = "rgba(245,123,45,1)";
+            this.needleContext.fillRect(0, 0, this.options.width, this.options.height);
+
             this.needleContext.fillStyle = this.options.needle.fillStyle;
             this.needleContext.strokeStyle = this.options.needle.strokeStyle;
             this.needleContext.lineWidth = this.options.needle.strokeWidth+1;
@@ -74,8 +79,9 @@ module DbDashboards.Dials {
             this.createPath();
             this.needleContext.stroke();
 
-        
-          
+   
+            this.needleContext.translate(-this.options.prv.needleX, -this.options.prv.needleY);
+
           
         }
 

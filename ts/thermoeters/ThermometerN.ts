@@ -25,12 +25,12 @@ module DbDashboards.Dials {
                 scaleEndAngle: 0,
                 needleZeroOffset: 0,
                 needleSweep: 0,
-                needleX: 0,
-                needleY: 0,
                 needleLength: this.needleLength,
                 minPoint: new Point(this.needleMinimumOffSet(), y),
                 maxPoint: new Point(this.effectiveWidth() - this.needleMinimumOffSet(), y),
-                needleRotation: Math.PI/2
+                needleRotation: Math.PI/2,
+                needleX: -40,
+                needleY: 20,
 
             };
 
