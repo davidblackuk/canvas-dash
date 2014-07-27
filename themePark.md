@@ -3,6 +3,7 @@ layout: page
 permalink: /themePark/
 title: Theme editor
 description: "Create, edit and tinker with cDash themes"
+tags: [cDash, about, html5, canvas, dials, gauges, dsahboards, controls, jQuery]
 pageJS: spectrum.js 
 pageJS2: themePark.js 
 pageCSS: spectrum.css

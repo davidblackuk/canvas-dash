@@ -1,10 +1,11 @@
 ---
 layout: page
 title: Welcome to cDash
-description: "A simple and clean responsive Jekyll theme for words and photos."
-tags: [html5, jquery, gauge, dashboard]
+description: "HTML 5 canvas based dashboard dials and gauges."
+tags: [cDash, about, html5, canvas, dials, gauges, dsahboards, controls, jQuery]
 pageJS: index.js
 ---
+
 
 cDash is a collection of dials, gauges and other controls that you can add to your web pages. The primary purpose of cDash gauges was for embedding in reports and dashboards, however they have been used in many other ways also.
 

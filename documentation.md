@@ -2,8 +2,8 @@
 layout: page
 permalink: /documentation/
 title: Documentation
-description: "Howtos and articles"
-
+description: "How tos and articles"
+tags: [cDash, about, html5, canvas, dials, gauges, dsahboards, controls, jQuery]
 ---
 
 Fork the GitHub project and away you go.

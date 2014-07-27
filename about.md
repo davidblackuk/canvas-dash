@@ -2,7 +2,8 @@
 layout: page
 permalink: /about/
 title: About cDash
-tags: [cDash, about]
+description: "cDash: About the HTML 5 canvas based dashboard dial a=nd gauge license"
+tags: [cDash, about, html5, canvas, dials, gauges, dsahboards, controls, jQuery]
 modified: 2014-07-18
 image:
   feature: banner.png

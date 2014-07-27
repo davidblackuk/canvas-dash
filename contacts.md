@@ -1,8 +1,9 @@
 ---
 layout: page
 permalink: /contacts/
-title: Contacts
-tags: [cDash, contacts]
+description: "cDash: How to get in touch with the author of the HTML 5 canvas based dashboard dials and gauges. "
+tags: [cDash, about, html5, canvas, dials, gauges, dsahboards, controls, jQuery]
+
 description: Get in touch
 modified: 2014-07-18
 ---

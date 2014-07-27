@@ -3,6 +3,7 @@ layout: page
 permalink: /themes/
 title: Out of the box themes
 description: "Browse and view all available themes"
+tags: [cDash, about, html5, canvas, dials, gauges, dsahboards, controls, jQuery]
 pageJS: themes.js 
 ---
 

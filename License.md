@@ -2,6 +2,7 @@
 layout: page
 permalink: /license/
 title: Licensing information
+tags: [cDash, about, html5, canvas, dials, gauges, dsahboards, controls, jQuery]
 description: "Show's how you can use cDash in your project, both non-commercial and commercial"
 ---
 
