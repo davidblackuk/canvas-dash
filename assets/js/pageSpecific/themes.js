@@ -31,15 +31,24 @@
 
         $(function () {
             initializeThemeSelector();
-            var theme = (typeof window.location.search == 'string' && window.location.search !== "") ? window.location.search.replace("?theme=","") : "chocolate";
+            var firstLoad = (typeof window.location.search !== 'string' || window.location.search === "")            
+            var theme = !firstLoad ? window.location.search.replace("?theme=","") : "metro";
             $("#themeSelector").val(theme);
             showTheme(theme + " ");
             $("#themeSelector").change(function () {
                 window.location.search = "?theme="+$(this).val();
-            })
+            });
+
+            if (!firstLoad){
+                  $('html, body').animate({
+                    scrollTop: $("#dashboard").offset().top
+                }, 2000);
+            }
+
             animate();
             window.setInterval(animate, 2000)
         });
+
 
         function animate() {
             for (var i=0; i<window.dials.length; i++){

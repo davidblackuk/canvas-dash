@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Dials: Creating a dial and setting the value"
+title: "Basic configuration"
 description: Dial types and themes
 modified: 2014-07-19 13:55:17 +0100
 tags: [dials, cdash, doc]
@@ -11,6 +11,8 @@ image:
 comments: 
 share: 
 pageJS: dials.js
+pageJS2: purl.js
+pageJS3: tryMe.js
 ---
 
 # Dials
@@ -31,6 +33,7 @@ The built in themes are:
 
 You can create dials with themes easily (click the try me button to open the code in the editor. Experiment with the commented out code and see what the themes look like). If you're trying this code in a standalone project, don't forget the canvas element!.
 
+<div class="tryMe">
 
 {% highlight javascript %}
 //  $("#canvas").cDash({theme: "metro"});
@@ -42,6 +45,7 @@ You can create dials with themes easily (click the try me button to open the cod
 $("#canvas").cDash();
 {% endhighlight %}
 
+</div>
 
 The dial will fill the canvas (at least to the maximum amount it can to maintain its aspect ratio). The dials were designed to be rendered on canvases at a size of about 200 x 200. Smaller sizes of canvases may lead to the dial looking strange as the size of the ticks and scale bands etc will be too large. To address this you need to either fully specify the sizes of these items in the options, or, use a built in display set.
 

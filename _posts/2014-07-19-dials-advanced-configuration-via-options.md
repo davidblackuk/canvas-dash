@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Dials: advanced configuration via options"
+title: "Advanced configuration"
 modified: 2014-07-19 14:28:08 +0100
 tags: [cdash, javascript, dials]
 image:
@@ -9,6 +9,11 @@ image:
   creditlink: 
 comments: 
 share: 
+pageJS: localAnchorLeftList.js
+pageJS2: purl.js
+pageJS3: tryMe.js
+
+
 ---
 
 There are a lot of options to control the appearance of the dials and sliders. The options are segmented by the area of the dial they control.
@@ -73,6 +78,8 @@ The top level properties of the dial options are:
 	* play with this setting only if you don't mind future updates hating you.
 
 
+<a class="jumpPoint" name="Face"></a>
+
 # Face options
 
 The typescript definition of the `FaceOptions` interface is as follows
@@ -97,6 +104,8 @@ Use the same color for both gradient colors to get a solid color face.
 
 You can have a play with these settings by hitting the 'try me' button below
 
+<div class="tryMe">
+
 {% highlight javascript %}
 
     var x = $("#canvas").cDash({
@@ -109,7 +118,9 @@ You can have a play with these settings by hitting the 'try me' button below
     x.value(50);
 {% endhighlight %}
 
+</div>
 
+<a  class="jumpPoint" name="Value"></a>
 
 # Value options
 
@@ -158,6 +169,8 @@ and the definition of the contained `FontOptions` interface is
 
 If you want to experiment, here's an example with a non default value range and a value that is greater than the default maximum.
 
+<div class="tryMe">
+
 {% highlight javascript %}
 
 var x = $("#canvas").cDash({
@@ -177,6 +190,8 @@ var x = $("#canvas").cDash({
 x.value(114);
 {% endhighlight %}
 
+</div>
+
 
 On a final note, values are:
 
@@ -189,7 +204,7 @@ On a final note, values are:
 	*	Don't worry if your minimum is greater than your maximum the control will swap them
 	*	Trust me this does happen especially with negative bounds.
 
-
+<a  class="jumpPoint" name="Bezel"></a>
 
 # Bezel options
 
@@ -217,6 +232,9 @@ The properties of the `BezelOptions` object are:
 
 For your experimental pleasure you can play with the code below. Notice that as the bezel grows and shrinks the scale readjusts to fit
 
+
+<div class="tryMe">
+
 {% highlight javascript %}
     var x = $("#canvas").cDash({
        bezel: {
@@ -230,7 +248,9 @@ For your experimental pleasure you can play with the code below. Notice that as 
     x.value(66);
 {% endhighlight %}
 
+</div>
 
+<a  class="jumpPoint" name="Glass"></a>
 
 # Glass options
 
@@ -253,6 +273,7 @@ The properties of the GlassOptions class are:
 *	`visible`	
 	*	Gets a value indicating if the glass layer is visible
 
+<div class="tryMe">
 
 {% highlight javascript %}
     var x = $("#canvas").cDash({
@@ -265,6 +286,10 @@ The properties of the GlassOptions class are:
     x.value(66);
 {% endhighlight %}
 
+</div>
+
+
+<a  class="jumpPoint" name="Needle"></a>
 
 # Needle options
 
@@ -281,6 +306,7 @@ The `NeedleOptions` interface for the dial  is
         shadowBlur:number;
         shadowX:number;
         shadowY:number;
+        style: string;
     }
 {% endhighlight %}
 
@@ -305,8 +331,21 @@ These properties have
 	*	X offset in pixels for the shadow
 *	`shadowY` 
 	*	Y offset in pixels for the shadow
+*   `style`
+    *   The visual style of the needle can be one of 
+        *   `triangle`
+        *   `arrow`
+        *   `line`
+        *   `circleArrow`
+        *   `dart`
+        *   `dot`
+
+If you change the style of needle you may well need to alter the scale and needle margins to get visually pleasing results. The different canned themes use different styles of needles and of course you should experiment in the [Theme Park](/themePark)
 
 Here's some code to try out
+
+
+<div class="tryMe">
 
 {% highlight javascript %}
     var x = $("#canvas").cDash({
@@ -326,15 +365,14 @@ Here's some code to try out
     x.value(66);
 {% endhighlight %}
 
+</div>
+
+<a  class="jumpPoint" name="Scale"></a>
+
+# Scale options
 
 
 
-
-
-
-{% highlight javascript %}
-
-{% endhighlight %}
 
 
 
