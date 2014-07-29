@@ -18,6 +18,8 @@ pageJS3: tryMe.js
 
 There are a lot of options to control the appearance of the dials and sliders. The options are segmented by the area of the dial they control.
 
+Before we start a note on colors: There are many places where the documentation talks of the color of an item. A color is any valid HTML 5 Canvas color: _#rrggbb_, _rgb(r,g,b)_, _color names_ (blue, black, yellow) etc. Currently you cannot have an rgba color function, as transparency does not work.
+
 The anatomy of a dial is as follows
 
 
@@ -93,14 +95,14 @@ export interface FaceOptions{
 
 {% endhighlight %}
 
-This is hardly the most complex options class :-) The face of the dial is rendered as a gradient between two colors. The colors are any valid HTML 5 Canvas colors: _#rrggbb_, _rgb(r,g,b)_, _color names_ etc. Currently you cannot have an rgba color function, as transparency does not work.
+This is hardly the most complex options class :-) The face of the dial is rendered as a gradient between two colors. 
 
 Use the same color for both gradient colors to get a solid color face.
 
 *	`gradientColor1`
-	*	The lower gradient color [^2] 
+	*	The lower gradient color 
 *	`gradientColor2`	
-	*	The upper gradient color [^2] 
+	*	The upper gradient color
 
 You can have a play with these settings by hitting the 'try me' button below
 
@@ -163,8 +165,8 @@ and the definition of the contained `FontOptions` interface is
 	*	The definition of the font to use to render the value
 		*	`family`	 The font family used to display the text
 		*	`pixelSize`	The pixel size to use for the font
-		*	`strokeStyle`	 The color[^2] to use for the text stroke
-		*	`fillStyle`	 the color[^2]  to use for the text fill
+		*	`strokeStyle`	 The color to use for the text stroke
+		*	`fillStyle`	 the color  to use for the text fill
 
 
 If you want to experiment, here's an example with a non default value range and a value that is greater than the default maximum.
@@ -226,7 +228,7 @@ The properties of the `BezelOptions` object are:
 *	`width`	 
 	*	the pixel width of the line that represents the bezel
 *	`strokeStyle`	 
-	*	the style[^2] to use to draw the bezel
+	*	the color to use to draw the bezel
 *	`visible`	 
 	*	a value indicating if the bezel should be visible or not (default true)
 
@@ -270,8 +272,11 @@ The properties of the GlassOptions class are:
 		*	`out` (default)  
 		*	`inOut`
 	*	These determine the shape of the highlight (experiment as always)	
+    *   ![A picture that shows the shapes of dial glass](../images/dialGlass.png)
 *	`visible`	
 	*	Gets a value indicating if the glass layer is visible
+
+
 
 <div class="tryMe">
 
@@ -314,9 +319,9 @@ These properties have
 
 
 *	`fillStyle`
-	*	the fill style[^2] of the needle
+	*	the fill color of the needle
 *	`strokeStyle`	 
-	*	stroke style[^2] for the needle stroke
+	*	stroke color for the needle stroke
 *	`strokeWidth` 
 	*	stroke width for the line around the needle
 *	`width`
@@ -324,7 +329,7 @@ These properties have
 *	`margin`
 	*	The margin from the inside edge of the bezel (again experiment dials are different to sliders)
 *	`shadowColor`	 
-	*	the fill color[^2] for the shadow
+	*	the fill color for the shadow
 *	`shadowBlur`
 	*	the blur radius
 *	`shadowX`
@@ -339,6 +344,8 @@ These properties have
         *   `circleArrow`
         *   `dart`
         *   `dot`
+
+![A picture that shows the styles of needles](../images/dialArrows.png)
 
 If you change the style of needle you may well need to alter the scale and needle margins to get visually pleasing results. The different canned themes use different styles of needles and of course you should experiment in the [Theme Park](/themePark)
 
@@ -371,10 +378,68 @@ Here's some code to try out
 
 # Scale options
 
+The scale is composed from three parts, the scale band and the major and minor ticks. These are shown in the diagram below
 
 
+![A picture that shows the components of a dial scale](../images/dialScale.png)
+      
 
+The scale properties are used for all dial types except the _numeric_ type. The numeric dial type does not have a scale to display.
+
+The typescript interface definition for the Scale interface is:
+
+
+{% highlight javascript %}
+ export interface ScaleOptions {
+    margin:number;
+    strokeStyle:string;
+    width:number;
+    majorTicks:TickOptions;
+    minorTicks:TickOptions;
+    font: FontOptions;
+    decimalPlaces: number;
+    sideMargin:number;
+}
+{% endhighlight %}
+
+The properties for the scale are:
+
+*   `margin`
+    *   The margin from the bezel to the scale in pixels
+*   `strokeStyle`
+    *   The stroke color of the scale band
+*   `width`
+    *   The pixel width of the scale band
+*   `majorTicks`
+    *   The definition of a major tick (see `TickOptions` below)
+*   `minorTicks`
+    *   The definition of a minor tick (see `TickOptions` below)
+*   `font`
+    *   The `FontOptions` for the scale text (see the Values documentation for a definition of [FontOptions](#Value)  ) 
+*   `decimalPlaces`
+    *   The number of decimal places to display in scale values
+*   `sideMargin`
+    *   For sliders this allows the scale to be pulled in from the edge. When you are displaying scale values that are large or have decimal places this helps prevent the text clipping. However being Frank I would recommend not displaying scale values at all in these situations. Just display the dial value.
+
+The scale has ticks there are two types of ticks, major and minor. The minor ticks are rendered in between the major ones. Both sets of ticks are specified using the same properties:
+
+{% highlight javascript %}
+export interface TickOptions {
+    strokeStyle:string;
+    count:number;
+    width:number;
+    length:number;
+} 
+{% endhighlight %}
+
+*   `strokeStyle`
+    *   The stroke color of the tick line
+*   `count`
+    *   The number of ticks (experiment with this value as there is often a hidden minor tick under the major tick associated with it so a  minor tick count of four may show three, try it in the [Theme Park](/themePark)
+*   `width`
+    *   The pixel width of the tick line
+*   `length`
+    *   The pixel length of the line (again experimentation is required as part of the tick is below the scale band, try it in the [Theme Park](/themePark)
 
 
 [^1]: I'll cover Marquees in a separate post.
-[^2]: colors are any valid HTML 5 Canvas colors: _#rrggbb_, _rgb(r,g,b)_, _color names_ etc. Currently you cannot have an rgba color function, as transparency does not work

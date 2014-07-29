@@ -12,14 +12,13 @@ var ThemePark = function(editorDiv, previewDiv, canvas){
 }
 
 ThemePark.prototype.initializeOptions = function() {
-	this.options = $.extend(true, {type:"Dial360", orientation:"n", x:0, y:0, width:200, height:200}, 
-        DbDashboards.Dials.DialBase.defaults, DbDashboards.Dials.DialBase.themes.chocolate);
-    console.dir(this.options);
+	this.options = $.extend(true, {type:"Dial360", orientation:"n", x:0, y:0, width:200, height:200, theme:"paper"}, 
+        DbDashboards.Dials.DialBase.defaults, DbDashboards.Dials.DialBase.themes.paper);
 };
 
 ThemePark.prototype.process = function() {
 	this.dialFromOptions();
-	this.initializeUI();
+	this.initializeUI(); 
 };
 
 
@@ -59,6 +58,19 @@ ThemePark.prototype.initializeGeneralOptions = function(list) {
     var section = list;
    $("<br/>").appendTo(section);
 
+    this.addDropDownEditor(section, "Dial type", this.options.theme, 
+        [
+            {name: "blue", value:"blue"},
+            {name: "choc...", value:"chocolate"},
+            {name: "dark", value:"dark"},
+            {name: "metro", value:"metro"},
+            {name: "paper", value:"paper"},
+        ], 
+        function(s){ 
+            _that.setTheme(s);
+            
+        });
+
     this.addDropDownEditor(section, "Dial type", this.options.type, 
         [
             {name: "Dial 360", value:"dial360"},
@@ -84,15 +96,37 @@ ThemePark.prototype.initializeGeneralOptions = function(list) {
     this.addNumericEditor(section, "Width", this.options.width, function(num){ _that.options.width = num; _that.dialFromOptions();});
     this.addNumericEditor(section, "Height", this.options.height, function(num){ _that.options.height = num; _that.dialFromOptions();});
      
+   $("<br/>").appendTo(section);
+   $("<br/>").appendTo(section);
+    var btn = $("<a class='btn'>Source...</btn>").appendTo(section);
+    var _that = this;
+    btn.click(function(){
+        window.alert(JSON.stringify(_that.options));
+    });
 };
+
+ThemePark.prototype.setTheme = function(theme) {
+
+    if (window.confirm("Reset to theme: '"+theme+"' ?, all changes will be lost!")) {
+        var opts = DbDashboards.Dials.DialBase.themes[theme];
+
+        this.options = $.extend(true, {type:"Dial360", orientation:"n", x:0, y:0, width:200, height:200, theme:theme}, 
+            DbDashboards.Dials.DialBase.defaults, opts);
+        this.initializeUI();
+        this.dialFromOptions();
+        this.setInitialDialSize();
+    }
+}
+
+
 
 ThemePark.prototype.setInitialDialSize = function(list) {
     var w = 200;
     var h = 200;
-    if (this.options.type=="slider"){
+    if (this.options.type=="slider" || this.options.type=="thermometer"){
         h = 80;
     }
-    if (this.orientation == "e" || this.orientation =="w") {
+    if (this.options.orientation == "e" || this.options.orientation =="w") {
         t = w;
         w = h;
         h = t;
@@ -111,7 +145,7 @@ ThemePark.prototype.initializeFace = function(list) {
     this.addColorEditor(faceSection, "Color 1: ", this.options.face.gradientColor1, function(color){ 
         _that.options.face.gradientColor1 = color; 
         _that.dialFromOptions();
-        console.dir(color);
+       
     });
     this.addColorEditor(faceSection, "color 2: ", this.options.face.gradientColor2, function(color){ _that.options.face.gradientColor2 = color; _that.dialFromOptions();});
 };
@@ -122,11 +156,28 @@ ThemePark.prototype.initializeBezel = function(list) {
     var section = this.addSection(list, "Bezel", true);
     this.addBooleanEditor(section, "Visible", this.options.bezel.visible, function(visible){ 
         console.log("value toggle" + visible );
-        _that.options.bezel.visible = visible; _that.dialFromOptions();});
+        _that.options.bezel.visible = visible; 
+        _that.dialFromOptions();});
     $("<br/>").appendTo(section);
     this.addNumericEditor(section, "Margin", this.options.bezel.margin, function(num){ _that.options.bezel.margin = num; _that.dialFromOptions();});
     this.addNumericEditor(section, "Width", this.options.bezel.width, function(num){ _that.options.bezel.width = num; _that.dialFromOptions();});
     this.addColorEditor(section, "Color", this.options.bezel.strokeStyle, function(color){ _that.options.bezel.strokeStyle = color; _that.dialFromOptions();});
+
+};
+
+ThemePark.prototype.initializeGlass = function(list) {
+    var _that = this;
+    var section = this.addSection(list, "Glass", true);
+    this.addBooleanEditor(section, "Visible", this.options.glass.visible, 
+        function(visible){ 
+            _that.options.glass.visible = visible; 
+            _that.dialFromOptions();
+        });
+    $("<br/>").appendTo(section);
+    this.addDropDownEditor(section, "Shape", this.options.glass.shape, 
+        [{name: "In out", value:"inOut"},{name: "Out", value:"out"}], 
+        function(s){ _that.options.glass.shape = s; _that.dialFromOptions();});
+    
 
 };
 
@@ -187,17 +238,6 @@ ThemePark.prototype.initializeValue = function(list) {
 };
 
 
-ThemePark.prototype.initializeGlass = function(list) {
-	var _that = this;
-    var section = this.addSection(list, "Glass", true);
-    this.addBooleanEditor(section, "Visible", this.options.glass.visible, function(visible){ _that.options.glass.visible = visible; _that.dialFromOptions();});
-    $("<br/>").appendTo(section);
-    this.addDropDownEditor(section, "Shape", this.options.glass.shape, 
-    	[{name: "In out", value:"inOut"},{name: "Out", value:"out"}], 
-    	function(s){ _that.options.glass.shape = s; _that.dialFromOptions();});
-    
-
-};
 
 
 
