@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Advanced configuration"
+title: "Advanced dial configuration"
 modified: 2014-07-19 14:28:08 +0100
 tags: [cdash, javascript, dials]
 image:

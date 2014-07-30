@@ -1,6 +1,6 @@
 ---
 layout: post
-title: "Basic configuration"
+title: "Basic dial configuration"
 description: Dial types and themes
 modified: 2014-07-19 13:55:17 +0100
 tags: [dials, cdash, doc]

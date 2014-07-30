@@ -34,7 +34,7 @@ Acknowledgments
 
 The cDash code and the contents of this web site are based in part on work done by others. As always I'm really grateful to anyone who puts time and effort into an open source endeavor.
 
-cDash uses the ubiquitous [jQuery library](http://www.jquery.org) and plugs into it too, It also uses the jquery-number formatting library by Sam Sehnert of [Digital Fusion](http://www.teamdf.com).
+cDash uses the ubiquitous [jQuery library](http://www.jquery.org) and plugs into it too.
 
 This web site is based on the So Simple Theme and generated using Jekyll (links to both are on the footer of each and every page).
 

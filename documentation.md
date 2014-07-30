@@ -6,50 +6,54 @@ description: "How tos and articles"
 tags: [cDash, about, html5, canvas, dials, gauges, dsahboards, controls, jQuery]
 ---
 
-Fork the GitHub project and away you go.
+cDash lives on GitHub, click the ribbon at the top of the page to go to the project. There are two ways to work with cDash, either fork the repository
+on GitHub and work with that (great for keeping up to date) or, download the project as a zip file and expand that.
 
-The `ts` sub-folder of the _git_ root contains the cDash typescript source. The file `cdash.js` contains the javascript version of the library and can be in the `out` folder. Use which ever version you prefer. However: if you make changes to the code, fix defects or contribute new and cool stuff, please modify the typescript file, this is the canonical form of the code.
+Regardless of how you install the source what you'll end up with is a directory structure on disk, most of which you cane safely ignore unless you want to contribute :-)
 
-The supporting libraries that you need to get the code to work are included in the lib folder. Currently the lib files are: the jQuery 1.9.1 framework and the jquery-number plugin. I don't make heavy weight use of jQuery and the cDash library should work with any jQuery version from 1.6 onwards.
-
-The minimal code and markup to surface a cDash control is shown below:
+The minimal code and markup to surface a cDash control is included in the index.html file in the root of the distribution (open it and see a dial and it should look round and proud[^1]). The file contents look like: 
 
 
 {% highlight html %}
-
 <!DOCTYPE html>
 <html>
-  <head>
-    <title>cDash test page</title>
-
-    <script type="text/javascript" src="ts/lib/jquery-1.9.1.min.js"></script>
-    <script type="text/javascript" src="ts/lib/jquery.number.min.js"></script>
-    <script type="text/javascript" src="ts/cDash.js"></script>
-
+<head>
+    <script type="text/javascript" src="lib/jquery-1.9.1.min.js"></script>
+    <script type="text/javascript" src="lib/cDash.js"></script>
+</head>
+<body>
+    <canvas id="dial1" width="200" height="200"></canvas>
     <script type="text/javascript">
-        $(function(){
+        $(function () {
             $("#dial1").cDash();
         });
     </script>
-
-  </head>
-  <body>
-    <canvas id="dial1" width="200" height="200"></canvas>
-  </body>
+</body>
 </html>
-
 {% endhighlight %}
 
-If any of that appears a little strange to you then you might want to have a look at an HTML5 and JavaScript tutorial. The only two things of any note are: The `DOCTYPE` declares an HTML5 document (line 1) and the creation of the `canvas` element (line 12).
+ The only two things of any note are: The `DOCTYPE` declares an HTML5 document (line 1) and the creation of the `canvas` element (line 9).
 
-If you find you canvases being rendered peculiarly have a look at your CSS files. If the canvas appears to have elliptical circles this is usually due to `CSS` modifying the width and height of the canvas. The canvas tag's width and height attributes set the pixel size of the canvas, CSS sets the display size of the container. So a circle of radius 50 on a canvas of with and height 100 will appear round. If the CSS sets the element to width 50, height 100, you get an ellipse (and both are correct, that's the way the world works!).
+To reuse the code in your projects simply copy `cDash.js`  from the `lib` folder and put it into your own project. 
+
+## Compatibility
+
+The example uses `jQuery 1.9.1` but I don't make any heavy weight use of JQuery's features and I expect it should work with jQuery versions back to 1.7. Other than `jQuery` cDash has no external dependencies.
 
 ## For your reading pleasure
+
+Here are the all important hooks into the documentation.
 
 <ul class="post-list">
 {% for post in site.posts %} 
   <li><article><a href="{{ site.url }}{{ post.url }}">{{ post.title }} <span class="entry-date"><time datetime="{{ post.date | date_to_xmlschema }}">{{ post.date | date: "%B %d, %Y" }}</time></span></a></article></li>
 {% endfor %}
 </ul>
+
+<br/>
+Footnotes
+
+[^1]: If you find you canvases being rendered peculiarly have a look at your CSS files. If the canvas appears to have elliptical circles this is usually due to `CSS` modifying the width and height of the canvas. The canvas tag's width and height attributes set the pixel size of the canvas, CSS sets the display size of the container. So a circle of radius 50 on a canvas of with and height 100 will appear round. If the CSS sets the element to width 50, height 100, you get an ellipse (and both are correct, that's the way the world works!).
+
 
 
