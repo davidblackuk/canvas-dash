@@ -95,7 +95,7 @@ module DbDashboards.Dials {
 
 
 
-                var txt = $.number(stepValue+this.dialOptions.value.min, this.dialOptions.scale.decimalPlaces);
+                var txt = (stepValue+this.dialOptions.value.min).toFixed(this.dialOptions.scale.decimalPlaces);
 
 
 

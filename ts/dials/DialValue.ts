@@ -15,7 +15,7 @@ module DbDashboards.Dials {
             ctx.shadowOffsetX = 0;
             ctx.shadowOffsetY = 0;
             ctx.shadowColor = "rgba(0,0,0,0)";
-            var txt = $.number(stepValue, this.dial.options.value.decimalPlaces);
+            var txt = stepValue.toFixed(this.dial.options.value.decimalPlaces);
 
 
             ctx.textAlign = "center";

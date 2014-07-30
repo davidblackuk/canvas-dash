@@ -19,7 +19,6 @@
     <Content Include="all.png" />
     <Content Include="index.html" />
     <Content Include="lib\jquery-1.9.1.min.js" />
-    <Content Include="lib\jquery.number.min.js" />
     <Content Include="lib\cDash.js" />
     <Content Include="test.html" />
     <Content Include="web.config" />

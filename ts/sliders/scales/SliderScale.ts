@@ -76,7 +76,7 @@ module DbDashboards.Dials {
 
             for (var maj = 0; maj < this.options.majorTicks.count; maj++) {
                 var stepValue = ((this.dialOptions.value.max - this.dialOptions.value.min)/ (this.options.majorTicks.count-1))*maj;
-                var txt = $.number(stepValue+this.dialOptions.value.min, this.options.decimalPlaces);
+                var txt = (stepValue+this.dialOptions.value.min).toFixed(this.options.decimalPlaces);
 
                 var at = this.getPointFoprScaleNumber(maj);
 
