@@ -24,17 +24,17 @@
  */
 module DbDashboards.Dials {
 
-    
+
 
     export class DialBase extends DbDashboards.Common.Dashboard {
 
-        public static Dial360:string = "dial360";
+        public static Dial360: string = "dial360";
         public static Dial180: string = "dial180";
-        public static Dial180N:string = "dial180N";
-        public static Dial180S:string = "dial180S";
-        public static Dial180E:string = "dial180E";
-        public static Dial180W:string = "dial180W";
-        public static Slider:string = "slider";
+        public static Dial180N: string = "dial180N";
+        public static Dial180S: string = "dial180S";
+        public static Dial180E: string = "dial180E";
+        public static Dial180W: string = "dial180W";
+        public static Slider: string = "slider";
         public static Thermometer: string = "thermometer";
 
 
@@ -47,7 +47,7 @@ module DbDashboards.Dials {
         // this layer contains the background and the scale and text etc
         private backgroundContext: CanvasRenderingContext2D;
 
-    
+
 
         // this layer contains the bezel and the glass
         private foregroundContext: CanvasRenderingContext2D;
@@ -64,20 +64,20 @@ module DbDashboards.Dials {
          * Constructs a new DialBase
          * @param options the options for the Dial
          */
-         constructor(public dialSpecificOverrides: DialOptions, public userOverrides:DialOptions, public target:JQuery, private farm: FactoryFarm) {
+        constructor(public dialSpecificOverrides: DialOptions, public userOverrides: DialOptions, public target: JQuery, private farm: FactoryFarm) {
             super();
 
 
-            this.options = this.mergeSettings(dialSpecificOverrides,  userOverrides );
+            this.options = this.mergeSettings(dialSpecificOverrides, userOverrides);
             this.setOrientation();
 
 
 
             this.context = (<any>this.target[0]).getContext("2d");
-            
-             this.backgroundContext = this.createLayerContext(this.context, 0, 0);
-        
-            this.foregroundContext = this.createLayerContext(this.context, 0, 0);
+
+            this.backgroundContext = this.createContextForLayer(this.context, this.options.width, this.options.height);
+
+            this.foregroundContext = this.createContextForLayer(this.context, this.options.width, this.options.height);
 
         }
 
@@ -87,10 +87,10 @@ module DbDashboards.Dials {
          */
         private initializeOnce() {
             this.mask = this.getMask();
-            this.needle = this.farm.needleFactory.create(this.options, this.createLayerContext(this.context, 0, 0));
+            this.needle = this.farm.needleFactory.create(this.options, this.createContextForLayer(this.context, this.options.width, this.options.height));
             this.scale = this.farm.scaleFactory.create(this.options, this.backgroundContext);
-            this.face = new DialFace(this, this.createLayerContext(this.context, 0, 0));
-            this.glass = new DialGlass(this, this.createLayerContext(this.context, 0, 0));
+            this.face = new DialFace(this, this.createContextForLayer(this.context, this.options.width, this.options.height));
+            this.glass = new DialGlass(this, this.createContextForLayer(this.context, this.options.width, this.options.height));
         }
 
 
@@ -100,7 +100,7 @@ module DbDashboards.Dials {
          */
         setOrientation() {
             this.options.orientation = Orientations.parse(this.options.orientation);
-         }
+        }
 
 
 
@@ -110,15 +110,15 @@ module DbDashboards.Dials {
          * @param value the new value (omit to bet the current value)
          * @returns {number} the new or current value
          */
-        public value(value: number) : number {
-            if (typeof  value != undefined){
+        public value(value: number): number {
+            if (typeof value != undefined) {
                 this.setValue(value);
             }
             return this.options.value.value;
         }
 
 
-        destroyInternal(){
+        destroyInternal() {
             this.context = null;
             this.backgroundContext = null;
             this.needle.destroy();
@@ -140,6 +140,7 @@ module DbDashboards.Dials {
 
 
             // todo refactor this to iterate an array of IRender
+
             this.mask.apply(this.face.context);
             this.mask.apply(this.backgroundContext);
             this.mask.apply(this.needle.needleContext);
@@ -157,21 +158,21 @@ module DbDashboards.Dials {
             }
 
             if (this.options.bezel.visible) {
-             this.addBezel(this.foregroundContext);
+                this.addBezel(this.foregroundContext);
             }
 
             this.renderLayers();
 
 
 
-            if (this.options.value.value != this.options.value.min){
+            if (this.options.value.value != this.options.value.min) {
                 this.setValue(this.options.value.value);
             }
         }
 
 
 
-        private setValue(v: number){
+        private setValue(v: number) {
 
             var vals = this.options.value;
 
@@ -182,21 +183,21 @@ module DbDashboards.Dials {
             // to 25, the animation starts from 0 (as original value not set). causing hilarious (not) results
             // so we clamp the original in the same way we clamp the new value
 
-            if (original < vals.min){
+            if (original < vals.min) {
                 original = vals.min;
             } else if (original > vals.max) {
                 original = vals.max;
             }
 
 
-            if (v < vals.min){
+            if (v < vals.min) {
                 v = vals.min;
-            }  else if (v > this.options.value.max){
+            } else if (v > this.options.value.max) {
                 v = vals.max;
             }
             vals.value = v;
 
-            var sweepDelta = Math.abs(vals.value - original) / (vals.max - vals.min) ;
+            var sweepDelta = Math.abs(vals.value - original) / (vals.max - vals.min);
 
 
             if (0 == v) {
@@ -204,16 +205,17 @@ module DbDashboards.Dials {
                 this.drawNeedle(v);
                 this.renderLayers();
             } else {
-                $({value: original}).animate({value: vals.value},{
+                $({ value: original }).animate({ value: vals.value }, {
                     duration: 1000 * sweepDelta,
                     step: (function (d: DialBase) {
                         return function (now: number, tween: any) {
-                        
-                        d.drawNeedle(tween.now);
-                        d.renderLayers();
+
+                            d.drawNeedle(tween.now);
+                            d.renderLayers();
 
 
-                    };})(this)
+                        };
+                    })(this)
                 })
             }
 
@@ -223,11 +225,11 @@ module DbDashboards.Dials {
 
         private renderLayers() {
             this.context.drawImage(this.face.canvas(), this.options.x, this.options.y);
-     
-           this.context.drawImage(this.backgroundContext.canvas, this.options.x,this.options.y);
-                   
-           this.context.drawImage(this.needle.canvas(),  this.options.x,this.options.y);
-           this.context.drawImage(this.foregroundContext.canvas,  this.options.x,this.options.y);
+
+            this.context.drawImage(this.backgroundContext.canvas, this.options.x, this.options.y);
+
+            this.context.drawImage(this.needle.canvas(), this.options.x, this.options.y);
+            this.context.drawImage(this.foregroundContext.canvas, this.options.x, this.options.y);
 
             this.context.drawImage(this.glass.canvas(), this.options.x, this.options.y);
         }
@@ -237,11 +239,11 @@ module DbDashboards.Dials {
         /**
          * Applies a mask to the prevent glass highlights etc over flowing
          */
-        getMask() : DialMask {
+        getMask(): DialMask {
             throw new Error("This method must be implemented");
         }
 
-       
+
 
 
 
@@ -284,12 +286,12 @@ module DbDashboards.Dials {
 
          * @param userOptions (optional) can contain the user specific overrides
          */
-        public  mergeSettings(dialSpecificDefaults: any, userOptions: any  ) : DialOptions {
-            var coords = {x: 0, y: 0, width: this.target.width(), height: this.target.height()};
+        public mergeSettings(dialSpecificDefaults: any, userOptions: any): DialOptions {
+            var coords = { x: 0, y: 0, width: this.target.width(), height: this.target.height() };
             var theme = this.getThemeFromOptions(userOptions, DialBase.themes);
             var displaySet = this.getDisplaySetFromOptions(userOptions);
 
-            var settings = $.extend(true, coords, DialBase.defaults, {}, theme, displaySet, dialSpecificDefaults , userOptions);
+            var settings = $.extend(true, coords, DialBase.defaults, {}, theme, displaySet, dialSpecificDefaults, userOptions);
             return <DialOptions>settings;
         }
 
@@ -301,15 +303,15 @@ module DbDashboards.Dials {
             var name = options.theme.trim();
             if (typeof name == "string") {
                 for (var t in themes) {
-                   if (t == name) {
-                       return themes[name];
-                   }
+                    if (t == name) {
+                        return themes[name];
+                    }
                 }
             }
             return DialBase.themes.chocolate;
         }
 
-        public  getDisplaySetFromOptions(options: any) : any {
+        public getDisplaySetFromOptions(options: any): any {
             if (typeof options.displaySet != 'undefined') {
                 var name = options.displaySet.trim();
                 for (var t in DialBase.settings) {
@@ -317,7 +319,7 @@ module DbDashboards.Dials {
                         return DialBase.settings[name];
                     }
                 }
-           }
+            }
             return {};
         }
 
@@ -327,13 +329,13 @@ module DbDashboards.Dials {
         public static defaults: DialOptions = {
             baseRunOutSize: 33,
             maskSubControls: true,
-            face:{
+            face: {
                 gradientColor1: "red",
                 gradientColor2: "yellow"
             },
             value: {
                 value: 0,
-                min:0,
+                min: 0,
                 decimalPlaces: 0,
                 max: 100,
                 font: {
@@ -352,7 +354,7 @@ module DbDashboards.Dials {
                 visible: true
             },
             needle: {
-                strokeStyle:"pink",
+                strokeStyle: "pink",
                 fillStyle: "green",
                 strokeWidth: 0.5,
                 width: 7,
@@ -385,7 +387,7 @@ module DbDashboards.Dials {
                     count: 4,
                     width: 2,
                     length: 3
-                },font: {
+                }, font: {
                     strokeStyle: "pink",
                     fillStyle: "red",
                     family: "Verdana",
@@ -397,8 +399,8 @@ module DbDashboards.Dials {
 
 
         public static themes: DbDashboards.Common.Themes = {
-            dark:   {
-                face:{
+            dark: {
+                face: {
                     gradientColor2: "#003",
                     gradientColor1: "#000"
                 },
@@ -438,7 +440,7 @@ module DbDashboards.Dials {
                 }
             },
             blue: {
-                face:{
+                face: {
                     gradientColor1: "#00d",
                     gradientColor2: "#003"
                 },
@@ -450,8 +452,8 @@ module DbDashboards.Dials {
                 },
                 bezel: {
                     strokeStyle: "rgba(0,0,0,0)",
-                    width:1.5,
-                    margin:2
+                    width: 1.5,
+                    margin: 2
                 },
                 needle: {
                     fillStyle: "#CBCBF7",
@@ -466,11 +468,11 @@ module DbDashboards.Dials {
                     strokeStyle: "#99e",
                     majorTicks: {
                         strokeStyle: "#99e",
-                        length:10
+                        length: 10
                     },
                     minorTicks: {
                         strokeStyle: "#99e",
-                        length:5
+                        length: 5
                     },
                     font: {
                         strokeStyle: "#B8CEFC",
@@ -547,7 +549,7 @@ module DbDashboards.Dials {
                     style: DialNeedleFactory.line,
                     width: 3,
                     margin: 20
-                  
+
                 },
                 scale: {
                     sideMargin: 15,
@@ -557,7 +559,7 @@ module DbDashboards.Dials {
                     },
                     minorTicks: {
                         strokeStyle: "#FFFFFF"
-                    },font: {
+                    }, font: {
                         strokeStyle: "#FFFFFF",
                         fillStyle: "#FFFFFF",
                         family: "Helvetica"
@@ -569,7 +571,7 @@ module DbDashboards.Dials {
             paper: {
                 glass: {
                     visible: false
-                },face: {
+                }, face: {
                     gradientColor1: "#DCE0CE",
                     gradientColor2: "#DCE0CE"
                 },
@@ -611,7 +613,7 @@ module DbDashboards.Dials {
 
         public static settings = {
             medium: {
-                baseRunOutSize:22,
+                baseRunOutSize: 22,
                 value: {
                     font: {
                         pixelSize: 10
@@ -626,11 +628,11 @@ module DbDashboards.Dials {
                 scale: {
                     margin: 1,
                     width: 2,
-                    majorTicks:{
+                    majorTicks: {
                         count: 5,
                         length: 3
                     },
-                    minorTicks:{
+                    minorTicks: {
                         count: 5,
                         length: 1.5
                     },
@@ -639,13 +641,13 @@ module DbDashboards.Dials {
                     }
 
                 },
-                needle:{
+                needle: {
                     margin: 4,
                     width: 3
                 }
             },
-            small:{
-                baseRunOutSize:12,
+            small: {
+                baseRunOutSize: 12,
                 value: {
                     font: {
                         pixelSize: 7
@@ -660,11 +662,11 @@ module DbDashboards.Dials {
                 scale: {
                     margin: 0.5,
                     width: 1,
-                    majorTicks:{
+                    majorTicks: {
                         count: 5,
                         length: 3
                     },
-                    minorTicks:{
+                    minorTicks: {
                         count: 5,
                         length: 1.5
                     },

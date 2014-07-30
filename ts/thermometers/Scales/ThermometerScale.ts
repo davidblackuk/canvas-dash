@@ -14,7 +14,14 @@ module DbDashboards.Dials {
         constructor(dialOptions: DialOptions, context: CanvasRenderingContext2D) {
             super(dialOptions, context);
             this.options = dialOptions.scale;
-            this.metrics = ThermometerNeedle.calculateMetrics(dialOptions);
+
+            if (dialOptions.orientation == Orientations.North || dialOptions.orientation == Orientations.South) {
+                this.metrics = HorizontalThermometerNeedle.calculateMetrics(dialOptions);
+            }
+            else {
+              
+                this.metrics = VerticalThermometerNeedle.calculateMetrics(dialOptions);
+            }
             this.needleCenterTop = new Point(this.metrics.x + this.metrics.w / 2, this.metrics.y);
             this.needleCenterBottom = new Point(this.metrics.x + this.metrics.w / 2, this.metrics.tubeBaseY);
         }

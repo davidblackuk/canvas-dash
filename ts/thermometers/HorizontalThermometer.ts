@@ -5,7 +5,7 @@ module DbDashboards.Dials {
     /**
      * A horizontal gauge
      */
-    export class ThermometerE extends Thermometer {
+    export class HorizontalThermometer extends Thermometer {
 
         /**
          * Constructs a new Dial360
@@ -13,11 +13,6 @@ module DbDashboards.Dials {
          */
         constructor(options: DialOptions, public target: JQuery) {
             super(options, target);
-
-
-
-
-
             var x = this.effectiveWidth() - this.needleCenterFromTop();
 
             this.options.prv = {
@@ -33,34 +28,20 @@ module DbDashboards.Dials {
                 minPoint: new Point(x, this.needleMinimumOffSet()),
                 maxPoint: new Point(x, this.effectiveHeight() - this.needleMinimumOffSet()),
                 needleRotation: 0
-
             };
-
+            
         }
 
         /**
         * Ask the dial where its value should be displayed
         */
         getDialValuePostion(): TranslationAndRotation {
-            var tx = (this.options.prv.effectiveWidth / 2);
 
-
-
-            var margin = this.options.bezel.margin * 2 + this.options.bezel.width + this.options.value.margin;
-
-
-
-
-            var ty = (this.options.height - margin) ;
-
-            //var t = this.needle.needleContext.strokeStyle;
-            //this.needle.needleContext.strokeStyle = "blue";
-            //this.needle.needleContext.strokeRect(0, this.options.height - margin, this.options.width, - this.options.value.font.pixelSize);
-            //this.needle.needleContext.strokeStyle = t;
-
+            var ty = (this.options.prv.effectiveHeight / 2) + ( this.options.value.font.pixelSize/4);
+            var bezOffset = (this.options.bezel.width / 2) + this.options.bezel.margin;
+            var tx = (bezOffset + (this.options.value.font.pixelSize)) + 2;
             return { x: tx, y: ty, r: 0 };
 
         }
-
     }
 }

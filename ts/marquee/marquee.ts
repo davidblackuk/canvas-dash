@@ -71,7 +71,8 @@ module DbDashboards.Marquees {
 
 
             this.onScreenContext = (<any>this.target[0]).getContext("2d");
-            this.backBuffer = this.createLayerContext(this.onScreenContext,0, 0);
+          
+            this.backBuffer = this.createContextForLayer(this.onScreenContext, this.onScreenContext.canvas.width, this.onScreenContext.canvas.height);
             this.fillBackBuffer();
             this.characters = new Characters();
             this.currentStringPos = -1;

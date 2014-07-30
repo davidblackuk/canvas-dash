@@ -39,9 +39,6 @@ module DbDashboards.Dials {
 
 
 
-
-
-
         addBezel(ctx: CanvasRenderingContext2D) {
             var b = new SliderBezel(this);
             b.addLayer(ctx);

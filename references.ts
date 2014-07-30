@@ -56,6 +56,10 @@
 ///<reference path='ts/sliders/SliderBezel.ts' />
 ///<reference path='ts/sliders/SliderMask.ts' />
 ///<reference path='ts/sliders/needles/SliderNeedle.ts' />
+///<reference path='ts/thermometers/Thermometer.ts' />
+///<reference path='ts/thermometers/HorizontalThermometer.ts' />
+///<reference path='ts/thermometers/VerticalThermometer.ts' />
+
 ///<reference path='ts/marquee/characters.ts' />
 ///<reference path='ts/marquee/marquee.ts' />
 ///<reference path='ts/jQueryIntegration.ts' />

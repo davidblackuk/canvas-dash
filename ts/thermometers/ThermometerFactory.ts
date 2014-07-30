@@ -9,7 +9,7 @@ module DbDashboards.Dials {
         }
 
         north(options: DialOptions, target: JQuery) {
-            return new ThermometerN(options, target);
+            return new HorizontalThermometer(options, target);
         }
 
         south(options: DialOptions, target: JQuery) {
@@ -17,7 +17,7 @@ module DbDashboards.Dials {
         }
 
         east(options: DialOptions, target: JQuery) {
-            return new ThermometerE(options, target);
+            return new VerticalThermometer(options, target);
         }
 
         west(options: DialOptions, target: JQuery) {

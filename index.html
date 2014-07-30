@@ -1,111 +1,17 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Test page root for Dashboard dials and gauges</title>
-
     <script type="text/javascript" src="lib/jquery-1.9.1.min.js"></script>
     <script type="text/javascript" src="lib/jquery.number.min.js"></script>
     <script type="text/javascript" src="out/cDash.js"></script>
-
-
-    <style type="text/css">
-        body {
-            background-color: #0c054d;
-        }
-
-    </style>
-
-
-    <script type="text/javascript">
-        function showTheme(theme) {
-
-            window.dials = [];
-
-
-
-
-            $("#marquee").cDash({type:"marquee",  theme: theme, message: "There is nothing to fear, except fear itself. Well that and spiders, obviously :-)   ***    message repeats    ****    "});
-
-
-            var size = theme.trim() == "metro" ? 60: 70;
-
-
-            dials.push($("#dashboard").cDash({type: "slider",  orientation:"w", x:10, y:20, width:size+10, height:220, theme: theme, id:"dial1"}).data("dial1"));
-
-            dials.push($("#dashboard").cDash({type: "slider", orientation:"n", x:100, y:20, width: 220, height:size, theme: theme, id:"dial2"}).data("dial2"));
-            dials.push($("#dashboard").cDash({type: "slider", orientation:"s", x:100, y:100, width: 220, height:size, theme: theme, id:"dial3"}).data("dial3"));
-
-            dials.push($("#dashboard").cDash({type: "slider", orientation:"e", x:340, y:20, width: size+10, height:220, theme: theme, id:"dial4"}).data("dial4"));
-
-
-
-            dials.push($("#dashboard").cDash({type: "dial180", orientation:"n", x:430, y:20, width: 200, height:200, theme: theme, id:"dial6"}).data("dial6"));
-            dials.push($("#dashboard").cDash({type: "dial180", orientation:"s", x:430, y:160, width: 200, height:200, theme: theme, id:"dial6"}).data("dial6"));
-
-            dials.push($("#dashboard").cDash({type: "dial180", orientation:"w", x:430, y:300, width: 133, height:200, theme: theme, id:"dial7"}).data("dial7"));
-            dials.push($("#dashboard").cDash({type: "dial180", orientation:"e", x:575, y:300, width: 133, height:200, theme: theme, id:"dial8"}).data("dial8"));
-
-            dials.push($("#dashboard").cDash({ type: "dial360", orientation: "n", x: 650, y: 20, width: 200, height: 200, theme: theme, id: "dial5" }).data("dial5"));
-            dials.push($("#dashboard").cDash({ type: "dial360", orientation: "s", x: 740, y: 200, width: 200, height: 200, theme: theme, id: "dial5" }).data("dial5"));
-            dials.push($("#dashboard").cDash({ type: "dial360", orientation: "e", x: 850, y: 20, width: 200, height: 200, theme: theme, id: "dial5" }).data("dial5"));
-            dials.push($("#dashboard").cDash({ type: "dial360", orientation: "w", x: 940, y: 200, width: 200, height: 200, theme: theme, id: "dial5" }).data("dial5"));
-
-
-
-
-            dials.push($("#dashboard").cDash({ type: "thermometer", orientation: "w", x: 10, y: 245, width: size + 10, height: 220, theme: theme, id: "dial1" }).data("dial1"));
-
-            dials.push($("#dashboard").cDash({ type: "thermometer", orientation: "n", x: 100, y: 245, width: 220, height: size, theme: theme, id: "dial2" }).data("dial2"));
-            dials.push($("#dashboard").cDash({ type: "thermometer", orientation: "s", x: 100, y: 325, width: 220, height: size+123, theme: theme, id: "dial3" }).data("dial3"));
-
-            dials.push($("#dashboard").cDash({ type: "thermometer", orientation: "e", x: 340, y: 245, width: size + 10, height: 220, theme: theme, id: "dial4" }).data("dial4"));
-
-
-
-
-
-        }
-
-        $(function () {
-            initializeThemeSelector();
-            var theme = (typeof window.location.search == 'string' && window.location.search !== "") ? window.location.search.replace("?theme=","") : "chocolate";
-            $("#themeSelector").val(theme);
-            showTheme(theme + " ");
-            $("#themeSelector").change(function () {
-                window.location.search = "?theme="+$(this).val();
-            })
-            animate();
-            window.setInterval(animate, 2000)
-        });
-
-        function animate() {
-            for (var i=0; i<window.dials.length; i++){
-                window.dials[i].value(Math.random()*100);
-            }
-        }
-
-        function initializeThemeSelector() {
-            for (var i in DbDashboards.Dials.DialBase.themes) {
-                $('<option value="'+i+'"> '+i+' </option>').appendTo($("#themeSelector"));
-            }
-        }
-
-    </script>
-
-
-
 </head>
 <body>
-<p>Pick a theme and have a look..</p>
-<select id="themeSelector">
-</select>
-<br/>
+    <canvas id="dial1" width="200" height="200"></canvas>
 
-
-
-<canvas  id="dashboard" width="1200" height="500"></canvas>
-
-<canvas id="marquee" width="1000" height="40"></canvas>
-
+    <script type="text/javascript">
+        $(function () {
+            $("#dial1").cDash();
+        });
+    </script>
 </body>
 </html>

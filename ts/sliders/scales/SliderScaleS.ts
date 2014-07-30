@@ -16,7 +16,7 @@ module DbDashboards.Dials {
 
         /**
          * calculate the start and end points of a major tick line for this dial and orientation
-        */
+         */
         getMajorTickLine(step: number): Line {
             var x1 = this.scaleBandX1 + (this.majorTickSpacing * step);
             var y1 = this.scaleBandY1;
@@ -28,7 +28,7 @@ module DbDashboards.Dials {
 
         /**
          * calculate the start and end points of a minor tick line for this dial and orientation
-        */
+         */
         getMinorTickLine(step: number, increment: number): Line {
             var start = this.scaleBandX1 + (this.majorTickSpacing * step);
             var x1 = start + (this.minorTickSpacing * increment);

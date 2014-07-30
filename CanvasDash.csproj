@@ -17,15 +17,14 @@
   </PropertyGroup>
   <ItemGroup>
     <Content Include="all.png" />
-    <Content Include="editor.html" />
     <Content Include="index.html" />
     <Content Include="lib\jquery-1.9.1.min.js" />
     <Content Include="lib\jquery.number.min.js" />
     <Content Include="out\cDash.js" />
+    <Content Include="test.html" />
     <Content Include="web.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="build" />
     <Content Include="LICENSE" />
     <Content Include="README.md" />
     <Content Include="out\cDash.js.map" />
@@ -112,14 +111,16 @@
     <TypeScriptCompile Include="ts\sliders\slider\SliderN.ts" />
     <TypeScriptCompile Include="ts\sliders\slider\SliderS.ts" />
     <TypeScriptCompile Include="ts\sliders\slider\SliderW.ts" />
-    <TypeScriptCompile Include="ts\thermoeters\needles\ThermometerNeedle.ts" />
-    <TypeScriptCompile Include="ts\thermoeters\needles\ThermometerNeedleFactory.ts" />
-    <TypeScriptCompile Include="ts\thermoeters\Scales\ThermometerScale.ts" />
-    <TypeScriptCompile Include="ts\thermoeters\Scales\THermometerScaleFactory.ts" />
-    <TypeScriptCompile Include="ts\thermoeters\Thermometer.ts" />
-    <TypeScriptCompile Include="ts\thermoeters\ThermometerE.ts" />
-    <TypeScriptCompile Include="ts\thermoeters\ThermometerFactory.ts" />
-    <TypeScriptCompile Include="ts\thermoeters\ThermometerN.ts" />
+    <TypeScriptCompile Include="ts\thermometers\needles\ThermometerNeedle.ts" />
+    <TypeScriptCompile Include="ts\thermometers\needles\VerticalThermometerNeedle.ts" />
+    <TypeScriptCompile Include="ts\thermometers\needles\ThermometerNeedleFactory.ts" />
+    <TypeScriptCompile Include="ts\thermometers\needles\HorizontalThermometerNeedle.ts" />
+    <TypeScriptCompile Include="ts\thermometers\Scales\ThermometerScale.ts" />
+    <TypeScriptCompile Include="ts\thermometers\Scales\THermometerScaleFactory.ts" />
+    <TypeScriptCompile Include="ts\thermometers\Thermometer.ts" />
+    <TypeScriptCompile Include="ts\thermometers\VerticalThermometer.ts" />
+    <TypeScriptCompile Include="ts\thermometers\ThermometerFactory.ts" />
+    <TypeScriptCompile Include="ts\thermometers\HorizontalThermometer.ts" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="ts\themes\" />

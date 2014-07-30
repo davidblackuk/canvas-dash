@@ -6,18 +6,19 @@ module DbDashboards.Common {
         /**
          * create a background layer canvas and return the context
          * @param srcContext the source context to take the width and height from (or null to use only the padding)
-         * @param xPadding extra pixels to add to the width of the canvas (or to 0 if the source context is null)
-         * @param yPadding extra pixels to add to the height of the canvas (or to 0 if the source context is null)
+         * @param width the width of the canvas
+         * @param height the height of the canvas
          * @returns {CanvasRenderingContext2D}
          */
-        createLayerContext(srcContext: CanvasRenderingContext2D, xPadding: number, yPadding: number) {
+        createContextForLayer(srcContext: CanvasRenderingContext2D, width: number, height: number) {
             var buffer:HTMLCanvasElement = <HTMLCanvasElement>document.createElement('canvas');
             var w = (srcContext != null) ? srcContext.canvas.width : 0;
             var h = (srcContext != null) ? srcContext.canvas.height : 0;
-            buffer.width = w + xPadding;
-            buffer.height = h + yPadding;
+            //buffer.width = w + xPadding;
+            //buffer.height = h + yPadding;
 
-
+            buffer.width = width;
+            buffer.height = height;
 
             return buffer.getContext("2d");
         }

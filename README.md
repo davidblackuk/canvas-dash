@@ -5,7 +5,7 @@ HTML 5 Canvas based Dashboard gauges
 
 A library of dashboard dials, gauges and other ephemera implemented using the HTML 5 canvas control, for modern browsers.
 
-[For documentation and demos, go to the project home page.](http://canvasdash.org/)
+[For documentation and demos and loads of cool stuff, go to the project home page.](http://canvasdash.org/)
 
 The library features:
 
